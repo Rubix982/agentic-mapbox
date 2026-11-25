@@ -1,0 +1,15 @@
+{
+  "name": "agentic-mapbox",
+  "private": true,
+  "type": "module",
+  "description": "A field guide to Mapbox for AI agents, read from Mapbox itself and checked by running code",
+  "dependencies": {
+    "@mapbox/mapbox-gl-style-spec": "14.35.2",
+    "mapbox-gl": "3.35.2"
+  },
+  "devDependencies": {
+    "playwright": "1.65.1",
+    "pngjs": "7.0.0",
+    "typescript": "5.8.3"
+  }
+}

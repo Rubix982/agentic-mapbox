@@ -1,0 +1,85 @@
+# agentic-mapbox
+
+Mapbox for AI agents: what Mapbox GL JS 3.35.2 says about itself, what Mapbox offers and what it costs, and a test of
+whether code an agent writes with Mapbox's own Agent Skills renders what was asked.
+
+Mapbox already publishes 27 Agent Skills, an MCP server and a CLI for agents (`kb/catalog.md`). This repository started
+by testing those rather than repeating them. On ten everyday GL JS tasks written blind, Claude (Opus 5.5) got 10 of 10
+right without help and 10 of 10 with Mapbox's skills, which it never opened (`CARD.md` C-001, `evals/results.md`). So
+for tasks like these there is no gap for a guide to fill. A second blind set on the newest parts of GL JS 3.x (3D models,
+clip, wind particles, procedural buildings, style imports, the Interactions API) also came out 10 of 10 (C-005), though
+three of those sessions got there by downloading and reading GL JS's own code.
+
+Then a tour (C-002): 22 small experiments over 21 of Mapbox's capabilities, each run once with a free account's public
+token, each recording facts that could have come out false and a screenshot (`experiments/results.md`,
+`experiments/gallery.html`). Everything was served except the account's own listings. Two height readings came out
+wrong: Mapbox's DEM has the Matterhorn 252 m low, and Tilequery's contours never reach a summit.
+
+Then a check of Mapbox's MCP server (C-003): its 16 web-service tools let an agent set 101 of the 240 parameters Mapbox
+documents for the endpoints they call. Where the tools' schemas and the docs disagreed, the API sided with the docs six
+times and with the tools twice (`experiments/results.md`).
+
+And a test of the Standard style's 48 settings (C-004). Asked in plain words for each, the model with no help wrote a
+working call for 44. For three of the newest it invented names, which GL JS ignores without a warning
+(`evals/results.md`). `kb.mjs config` now lists all 48.
+
+What is in it:
+
+| | |
+|---|---|
+| `kb/catalog.md` | every Mapbox web service with its free tier and price; the libraries; what GL JS reports about itself; the agent tooling Mapbox publishes and what its skills cover |
+| `tools/inventory.mjs` | reads GL JS and its style spec from `node_modules/` into `inventory/`: every layer type, property, expression, source, Map method, option and event |
+| `tools/kb.mjs` | searches the inventory |
+| `METHOD.md` | how facts are tagged with their evidence, and what is never committed |
+| `evals/` | the harness (headless Chromium, one run per page), ten blind tasks with checks and reference and wrong pages, the session runner, and the results |
+| `experiments/` | the tour: one script per question, in `standard/`, `3d/`, `data/` and `api/`, each writing its facts and screenshots to `results/`; `run.mjs` runs them and writes the table and `gallery.html` |
+| `experiments/mcp/` | the MCP tools against the API reference: `tool_schemas.mjs` (the tools' schemas as JSON Schema), `docs_params.py` (the docs' parameter tables), `compare.mjs`, `settle.mjs` |
+| `CARD.md`, `threads.md` | the closed question, and the ones behind it |
+
+## Use
+
+```bash
+npm install --ignore-scripts          # GL JS 3.35.2, style spec 14.35.2, TypeScript (for reading GL JS's types)
+node tools/inventory.mjs              # writes inventory/ (about 2 seconds)
+
+node tools/kb.mjs find dash           # anything whose name or doc mentions it
+node tools/kb.mjs prop line-dasharray # type, default, range, expression inputs, GL JS version that added it
+node tools/kb.mjs layer building      # every property of one layer type
+node tools/kb.mjs option style        # a Map constructor option and its default
+node tools/kb.mjs method setConfigProperty
+node tools/kb.mjs class Marker
+node tools/kb.mjs section terrain     # light, light-3d, fog, terrain, projection, camera, import, snow, rain, ...
+node tools/kb.mjs events
+node tools/kb.mjs config              # the Standard style's 48 settings (fetched by inventory.mjs when .env has a token)
+node tools/kb.mjs config showHdRoads  # one, with whether a model named it wrong without help
+
+node experiments/run.mjs              # every experiment, about 6 minutes, 19 map loads and 25 requests
+node experiments/run.mjs 3d/clip      # one
+open experiments/gallery.html         # the questions, facts and screenshots
+
+node experiments/mcp/tool_schemas.mjs # needs the MCP server cloned at .cache/vendor/mcp-server (commit in the script)
+node experiments/mcp/compare.mjs      # fetches 14 docs pages into .cache/ once, then compares
+node experiments/mcp/settle.mjs       # 11 read-only requests
+
+node evals/config/run.mjs --validate  # the settings test's grader, on right and wrong answers; no sessions
+node evals/config/run.mjs             # 48 Claude sessions (about $1 to $9), then grading
+```
+
+The inventory and its search need no Mapbox account. Running maps does: put a public token in `.env` as
+`MAPBOX_ACCESS_TOKEN=pk....` (ignored by git).
+
+## Licence
+
+MIT (`LICENSE`), for the code and the writing here.
+
+Not covered by it:
+- **Mapbox GL JS and its style spec,** which are under the Mapbox Terms of Service. Neither they nor the inventory text
+  read from them are committed; `tools/inventory.mjs` regenerates that text from the installed packages, and the
+  Standard style's settings from the Styles API.
+- **The screenshots in `experiments/*/results/`,** which are map images © [Mapbox](https://www.mapbox.com/about/maps)
+  © [OpenStreetMap](http://www.openstreetmap.org/copyright), with satellite imagery © Maxar.
+- **`experiments/mcp/results/tool-schemas.json`,** which reproduces the tool schemas of Mapbox's MCP server, MIT ©
+  Mapbox (`experiments/mcp/results/THIRD_PARTY.md`).
+
+Mapbox's docs pages, read for C-003, stay in the git-ignored `.cache/`. Only parameter names, types and constraints
+taken from them are committed.

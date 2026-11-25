@@ -1,0 +1,38 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Square du Temple site"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       2.3595,
+       48.864
+      ],
+      [
+       2.3618,
+       48.864
+      ],
+      [
+       2.3618,
+       48.8655
+      ],
+      [
+       2.3595,
+       48.8655
+      ],
+      [
+       2.3595,
+       48.864
+      ]
+     ]
+    ]
+   }
+  }
+ ]
+}

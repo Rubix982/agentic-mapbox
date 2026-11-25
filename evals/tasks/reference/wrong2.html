@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Density choropleth</title>
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.35.2/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.35.2/mapbox-gl.js"></script>
+<style>html, body { margin: 0; height: 100%; } #map { position: absolute; inset: 0; }</style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+mapboxgl.accessToken = window.MAPBOX_ACCESS_TOKEN;
+
+const map = new mapboxgl.Map({
+  container: 'map',
+  style: 'mapbox://styles/mapbox/standard',
+  center: [-3.70, 40.42],
+  zoom: 11.5,
+});
+window.map = map;
+
+map.on('load', () => {
+  map.addSource('districts', { type: 'geojson', data: 'districts.geojson' });
+  map.addLayer({
+    id: 'density',
+    type: 'fill',
+    source: 'districts',
+    slot: 'bottom', // above land and water, beneath roads and labels
+    paint: {
+      'fill-color': {
+        property: 'density',
+        stops: [[0, '#edf8fb'], [10, '#b3cde3'], [50, '#8c96c6'], [100, '#88419d']],
+      },
+      'fill-opacity': 0.75,
+    },
+  });
+});
+</script>
+</body>
+</html>

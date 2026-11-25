@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Address search</title>
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.35.2/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.35.2/mapbox-gl.js"></script>
+<style>
+html, body { margin: 0; height: 100%; }
+#map { position: absolute; inset: 0; }
+#panel { position: absolute; top: 10px; left: 10px; z-index: 1; display: flex; gap: 6px; padding: 6px; background: #fff;
+  border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.3); font: 14px system-ui, sans-serif; }
+#search { width: 260px; padding: 4px 6px; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div id="panel">
+  <input id="search" type="text" placeholder="Address" autocomplete="off">
+  <button id="go" type="button">Search</button>
+</div>
+<script>
+mapboxgl.accessToken = window.MAPBOX_ACCESS_TOKEN;
+
+const map = new mapboxgl.Map({
+  container: 'map',
+  style: 'mapbox://styles/mapbox/standard',
+  center: [-3.0, 54.5],
+  zoom: 5,
+});
+window.map = map;
+
+let marker = null;
+
+document.getElementById('go').addEventListener('click', async () => {
+  const q = document.getElementById('search').value.trim();
+  if (!q) return;
+  const url = `https://api.mapbox.com/search/geocode/v6/forward?q=${encodeURIComponent(q)}&limit=1` +
+    `&access_token=${mapboxgl.accessToken}`;
+  const res = await fetch(url);
+  const data = await res.json();
+  const feature = data.features && data.features[0];
+  if (!feature) return;
+  const lngLat = feature.center;
+  if (marker) marker.remove();
+  marker = new mapboxgl.Marker().setLngLat(lngLat).addTo(map);
+  map.flyTo({ center: lngLat, zoom: 16 });
+});
+</script>
+</body>
+</html>

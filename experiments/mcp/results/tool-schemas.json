@@ -1,0 +1,1624 @@
+{
+ "source": "github.com/mapbox/mcp-server",
+ "commit": "ea129dc7e3e98b0818ccb19b682c1b357cc6c398",
+ "version": "0.18.1",
+ "zod": "zod@4.6.7",
+ "tools": {
+  "search-and-geocode-tool": {
+   "SearchAndGeocodeInputSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+     "q": {
+      "type": "string",
+      "maxLength": 200,
+      "description": "Search query text. Limited to 200 characters (the API rejects longer queries with a 400, despite the docs stating 256). Supports natural-language phrasing combining category, place, and attributes (e.g. \"quiet coffee shops with wifi near downtown Seattle\"), though big-box retail brand + address queries (e.g. \"Costco near <address>\") are currently unreliable."
+     },
+     "language": {
+      "description": "ISO language code for the response (e.g., \"en\", \"es\", \"fr\", \"de\", \"ja\")",
+      "type": "string"
+     },
+     "proximity": {
+      "description": "Location to bias results towards as {longitude, latitude}. If not provided, defaults to IP-based location. STRONGLY ENCOURAGED for relevant results.",
+      "type": "object",
+      "properties": {
+       "longitude": {
+        "type": "number",
+        "minimum": -180,
+        "maximum": 180
+       },
+       "latitude": {
+        "type": "number",
+        "minimum": -90,
+        "maximum": 90
+       }
+      },
+      "required": [
+       "longitude",
+       "latitude"
+      ]
+     },
+     "bbox": {
+      "description": "Bounding box to limit results within [minLon, minLat, maxLon, maxLat]",
+      "type": "object",
+      "properties": {
+       "minLongitude": {
+        "type": "number",
+        "minimum": -180,
+        "maximum": 180
+       },
+       "minLatitude": {
+        "type": "number",
+        "minimum": -90,
+        "maximum": 90
+       },
+       "maxLongitude": {
+        "type": "number",
+        "minimum": -180,
+        "maximum": 180
+       },
+       "maxLatitude": {
+        "type": "number",
+        "minimum": -90,
+        "maximum": 90
+       }
+      },
+      "required": [
+       "minLongitude",
+       "minLatitude",
+       "maxLongitude",
+       "maxLatitude"
+      ]
+     },
+     "country": {
+      "description": "Array of ISO 3166 alpha 2 country codes to limit results",
+      "type": "array",
+      "items": {
+       "type": "string",
+       "minLength": 2,
+       "maxLength": 2
+      }
+     },
+     "types": {
+      "description": "Array of feature types to filter results (e.g., [\"poi\", \"address\", \"place\"])",
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "poi_category": {
+      "description": "Array of POI categories to include (e.g., [\"restaurant\", \"cafe\"])",
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "auto_complete": {
+      "description": "Enable partial and fuzzy matching",
+      "type": "boolean"
+     },
+     "eta_type": {
+      "description": "Request estimated time of arrival (ETA) to results",
+      "type": "string",
+      "enum": [
+       "navigation"
+      ]
+     },
+     "navigation_profile": {
+      "description": "Routing profile for ETA calculations",
+      "type": "string",
+      "enum": [
+       "driving",
+       "walking",
+       "cycling"
+      ]
+     },
+     "origin": {
+      "type": "object",
+      "properties": {
+       "longitude": {
+        "type": "number",
+        "minimum": -180,
+        "maximum": 180
+       },
+       "latitude": {
+        "type": "number",
+        "minimum": -90,
+        "maximum": 90
+       }
+      },
+      "required": [
+       "longitude",
+       "latitude"
+      ]
+     }
+    },
+    "required": [
+     "q"
+    ]
+   }
+  },
+  "reverse-geocode-tool": {
+   "ReverseGeocodeInputSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+     "longitude": {
+      "type": "number",
+      "minimum": -180,
+      "maximum": 180,
+      "description": "Longitude coordinate to reverse geocode"
+     },
+     "latitude": {
+      "type": "number",
+      "minimum": -90,
+      "maximum": 90,
+      "description": "Latitude coordinate to reverse geocode"
+     },
+     "permanent": {
+      "default": false,
+      "description": "Whether results can be stored permanently",
+      "type": "boolean"
+     },
+     "country": {
+      "type": "array",
+      "items": {
+       "type": "string",
+       "minLength": 2,
+       "maxLength": 2
+      },
+      "description": "Array of ISO 3166 alpha 2 country codes to limit results"
+     },
+     "language": {
+      "type": "string",
+      "description": "IETF language tag for the response (e.g., \"en\", \"es\", \"fr\", \"de\", \"ja\")"
+     },
+     "limit": {
+      "default": 1,
+      "description": "Maximum number of results (1-5). Use 1 for best results. If you need more than 1 result, you must specify exactly one type in the types parameter.",
+      "type": "number",
+      "minimum": 1,
+      "maximum": 5
+     },
+     "types": {
+      "description": "Array of feature types to filter results",
+      "type": "array",
+      "items": {
+       "type": "string",
+       "enum": [
+        "country",
+        "region",
+        "postcode",
+        "district",
+        "place",
+        "locality",
+        "neighborhood",
+        "address"
+       ]
+      }
+     },
+     "worldview": {
+      "default": "us",
+      "description": "Returns features from a specific regional perspective",
+      "type": "string",
+      "enum": [
+       "us",
+       "cn",
+       "jp",
+       "in"
+      ]
+     },
+     "format": {
+      "default": "formatted_text",
+      "description": "Output format: \"json_string\" returns raw GeoJSON data as a JSON string that can be parsed; \"formatted_text\" returns human-readable text with place names, addresses, and coordinates. Both return as text content but json_string contains parseable JSON data while formatted_text is for display.",
+      "type": "string",
+      "enum": [
+       "json_string",
+       "formatted_text"
+      ]
+     }
+    },
+    "required": [
+     "longitude",
+     "latitude"
+    ]
+   }
+  },
+  "category-search-tool": {
+   "CategorySearchInputSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+     "category": {
+      "type": "string",
+      "description": "The canonical place category name to search for (e.g., \"restaurant\", \"hotel\", \"cafe\"). To get the full list of supported categories, use the category_list_tool."
+     },
+     "language": {
+      "type": "string",
+      "description": "IETF language tag for the response (e.g., \"en\", \"es\", \"fr\", \"de\", \"ja\")"
+     },
+     "limit": {
+      "default": 10,
+      "description": "Maximum number of results to return (1-25)",
+      "type": "number",
+      "minimum": 1,
+      "maximum": 25
+     },
+     "proximity": {
+      "description": "Location to bias results towards as {longitude, latitude}. If not provided, defaults to IP-based location.",
+      "type": "object",
+      "properties": {
+       "longitude": {
+        "type": "number",
+        "minimum": -180,
+        "maximum": 180
+       },
+       "latitude": {
+        "type": "number",
+        "minimum": -90,
+        "maximum": 90
+       }
+      },
+      "required": [
+       "longitude",
+       "latitude"
+      ]
+     },
+     "bbox": {
+      "type": "object",
+      "properties": {
+       "minLongitude": {
+        "type": "number",
+        "minimum": -180,
+        "maximum": 180
+       },
+       "minLatitude": {
+        "type": "number",
+        "minimum": -90,
+        "maximum": 90
+       },
+       "maxLongitude": {
+        "type": "number",
+        "minimum": -180,
+        "maximum": 180
+       },
+       "maxLatitude": {
+        "type": "number",
+        "minimum": -90,
+        "maximum": 90
+       }
+      },
+      "required": [
+       "minLongitude",
+       "minLatitude",
+       "maxLongitude",
+       "maxLatitude"
+      ],
+      "description": "Bounding box to limit results within specified bounds"
+     },
+     "country": {
+      "description": "Array of ISO 3166 alpha 2 country codes to limit results",
+      "type": "array",
+      "items": {
+       "type": "string",
+       "minLength": 2,
+       "maxLength": 2
+      }
+     },
+     "poi_category_exclusions": {
+      "description": "Array of POI categories to exclude from results",
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     },
+     "format": {
+      "default": "formatted_text",
+      "description": "Output format: \"json_string\" returns raw GeoJSON data as a JSON string that can be parsed; \"formatted_text\" returns human-readable text with place names, addresses, and coordinates. Both return as text content but json_string contains parseable JSON data while formatted_text is for display.",
+      "type": "string",
+      "enum": [
+       "json_string",
+       "formatted_text"
+      ]
+     }
+    },
+    "required": [
+     "category"
+    ]
+   }
+  },
+  "category-list-tool": {
+   "CategoryListInputSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+     "language": {
+      "type": "string",
+      "description": "IETF language tag for the response (e.g., \"en\", \"es\", \"fr\", \"de\", \"ja\")"
+     },
+     "limit": {
+      "description": "Number of categories to return (1-100). If not specified, returns all categories.",
+      "type": "number",
+      "minimum": 1,
+      "maximum": 100
+     },
+     "offset": {
+      "default": 0,
+      "description": "Number of categories to skip for pagination. Default is 0.",
+      "type": "number",
+      "minimum": 0
+     }
+    }
+   }
+  },
+  "place-details-tool": {
+   "PlaceDetailsInputSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+     "mapbox_id": {
+      "type": "string",
+      "description": "The Mapbox ID of the place to retrieve details for. Obtained from search results returned by search_and_geocode_tool, category_search_tool, or reverse_geocode_tool (the mapbox_id field in properties)."
+     },
+     "attribute_sets": {
+      "description": "Only used when mapbox_id resolves via the legacy Details API fallback (boundaries, neighborhoods, cities, regions — see mapbox_id's description). Which attribute sets to include in that response. Options: \"basic\" (name/address/coordinates — always requested regardless of whether you list it here), \"photos\" (place photo URLs), \"visit\" (opening hours, rating, price level, popularity), \"venue\" (phone number, website URL, social media links). Ignored for POI lookups, which go through the Places API and have no equivalent parameter.",
+      "type": "array",
+      "items": {
+       "type": "string",
+       "enum": [
+        "basic",
+        "photos",
+        "visit",
+        "venue"
+       ]
+      }
+     },
+     "language": {
+      "description": "Only used when mapbox_id resolves via the legacy Details API fallback (see attribute_sets). BCP 47 language tag for localized results (e.g. \"en\", \"fr\", \"de\", \"ja\"). Affects place names and address formatting. Ignored for POI lookups.",
+      "type": "string"
+     },
+     "worldview": {
+      "description": "Only used when mapbox_id resolves via the legacy Details API fallback (see attribute_sets). Worldview for geopolitically sensitive content such as disputed borders. Options: \"ar\" (Argentina), \"cn\" (China), \"in\" (India), \"jp\" (Japan), \"ma\" (Morocco), \"ru\" (Russia), \"tr\" (Turkey), \"us\" (United States, default). Ignored for POI lookups.",
+      "type": "string",
+      "enum": [
+       "ar",
+       "cn",
+       "in",
+       "jp",
+       "ma",
+       "ru",
+       "tr",
+       "us"
+      ]
+     }
+    },
+    "required": [
+     "mapbox_id"
+    ]
+   }
+  },
+  "ground-location-tool": {
+   "GroundLocationInputSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+     "longitude": {
+      "type": "number",
+      "minimum": -180,
+      "maximum": 180,
+      "description": "Longitude of the location to ground responses around"
+     },
+     "latitude": {
+      "type": "number",
+      "minimum": -90,
+      "maximum": 90,
+      "description": "Latitude of the location to ground responses around"
+     },
+     "query": {
+      "description": "Optional category or type of places to search for nearby (e.g., \"restaurant\", \"coffee\", \"park\"). If omitted, returns general place context only.",
+      "type": "string"
+     },
+     "profile": {
+      "default": "mapbox/walking",
+      "description": "Travel profile for isochrone calculation. Use \"mapbox/driving-traffic\" for traffic-aware driving. Defaults to \"mapbox/walking\".",
+      "type": "string",
+      "enum": [
+       "mapbox/walking",
+       "mapbox/driving",
+       "mapbox/driving-traffic",
+       "mapbox/cycling"
+      ]
+     },
+     "contours_minutes": {
+      "default": [
+       5,
+       10,
+       15
+      ],
+      "description": "Travel-time thresholds in minutes for the isochrone. Max 4 values, each between 1-60.",
+      "type": "array",
+      "items": {
+       "type": "number",
+       "minimum": 1,
+       "maximum": 60
+      }
+     },
+     "limit": {
+      "default": 10,
+      "description": "Maximum number of nearby POIs to return (1-25)",
+      "type": "number",
+      "minimum": 1,
+      "maximum": 25
+     },
+     "language": {
+      "type": "string",
+      "description": "IETF language tag for the response (e.g., \"en\", \"es\", \"fr\", \"de\", \"ja\")"
+     },
+     "include": {
+      "description": "What to report about the spot itself, each one extra request: \"land\" for land use (park, cemetery, school, residential...), a national park or other protected area, and the building it is in; \"water\" for whether it is on water and how far the nearest water is; \"elevation\" for height above sea level; \"traffic\" for live congestion on the roads around it. Pick what the question needs, e.g. [\"traffic\"] for \"how bad is traffic at this address?\". Leave out when the question is only about the area or nearby places.",
+      "type": "array",
+      "items": {
+       "type": "string",
+       "enum": [
+        "land",
+        "water",
+        "elevation",
+        "traffic"
+       ]
+      }
+     }
+    },
+    "required": [
+     "longitude",
+     "latitude"
+    ]
+   }
+  },
+  "directions-tool": {
+   "DirectionsInputSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+     "coordinates": {
+      "minItems": 2,
+      "maxItems": 25,
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "longitude": {
+         "type": "number",
+         "minimum": -180,
+         "maximum": 180
+        },
+        "latitude": {
+         "type": "number",
+         "minimum": -90,
+         "maximum": 90
+        }
+       },
+       "required": [
+        "longitude",
+        "latitude"
+       ]
+      },
+      "description": "Array of coordinate objects with longitude and latitude properties to visit in order. Must include at least 2 coordinate pairs (starting and ending points). Up to 25 coordinates total are supported."
+     },
+     "routing_profile": {
+      "default": "mapbox/driving-traffic",
+      "description": "Routing profile for different modes of transport. Options: \n- mapbox/driving-traffic (default): automotive with current traffic conditions\n- mapbox/driving: automotive based on typical traffic\n- mapbox/walking: pedestrian/hiking\n- mapbox/cycling: bicycle",
+      "type": "string",
+      "enum": [
+       "mapbox/driving-traffic",
+       "mapbox/driving",
+       "mapbox/walking",
+       "mapbox/cycling"
+      ]
+     },
+     "geometries": {
+      "default": "none",
+      "description": "The format of the returned geometry. Options: \n- none (default): no geometry object is returned in the response. The mapboxRender.ref works with render_map_tool either way; use this whenever you do not need the raw coordinates yourself.\n- geojson: as a GeoJSON LineString, always returned directly in this response — the coordinate count depends on `overview` (see below), not on trip length, so this works the same way for a 2-mile trip and a 400-mile one. Use this whenever you (the caller) need the coordinates yourself, e.g. to draw the route in your own app; not required for render_map_tool.",
+      "type": "string",
+      "enum": [
+       "none",
+       "geojson"
+      ]
+     },
+     "overview": {
+      "description": "Detail level of the geometry named above (has no effect when geometries=\"none\", since no geometry is returned either way). Defaults to \"simplified\" when geometries=\"geojson\" (a route across an entire country is typically well under 100 coordinate pairs — enough to draw an accurate shape, not enough to bloat the response) and to \"full\" otherwise. Pass \"full\" explicitly for the maximum-precision geometry (every road segment vertex) if you need it, e.g. for a map people zoom in on; on a long trip this can be tens of thousands of coordinate pairs, at which point the response no longer fits in this reply and this tool returns a summary and a `mapbox://response/` ref instead (see the tool description). Note: the Directions API cannot return per-segment congestion data (`congestion_information` in the response) together with anything other than \"full\" — congestion is only included when the effective overview is \"full\".",
+      "type": "string",
+      "enum": [
+       "full",
+       "simplified"
+      ]
+     },
+     "max_height": {
+      "description": "The max vehicle height, in meters. The Directions API will compute a route that includes only roads with a height limit greater than or equal to the max vehicle height. Must be between 0 and 10 meters. The default value is 1.6 meters. Only available for driving and driving-traffic profiles.",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 10
+     },
+     "max_width": {
+      "description": "The max vehicle width, in meters. The Directions API will compute a route that includes only roads with a width limit greater than or equal to the max vehicle width. Must be between 0 and 10 meters. The default value is 1.9 meters. Only available for driving and driving-traffic profiles.",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 10
+     },
+     "max_weight": {
+      "description": "The max vehicle weight, in metric tons (1000 kg). The Directions API will compute a route that includes only roads with a weight limit greater than or equal to the max vehicle weight. Must be between 0 and 100 metric tons. The default value is 2.5 metric tons. Only available for driving and driving-traffic profiles.",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+     },
+     "alternatives": {
+      "default": false,
+      "description": "Whether to try to return alternative routes (true) or not (false, default). Up to two alternatives may be returned.",
+      "type": "boolean"
+     },
+     "depart_at": {
+      "description": "The departure time in ISO 8601 format (YYYY-MM-DDThh:mm:ssZ, YYYY-MM-DDThh:mmss±hh:mm, or YYYY-MM-DDThh:mm). This parameter is only available for the driving and driving-traffic profiles. The travel time will be calculated based on historical and real-time traffic data.",
+      "type": "string"
+     },
+     "arrive_by": {
+      "description": "The desired arrival time in ISO 8601 format (YYYY-MM-DDThh:mm:ssZ, YYYY-MM-DDThh:mmss±hh:mm, or YYYY-MM-DDThh:mm). This parameter is only available for the driving profile and is not supported by other profiles, not even driving-traffic. The travel time will be calculated based on historical and real-time traffic data.",
+      "type": "string"
+     },
+     "exclude": {
+      "description": "Whether to exclude certain road types and custom locations from routing. Multiple values can be specified as a comma-separated list. Available options:\n- All profiles:  ferry, cash_only_tolls\n- Driving/Driving-traffic profiles only: motorway, toll, unpaved, tunnel, country_border, state_border or point(<lng> <lat>)\nFor custom locations you can use Point exclusions (note lng and lat are space separated and at most 50 points are allowed)\nNote: country_border excludes all controlled country borders; borders within the Schengen Area are not excluded.",
+      "type": "string"
+     }
+    },
+    "required": [
+     "coordinates"
+    ]
+   }
+  },
+  "matrix-tool": {
+   "MatrixInputSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+     "coordinates": {
+      "minItems": 2,
+      "maxItems": 25,
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "longitude": {
+         "type": "number",
+         "minimum": -180,
+         "maximum": 180
+        },
+        "latitude": {
+         "type": "number",
+         "minimum": -90,
+         "maximum": 90
+        }
+       },
+       "required": [
+        "longitude",
+        "latitude"
+       ]
+      },
+      "description": "Array of coordinate objects with longitude and latitude properties. Must include at least 2 coordinate pairs. Up to 25 coordinates total are supported for most profiles (10 for driving-traffic)."
+     },
+     "profile": {
+      "type": "string",
+      "enum": [
+       "mapbox/driving-traffic",
+       "mapbox/driving",
+       "mapbox/walking",
+       "mapbox/cycling"
+      ],
+      "description": "Routing profile for different modes of transport. Options: \n- mapbox/driving-traffic (default): automotive with current traffic conditions (limited to 10 coordinates)\n- mapbox/driving: automotive based on typical traffic\n- mapbox/walking: pedestrian/hiking\n- mapbox/cycling: bicycle"
+     },
+     "annotations": {
+      "description": "Specifies the resulting matrices. Possible values are: duration (default), distance, or both values separated by a comma.",
+      "type": "string",
+      "enum": [
+       "duration",
+       "distance",
+       "duration,distance",
+       "distance,duration"
+      ]
+     },
+     "approaches": {
+      "description": "A semicolon-separated list indicating the side of the road from which to approach waypoints. Accepts \"unrestricted\" (default, route can arrive at the waypoint from either side of the road) or \"curb\" (route will arrive at the waypoint on the driving_side of the region). If provided, the number of approaches must be the same as the number of waypoints. You can skip a coordinate and show its position with the ; separator.",
+      "type": "string"
+     },
+     "bearings": {
+      "description": "A semicolon-separated list of headings and allowed deviation indicating the direction of movement. Input as two comma-separated values per location: a heading course measured clockwise from true north between 0 and 360, and the range of degrees by which the angle can deviate (recommended value is 45° or 90°), formatted as {angle,degrees}. If provided, the number of bearings must equal the number of coordinates. You can skip a coordinate and show its position in the list with the ; separator.",
+      "type": "string"
+     },
+     "destinations": {
+      "description": "Use the coordinates at given indices as destinations. Possible values are: a semicolon-separated list of 0-based indices, or \"all\" (default). The option \"all\" allows using all coordinates as destinations.",
+      "type": "string"
+     },
+     "sources": {
+      "description": "Use the coordinates at given indices as sources. Possible values are: a semicolon-separated list of 0-based indices, or \"all\" (default). The option \"all\" allows using all coordinates as sources.",
+      "type": "string"
+     }
+    },
+    "required": [
+     "coordinates",
+     "profile"
+    ]
+   }
+  },
+  "optimization-tool": {
+   "OptimizationInputSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+     "coordinates": {
+      "minItems": 2,
+      "maxItems": 12,
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "longitude": {
+         "type": "number",
+         "minimum": -180,
+         "maximum": 180
+        },
+        "latitude": {
+         "type": "number",
+         "minimum": -90,
+         "maximum": 90
+        }
+       },
+       "required": [
+        "longitude",
+        "latitude"
+       ]
+      },
+      "description": "Array of {longitude, latitude} coordinate pairs to optimize a route through. The V1 API supports 2-12 coordinates and returns the optimal visiting order."
+     },
+     "profile": {
+      "default": "mapbox/driving",
+      "description": "Routing profile to use for optimization",
+      "type": "string",
+      "enum": [
+       "mapbox/driving",
+       "mapbox/walking",
+       "mapbox/cycling",
+       "mapbox/driving-traffic"
+      ]
+     },
+     "source": {
+      "default": "any",
+      "description": "Location to start the trip. IMPORTANT: If you set roundtrip=false you MUST set source=\"first\" (and destination=\"last\"). The Mapbox V1 API rejects roundtrip=false with source=\"any\". \"any\" allows the optimizer to pick any coordinate as the start (only valid when roundtrip=true).",
+      "type": "string",
+      "enum": [
+       "any",
+       "first"
+      ]
+     },
+     "destination": {
+      "default": "any",
+      "description": "Location to end the trip. IMPORTANT: If you set roundtrip=false you MUST set destination=\"last\" (and source=\"first\"). The Mapbox V1 API rejects roundtrip=false with destination=\"any\". \"any\" allows the optimizer to pick any coordinate as the end (only valid when roundtrip=true).",
+      "type": "string",
+      "enum": [
+       "any",
+       "last"
+      ]
+     },
+     "roundtrip": {
+      "default": true,
+      "description": "Whether to return to the starting point. Default true returns a closed loop through the coordinates. Set false for one-way trips — REQUIRES source=\"first\" AND destination=\"last\" together. Passing roundtrip=false without both endpoint constraints will fail.",
+      "type": "boolean"
+     },
+     "geometries": {
+      "default": "geojson",
+      "description": "Format for route geometry",
+      "type": "string",
+      "enum": [
+       "geojson",
+       "polyline",
+       "polyline6"
+      ]
+     },
+     "overview": {
+      "default": "simplified",
+      "description": "Detail level of route geometry",
+      "type": "string",
+      "enum": [
+       "full",
+       "simplified",
+       "false"
+      ]
+     },
+     "steps": {
+      "default": false,
+      "description": "Whether to include turn-by-turn instructions",
+      "type": "boolean"
+     },
+     "annotations": {
+      "description": "Additional metadata to include for each route segment",
+      "type": "array",
+      "items": {
+       "type": "string",
+       "enum": [
+        "duration",
+        "distance",
+        "speed"
+       ]
+      }
+     },
+     "language": {
+      "description": "Language for instructions (if steps=true). ISO 639-1 code (e.g., \"en\", \"es\").",
+      "type": "string"
+     }
+    },
+    "required": [
+     "coordinates"
+    ]
+   }
+  },
+  "isochrone-tool": {
+   "IsochroneInputSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+     "profile": {
+      "default": "mapbox/driving-traffic",
+      "description": "Mode of travel.",
+      "type": "string",
+      "enum": [
+       "mapbox/driving-traffic",
+       "mapbox/driving",
+       "mapbox/cycling",
+       "mapbox/walking"
+      ]
+     },
+     "coordinates": {
+      "type": "object",
+      "properties": {
+       "longitude": {
+        "type": "number",
+        "minimum": -180,
+        "maximum": 180
+       },
+       "latitude": {
+        "type": "number",
+        "minimum": -90,
+        "maximum": 90
+       }
+      },
+      "required": [
+       "longitude",
+       "latitude"
+      ],
+      "description": "A coordinate object with longitude and latitude properties around which to center the isochrone lines. Longitude: -180 to 180, Latitude: -85.0511 to 85.0511"
+     },
+     "contours_minutes": {
+      "description": "Contour times in minutes. Times must be in increasing order. Must be specified either contours_minutes or contours_meters.",
+      "maxItems": 4,
+      "type": "array",
+      "items": {
+       "type": "integer",
+       "minimum": 1,
+       "maximum": 60
+      }
+     },
+     "contours_meters": {
+      "description": "Distances in meters. Distances must be in increasing order. Must be specified either contours_minutes or contours_meters.",
+      "maxItems": 4,
+      "type": "array",
+      "items": {
+       "type": "integer",
+       "minimum": 1,
+       "maximum": 100000
+      }
+     },
+     "contours_colors": {
+      "description": "Contour colors as hex strings without starting # (for example ff0000 for red. must match contours_minutes or contours_meters length if provided).",
+      "maxItems": 4,
+      "type": "array",
+      "items": {
+       "type": "string",
+       "pattern": "^[0-9a-fA-F]{6}$"
+      }
+     },
+     "polygons": {
+      "description": "Whether to return Polygons (true) or LineStrings (false).",
+      "default": false,
+      "type": "boolean"
+     },
+     "denoise": {
+      "description": "A floating point value that can be used to remove smaller contours. A value of 1.0 will only return the largest contour for a given value.",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+     },
+     "generalize": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Positive number in meters that is used to simplify geometries.\n        - Walking: use 0-500. Prefer 50-200 for short contours (minutes < 10 or meters < 5000), 300-500 as they grow.\n        - Driving: use 1000-5000. Start at 2000, use 3000 if minutes > 10 or meters > 20000. Use 4000-5000 if near 60 minutes or 100000 meters."
+     },
+     "exclude": {
+      "description": "Exclude certain road types and custom locations from routing.",
+      "type": "array",
+      "items": {
+       "type": "string",
+       "enum": [
+        "motorway",
+        "toll",
+        "ferry",
+        "unpaved",
+        "cash_only_tolls"
+       ]
+      }
+     },
+     "depart_at": {
+      "description": "An ISO 8601 date-time string representing the time to depart (format string: YYYY-MM-DDThh:mmss±hh:mm).",
+      "type": "string"
+     }
+    },
+    "required": [
+     "coordinates",
+     "generalize"
+    ]
+   }
+  },
+  "map-matching-tool": {
+   "MapMatchingInputSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+     "coordinates": {
+      "minItems": 2,
+      "maxItems": 100,
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "longitude": {
+         "type": "number",
+         "minimum": -180,
+         "maximum": 180
+        },
+        "latitude": {
+         "type": "number",
+         "minimum": -90,
+         "maximum": 90
+        }
+       },
+       "required": [
+        "longitude",
+        "latitude"
+       ]
+      },
+      "description": "Array of coordinate objects with longitude and latitude properties representing a GPS trace. Must include at least 2 and up to 100 coordinate pairs. Coordinates should be in the order they were recorded."
+     },
+     "profile": {
+      "default": "driving",
+      "description": "Routing profile for different modes of transport. Options: \n- driving: automotive based on road network\n- driving-traffic: automotive with current traffic conditions\n- walking: pedestrian/hiking\n- cycling: bicycle",
+      "type": "string",
+      "enum": [
+       "driving",
+       "driving-traffic",
+       "walking",
+       "cycling"
+      ]
+     },
+     "timestamps": {
+      "description": "Array of Unix timestamps (in seconds) corresponding to each coordinate. If provided, must have the same length as coordinates array and be in ascending order. Used to improve matching accuracy based on speed.",
+      "type": "array",
+      "items": {
+       "type": "integer",
+       "exclusiveMinimum": 0,
+       "maximum": 9007199254740991
+      }
+     },
+     "radiuses": {
+      "description": "Array of maximum distances (in meters, greater than 0 and up to 50) each coordinate can snap to the road network. If provided, must have the same length as coordinates array. Default is 5 meters. Use smaller values (1-10m) for clean GPS traces, larger values (20-50m) for noisy GPS traces.",
+      "type": "array",
+      "items": {
+       "type": "number",
+       "exclusiveMinimum": 0,
+       "maximum": 50
+      }
+     },
+     "annotations": {
+      "description": "Additional data to include in the response. Options: \n- speed: Speed limit per segment (km/h)\n- distance: Distance per segment (meters)\n- duration: Duration per segment (seconds)\n- congestion: Traffic level per segment (low, moderate, heavy, severe)",
+      "type": "array",
+      "items": {
+       "type": "string",
+       "enum": [
+        "speed",
+        "distance",
+        "duration",
+        "congestion"
+       ]
+      }
+     },
+     "overview": {
+      "default": "full",
+      "description": "Format of the returned geometry. Options: \n- full: Returns full geometry with all points\n- simplified: Returns simplified geometry\n- false: No geometry returned",
+      "type": "string",
+      "enum": [
+       "full",
+       "simplified",
+       "false"
+      ]
+     },
+     "geometries": {
+      "default": "geojson",
+      "description": "Format of the returned geometry. Options: \n- geojson: GeoJSON LineString (recommended)\n- polyline: Polyline with precision 5\n- polyline6: Polyline with precision 6",
+      "type": "string",
+      "enum": [
+       "geojson",
+       "polyline",
+       "polyline6"
+      ]
+     }
+    },
+    "required": [
+     "coordinates"
+    ]
+   }
+  },
+  "elevation-tool": {
+   "ElevationInputSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+     "points": {
+      "description": "Up to 25 places to get the ground elevation of, e.g. a summit, a town or a campsite.",
+      "minItems": 1,
+      "maxItems": 25,
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "longitude": {
+         "type": "number",
+         "minimum": -180,
+         "maximum": 180
+        },
+        "latitude": {
+         "type": "number",
+         "minimum": -90,
+         "maximum": 90
+        }
+       },
+       "required": [
+        "longitude",
+        "latitude"
+       ]
+      }
+     },
+     "path": {
+      "description": "A line (hike, ride, run) as ordered coordinates, for climb, descent and an elevation profile along it. For a route from directions_tool or a GPS trace matched with map_matching_tool, pass route_ref instead.",
+      "minItems": 2,
+      "maxItems": 1000,
+      "type": "array",
+      "items": {
+       "type": "object",
+       "properties": {
+        "longitude": {
+         "type": "number",
+         "minimum": -180,
+         "maximum": 180
+        },
+        "latitude": {
+         "type": "number",
+         "minimum": -90,
+         "maximum": 90
+        }
+       },
+       "required": [
+        "longitude",
+        "latitude"
+       ]
+      }
+     },
+     "route_ref": {
+      "description": "The structuredContent.mapboxRender.ref from a directions_tool result (a planned route) or a map_matching_tool result (a recorded run, ride or hike), passed unchanged. The tool fetches the full line itself, so you never need to copy route geometry.",
+      "type": "string"
+     }
+    }
+   }
+  },
+  "static-map-image-tool": {
+   "CustomMarkerOverlaySchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+     "type": {
+      "type": "string",
+      "const": "custom-marker"
+     },
+     "longitude": {
+      "type": "number",
+      "minimum": -180,
+      "maximum": 180
+     },
+     "latitude": {
+      "type": "number",
+      "minimum": -85.0511,
+      "maximum": 85.0511
+     },
+     "url": {
+      "description": "HTTPS URL of custom marker image (PNG or JPEG, max 1024px). Must point to a publicly reachable host; URLs targeting localhost, private, link-local, or unique-local addresses are rejected to prevent SSRF.",
+      "type": "string",
+      "format": "uri"
+     }
+    },
+    "required": [
+     "type",
+     "longitude",
+     "latitude",
+     "url"
+    ]
+   },
+   "GeoJsonOverlaySchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+     "type": {
+      "type": "string",
+      "const": "geojson"
+     },
+     "data": {
+      "description": "GeoJSON object (Point, MultiPoint, LineString, or Polygon)"
+     }
+    },
+    "required": [
+     "type",
+     "data"
+    ]
+   },
+   "MarkerOverlaySchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+     "type": {
+      "type": "string",
+      "const": "marker"
+     },
+     "longitude": {
+      "type": "number",
+      "minimum": -180,
+      "maximum": 180
+     },
+     "latitude": {
+      "type": "number",
+      "minimum": -85.0511,
+      "maximum": 85.0511
+     },
+     "size": {
+      "default": "small",
+      "type": "string",
+      "enum": [
+       "small",
+       "large"
+      ]
+     },
+     "label": {
+      "description": "Single letter (a-z), number (0-99), or Maki icon name. Valid Maki icons: aerialway, airfield, airport, alcohol-shop, american-football, amusement-park, animal-shelter, aquarium, arrow, art-gallery, attraction, bakery, bank-JP, bank, bar, barrier, baseball, basketball, bbq, beach, beer, bicycle-share, bicycle, blood-bank, bowling-alley, bridge, building-alt1, building, bus, cafe, campsite, car-rental, car-repair, car, casino, castle-JP, castle, caution, cemetery-JP, cemetery, charging-station, cinema, circle-stroked, circle, city, clothing-store, college-JP, college, commercial, communications-tower, confectionery, construction, convenience, cricket, cross, dam, danger, defibrillator, dentist, diamond, doctor, dog-park, drinking-water, elevator, embassy, emergency-phone, entrance-alt1, entrance, farm, fast-food, fence, ferry-JP, ferry, fire-station-JP, fire-station, fitness-centre, florist, fuel, furniture, gaming, garden-centre, garden, gate, gift, globe, golf, grocery, hairdresser, harbor, hardware, heart, heliport, highway-rest-area, historic, home, horse-riding, hospital-JP, hospital, hot-spring, ice-cream, industry, information, jewelry-store, karaoke, landmark-JP, landmark, landuse, laundry, library, lift-gate, lighthouse-JP, lighthouse, lodging, logging, marae, marker-stroked, marker, mobile-phone, monument-JP, monument, mountain, museum, music, natural, nightclub, observation-tower, optician, paint, park-alt1, park, parking-garage, parking-paid, parking, pharmacy, picnic-site, pitch, place-of-worship, playground, police-JP, police, post-JP, post, prison, racetrack-boat, racetrack-cycling, racetrack-horse, racetrack, rail-light, rail-metro, rail, ranger-station, recycling, religious-buddhist, religious-christian, religious-jewish, religious-muslim, religious-shinto, residential-community, restaurant-bbq, restaurant-noodle, restaurant-pizza, restaurant-seafood, restaurant-sushi, restaurant, road-accident, roadblock, rocket, school-JP, school, scooter, shelter, shoe, shop, skateboard, skiing, slaughterhouse, slipway, snowmobile, soccer, square-stroked, square, stadium, star-stroked, star, suitcase, swimming, table-tennis, taxi, teahouse, telephone, tennis, terminal, theatre, toilet, toll, town-hall, town, triangle-stroked, triangle, tunnel, veterinary, viewpoint, village, volcano, volleyball, warehouse, waste-basket, watch, water, waterfall, watermill, wetland, wheelchair, windmill, zoo. Labels longer than one character that are not valid Maki icons will be truncated to the first character.",
+      "type": "string"
+     },
+     "color": {
+      "description": "3 or 6 digit hex color without #",
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$"
+     }
+    },
+    "required": [
+     "type",
+     "longitude",
+     "latitude"
+    ]
+   },
+   "OverlaySchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "oneOf": [
+     {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "const": "marker"
+       },
+       "longitude": {
+        "type": "number",
+        "minimum": -180,
+        "maximum": 180
+       },
+       "latitude": {
+        "type": "number",
+        "minimum": -85.0511,
+        "maximum": 85.0511
+       },
+       "size": {
+        "default": "small",
+        "type": "string",
+        "enum": [
+         "small",
+         "large"
+        ]
+       },
+       "label": {
+        "description": "Single letter (a-z), number (0-99), or Maki icon name. Valid Maki icons: aerialway, airfield, airport, alcohol-shop, american-football, amusement-park, animal-shelter, aquarium, arrow, art-gallery, attraction, bakery, bank-JP, bank, bar, barrier, baseball, basketball, bbq, beach, beer, bicycle-share, bicycle, blood-bank, bowling-alley, bridge, building-alt1, building, bus, cafe, campsite, car-rental, car-repair, car, casino, castle-JP, castle, caution, cemetery-JP, cemetery, charging-station, cinema, circle-stroked, circle, city, clothing-store, college-JP, college, commercial, communications-tower, confectionery, construction, convenience, cricket, cross, dam, danger, defibrillator, dentist, diamond, doctor, dog-park, drinking-water, elevator, embassy, emergency-phone, entrance-alt1, entrance, farm, fast-food, fence, ferry-JP, ferry, fire-station-JP, fire-station, fitness-centre, florist, fuel, furniture, gaming, garden-centre, garden, gate, gift, globe, golf, grocery, hairdresser, harbor, hardware, heart, heliport, highway-rest-area, historic, home, horse-riding, hospital-JP, hospital, hot-spring, ice-cream, industry, information, jewelry-store, karaoke, landmark-JP, landmark, landuse, laundry, library, lift-gate, lighthouse-JP, lighthouse, lodging, logging, marae, marker-stroked, marker, mobile-phone, monument-JP, monument, mountain, museum, music, natural, nightclub, observation-tower, optician, paint, park-alt1, park, parking-garage, parking-paid, parking, pharmacy, picnic-site, pitch, place-of-worship, playground, police-JP, police, post-JP, post, prison, racetrack-boat, racetrack-cycling, racetrack-horse, racetrack, rail-light, rail-metro, rail, ranger-station, recycling, religious-buddhist, religious-christian, religious-jewish, religious-muslim, religious-shinto, residential-community, restaurant-bbq, restaurant-noodle, restaurant-pizza, restaurant-seafood, restaurant-sushi, restaurant, road-accident, roadblock, rocket, school-JP, school, scooter, shelter, shoe, shop, skateboard, skiing, slaughterhouse, slipway, snowmobile, soccer, square-stroked, square, stadium, star-stroked, star, suitcase, swimming, table-tennis, taxi, teahouse, telephone, tennis, terminal, theatre, toilet, toll, town-hall, town, triangle-stroked, triangle, tunnel, veterinary, viewpoint, village, volcano, volleyball, warehouse, waste-basket, watch, water, waterfall, watermill, wetland, wheelchair, windmill, zoo. Labels longer than one character that are not valid Maki icons will be truncated to the first character.",
+        "type": "string"
+       },
+       "color": {
+        "description": "3 or 6 digit hex color without #",
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$"
+       }
+      },
+      "required": [
+       "type",
+       "longitude",
+       "latitude"
+      ]
+     },
+     {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "const": "custom-marker"
+       },
+       "longitude": {
+        "type": "number",
+        "minimum": -180,
+        "maximum": 180
+       },
+       "latitude": {
+        "type": "number",
+        "minimum": -85.0511,
+        "maximum": 85.0511
+       },
+       "url": {
+        "description": "HTTPS URL of custom marker image (PNG or JPEG, max 1024px). Must point to a publicly reachable host; URLs targeting localhost, private, link-local, or unique-local addresses are rejected to prevent SSRF.",
+        "type": "string",
+        "format": "uri"
+       }
+      },
+      "required": [
+       "type",
+       "longitude",
+       "latitude",
+       "url"
+      ]
+     },
+     {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "const": "path"
+       },
+       "encodedPolyline": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Encoded polyline string with 5 decimal place precision"
+       },
+       "strokeWidth": {
+        "default": 5,
+        "type": "number",
+        "minimum": 1
+       },
+       "strokeColor": {
+        "description": "3 or 6 digit hex color without #",
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$"
+       },
+       "strokeOpacity": {
+        "description": "Stroke opacity (0-1)",
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1
+       },
+       "fillColor": {
+        "description": "3 or 6 digit hex color without #",
+        "type": "string",
+        "pattern": "^[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$"
+       },
+       "fillOpacity": {
+        "description": "Fill opacity (0-1)",
+        "type": "number",
+        "minimum": 0,
+        "maximum": 1
+       }
+      },
+      "required": [
+       "type",
+       "encodedPolyline"
+      ]
+     },
+     {
+      "type": "object",
+      "properties": {
+       "type": {
+        "type": "string",
+        "const": "geojson"
+       },
+       "data": {
+        "description": "GeoJSON object (Point, MultiPoint, LineString, or Polygon)"
+       }
+      },
+      "required": [
+       "type",
+       "data"
+      ]
+     }
+    ]
+   },
+   "PathOverlaySchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+     "type": {
+      "type": "string",
+      "const": "path"
+     },
+     "encodedPolyline": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Encoded polyline string with 5 decimal place precision"
+     },
+     "strokeWidth": {
+      "default": 5,
+      "type": "number",
+      "minimum": 1
+     },
+     "strokeColor": {
+      "description": "3 or 6 digit hex color without #",
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$"
+     },
+     "strokeOpacity": {
+      "description": "Stroke opacity (0-1)",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+     },
+     "fillColor": {
+      "description": "3 or 6 digit hex color without #",
+      "type": "string",
+      "pattern": "^[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$"
+     },
+     "fillOpacity": {
+      "description": "Fill opacity (0-1)",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+     }
+    },
+    "required": [
+     "type",
+     "encodedPolyline"
+    ]
+   },
+   "StaticMapImageInputSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+     "center": {
+      "type": "object",
+      "properties": {
+       "longitude": {
+        "type": "number",
+        "minimum": -180,
+        "maximum": 180
+       },
+       "latitude": {
+        "type": "number",
+        "minimum": -85.0511,
+        "maximum": 85.0511
+       }
+      },
+      "required": [
+       "longitude",
+       "latitude"
+      ],
+      "description": "Center point of the map as coordinate object with longitude and latitude properties. Longitude: -180 to 180, Latitude: -85.0511 to 85.0511"
+     },
+     "zoom": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 22,
+      "description": "Zoom level (0-22). Fractional zoom levels are rounded to two decimal places"
+     },
+     "size": {
+      "type": "object",
+      "properties": {
+       "width": {
+        "type": "number",
+        "minimum": 1,
+        "maximum": 1280
+       },
+       "height": {
+        "type": "number",
+        "minimum": 1,
+        "maximum": 1280
+       }
+      },
+      "required": [
+       "width",
+       "height"
+      ],
+      "description": "Image size as object with width and height properties in pixels. Each dimension must be between 1 and 1280 pixels"
+     },
+     "style": {
+      "default": "mapbox/streets-v12",
+      "description": "Mapbox style ID in the format username/style-id (e.g., mapbox/streets-v12, mapbox/satellite-v9, mapbox/dark-v11)",
+      "type": "string",
+      "pattern": "^[a-zA-Z0-9_-]+\\/[a-zA-Z0-9_-]+$"
+     },
+     "highDensity": {
+      "default": false,
+      "description": "Whether to return a high-density (2x) image",
+      "type": "boolean"
+     },
+     "overlays": {
+      "description": "Array of overlays to add to the map. Overlays are rendered in order (last item appears on top)",
+      "type": "array",
+      "items": {
+       "oneOf": [
+        {
+         "type": "object",
+         "properties": {
+          "type": {
+           "type": "string",
+           "const": "marker"
+          },
+          "longitude": {
+           "type": "number",
+           "minimum": -180,
+           "maximum": 180
+          },
+          "latitude": {
+           "type": "number",
+           "minimum": -85.0511,
+           "maximum": 85.0511
+          },
+          "size": {
+           "default": "small",
+           "type": "string",
+           "enum": [
+            "small",
+            "large"
+           ]
+          },
+          "label": {
+           "description": "Single letter (a-z), number (0-99), or Maki icon name. Valid Maki icons: aerialway, airfield, airport, alcohol-shop, american-football, amusement-park, animal-shelter, aquarium, arrow, art-gallery, attraction, bakery, bank-JP, bank, bar, barrier, baseball, basketball, bbq, beach, beer, bicycle-share, bicycle, blood-bank, bowling-alley, bridge, building-alt1, building, bus, cafe, campsite, car-rental, car-repair, car, casino, castle-JP, castle, caution, cemetery-JP, cemetery, charging-station, cinema, circle-stroked, circle, city, clothing-store, college-JP, college, commercial, communications-tower, confectionery, construction, convenience, cricket, cross, dam, danger, defibrillator, dentist, diamond, doctor, dog-park, drinking-water, elevator, embassy, emergency-phone, entrance-alt1, entrance, farm, fast-food, fence, ferry-JP, ferry, fire-station-JP, fire-station, fitness-centre, florist, fuel, furniture, gaming, garden-centre, garden, gate, gift, globe, golf, grocery, hairdresser, harbor, hardware, heart, heliport, highway-rest-area, historic, home, horse-riding, hospital-JP, hospital, hot-spring, ice-cream, industry, information, jewelry-store, karaoke, landmark-JP, landmark, landuse, laundry, library, lift-gate, lighthouse-JP, lighthouse, lodging, logging, marae, marker-stroked, marker, mobile-phone, monument-JP, monument, mountain, museum, music, natural, nightclub, observation-tower, optician, paint, park-alt1, park, parking-garage, parking-paid, parking, pharmacy, picnic-site, pitch, place-of-worship, playground, police-JP, police, post-JP, post, prison, racetrack-boat, racetrack-cycling, racetrack-horse, racetrack, rail-light, rail-metro, rail, ranger-station, recycling, religious-buddhist, religious-christian, religious-jewish, religious-muslim, religious-shinto, residential-community, restaurant-bbq, restaurant-noodle, restaurant-pizza, restaurant-seafood, restaurant-sushi, restaurant, road-accident, roadblock, rocket, school-JP, school, scooter, shelter, shoe, shop, skateboard, skiing, slaughterhouse, slipway, snowmobile, soccer, square-stroked, square, stadium, star-stroked, star, suitcase, swimming, table-tennis, taxi, teahouse, telephone, tennis, terminal, theatre, toilet, toll, town-hall, town, triangle-stroked, triangle, tunnel, veterinary, viewpoint, village, volcano, volleyball, warehouse, waste-basket, watch, water, waterfall, watermill, wetland, wheelchair, windmill, zoo. Labels longer than one character that are not valid Maki icons will be truncated to the first character.",
+           "type": "string"
+          },
+          "color": {
+           "description": "3 or 6 digit hex color without #",
+           "type": "string",
+           "pattern": "^[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$"
+          }
+         },
+         "required": [
+          "type",
+          "longitude",
+          "latitude"
+         ]
+        },
+        {
+         "type": "object",
+         "properties": {
+          "type": {
+           "type": "string",
+           "const": "custom-marker"
+          },
+          "longitude": {
+           "type": "number",
+           "minimum": -180,
+           "maximum": 180
+          },
+          "latitude": {
+           "type": "number",
+           "minimum": -85.0511,
+           "maximum": 85.0511
+          },
+          "url": {
+           "description": "HTTPS URL of custom marker image (PNG or JPEG, max 1024px). Must point to a publicly reachable host; URLs targeting localhost, private, link-local, or unique-local addresses are rejected to prevent SSRF.",
+           "type": "string",
+           "format": "uri"
+          }
+         },
+         "required": [
+          "type",
+          "longitude",
+          "latitude",
+          "url"
+         ]
+        },
+        {
+         "type": "object",
+         "properties": {
+          "type": {
+           "type": "string",
+           "const": "path"
+          },
+          "encodedPolyline": {
+           "type": "string",
+           "minLength": 1,
+           "description": "Encoded polyline string with 5 decimal place precision"
+          },
+          "strokeWidth": {
+           "default": 5,
+           "type": "number",
+           "minimum": 1
+          },
+          "strokeColor": {
+           "description": "3 or 6 digit hex color without #",
+           "type": "string",
+           "pattern": "^[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$"
+          },
+          "strokeOpacity": {
+           "description": "Stroke opacity (0-1)",
+           "type": "number",
+           "minimum": 0,
+           "maximum": 1
+          },
+          "fillColor": {
+           "description": "3 or 6 digit hex color without #",
+           "type": "string",
+           "pattern": "^[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$"
+          },
+          "fillOpacity": {
+           "description": "Fill opacity (0-1)",
+           "type": "number",
+           "minimum": 0,
+           "maximum": 1
+          }
+         },
+         "required": [
+          "type",
+          "encodedPolyline"
+         ]
+        },
+        {
+         "type": "object",
+         "properties": {
+          "type": {
+           "type": "string",
+           "const": "geojson"
+          },
+          "data": {
+           "description": "GeoJSON object (Point, MultiPoint, LineString, or Polygon)"
+          }
+         },
+         "required": [
+          "type",
+          "data"
+         ]
+        }
+       ]
+      }
+     }
+    },
+    "required": [
+     "center",
+     "zoom",
+     "size"
+    ]
+   }
+  },
+  "list-public-tokens-tool": {
+   "ListPublicTokensInputSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+     "site_url": {
+      "description": "Where the page or app that will use the token is served from, for example \"https://example.com\" or \"http://localhost:3000\". Used to pick a public token that is restricted to that URL. Leave it out if you don't know yet.",
+      "type": "string",
+      "format": "uri"
+     }
+    }
+   }
+  },
+  "feedback-tool": {
+   "FeedbackInputSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+     "feedback": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000,
+      "description": "What is wrong, in the user's own words, plus what it should be if they said. Name the place or road. Example: \"Blue Bottle Coffee at 66 Mint St has closed permanently.\""
+     },
+     "category": {
+      "type": "string",
+      "enum": [
+       "poi_closed",
+       "poi_details",
+       "poi_location",
+       "poi_missing",
+       "map_data_issue",
+       "map_rendering_issue",
+       "routing_issue",
+       "poor_routing_issue",
+       "alternative_route_issue",
+       "no_route",
+       "illegal_turn",
+       "illegal_entrance",
+       "missing_expected_maneuver",
+       "eta_issue",
+       "road_closure_issue",
+       "road_incident_issue",
+       "speed_limit_issue",
+       "traffic_issue",
+       "false_negative_traffic_issue",
+       "false_positive_traffic_issue",
+       "application_issue"
+      ],
+      "description": "The kind of problem:\n- poi_closed: the place no longer exists\n- poi_details: wrong name, hours, phone, website or other details\n- poi_location: the place is on the wrong spot\n- poi_missing: a place, address or business could not be found\n- map_data_issue / map_rendering_issue: wrong map features, or the map draws wrong\n- routing_issue: something else wrong with a route\n- poor_routing_issue / alternative_route_issue / no_route: a bad, missing or no route\n- illegal_turn / illegal_entrance / missing_expected_maneuver: a turn or entrance the route got wrong\n- eta_issue: the travel time was wrong\n- road_closure_issue / road_incident_issue / speed_limit_issue: road data\n- traffic_issue / false_negative_traffic_issue / false_positive_traffic_issue: traffic shown wrong (missed congestion, or congestion that is not there)\n- application_issue: anything about the app itself rather than the map data, such as a bug, a confusing screen or a suggestion"
+     },
+     "coordinates": {
+      "description": "Where the feedback is about: the place or the spot on the route, usually taken from an earlier search or directions result. Do not guess. Leave it out when the feedback is not about a place, such as most feedback about the app itself.",
+      "type": "object",
+      "properties": {
+       "longitude": {
+        "type": "number",
+        "minimum": -180,
+        "maximum": 180
+       },
+       "latitude": {
+        "type": "number",
+        "minimum": -90,
+        "maximum": 90
+       }
+      },
+      "required": [
+       "longitude",
+       "latitude"
+      ]
+     },
+     "send_anyway": {
+      "description": "Skip the check for an earlier report from this account. Set it only after the tool said a report already exists and the user says theirs is about a different problem.",
+      "type": "boolean"
+     }
+    },
+    "required": [
+     "feedback",
+     "category"
+    ]
+   }
+  },
+  "report-tool": {
+   "ReportInputSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+     "feedback": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 2000,
+      "description": "What happened or what the user wants, in the user's own words. For a bug or wrong result, say what was asked, what came back and what was expected. Example: \"search_and_geocode_tool returned a Blue Bottle in Oakland when I asked for the one on Mint St in San Francisco.\""
+     },
+     "category": {
+      "type": "string",
+      "enum": [
+       "bug",
+       "wrong_result",
+       "feature_request",
+       "other"
+      ],
+      "description": "The kind of feedback:\n- bug: a tool failed, errored or the map did not draw\n- wrong_result: a tool worked but gave a wrong, confusing or unhelpful answer\n- feature_request: something the user wishes the server could do\n- other: anything else"
+     },
+     "tool_name": {
+      "description": "The tool the feedback is about, if any, for example directions_tool.",
+      "type": "string"
+     }
+    },
+    "required": [
+     "feedback",
+     "category"
+    ]
+   }
+  }
+ }
+}

@@ -1,0 +1,40 @@
+{
+ "type": "FeatureCollection",
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Market Street walk"
+   },
+   "geometry": {
+    "type": "LineString",
+    "coordinates": [
+     [
+      -122.4194,
+      37.7793
+     ],
+     [
+      -122.4135,
+      37.7816
+     ],
+     [
+      -122.4078,
+      37.7843
+     ],
+     [
+      -122.4031,
+      37.7876
+     ],
+     [
+      -122.3998,
+      37.7907
+     ],
+     [
+      -122.3947,
+      37.7946
+     ]
+    ]
+   }
+  }
+ ]
+}

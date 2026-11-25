@@ -1,0 +1,95 @@
+{
+  "experiment": "standard/light-presets",
+  "question": "Do the Standard style's four light presets each change the picture, without reloading the style?",
+  "ran_at": "2026-11-25T03:24:04.637Z",
+  "gl_js": "3.35.2",
+  "served_by_mapbox": true,
+  "refusals": [],
+  "refusals_asked_for": [],
+  "all_facts_hold": true,
+  "facts": [
+    {
+      "fact": "The style declares exactly these four presets: dawn, day, dusk, night",
+      "holds": true,
+      "numbers": {
+        "declared": [
+          "dawn",
+          "day",
+          "dusk",
+          "night"
+        ],
+        "default": "day"
+      }
+    },
+    {
+      "fact": "Each preset reads back as set",
+      "holds": true
+    },
+    {
+      "fact": "Every other preset's mean brightness differs from day's by more than 10 (on 0-255)",
+      "holds": true,
+      "numbers": {
+        "dawn": 201.8,
+        "day": 213.9,
+        "dusk": 70.2,
+        "night": 40.1
+      }
+    },
+    {
+      "fact": "Night is the darkest of the four",
+      "holds": true
+    },
+    {
+      "fact": "Changing the preset never reloaded the style (style.load fired once)",
+      "holds": true,
+      "numbers": {
+        "style_loads": 1
+      }
+    }
+  ],
+  "numbers": {
+    "dawn": {
+      "readBack": "dawn",
+      "lum": 201.8,
+      "sat": 0.219
+    },
+    "day": {
+      "readBack": "day",
+      "lum": 213.9,
+      "sat": 0.122
+    },
+    "dusk": {
+      "readBack": "dusk",
+      "lum": 70.2,
+      "sat": 0.279
+    },
+    "night": {
+      "readBack": "night",
+      "lum": 40.1,
+      "sat": 0.584
+    }
+  },
+  "reasons": [],
+  "screenshots": [
+    "results/light-presets-dawn.png",
+    "results/light-presets-day.png",
+    "results/light-presets-dusk.png",
+    "results/light-presets-night.png"
+  ],
+  "use": {
+    "map_loads": 1,
+    "web_service_requests": 0,
+    "requests_by_host": {
+      "127.0.0.1:57816": 1,
+      "api.mapbox.com": 61,
+      "": 2,
+      "events.mapbox.com": 4
+    }
+  },
+  "errors": {
+    "console": [],
+    "page": [],
+    "requests": []
+  },
+  "seconds": 39.5
+}

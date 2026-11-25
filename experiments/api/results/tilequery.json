@@ -1,0 +1,113 @@
+{
+  "experiment": "api/tilequery",
+  "question": "What does Tilequery say is at the Eiffel Tower in Mapbox Streets, and how high are Mont Blanc and the Matterhorn in Mapbox Terrain contours?",
+  "ran_at": "2026-11-25T03:28:16.600Z",
+  "gl_js": "3.35.2",
+  "served_by_mapbox": true,
+  "refusals": [],
+  "refusals_asked_for": [
+    "422 https://api.mapbox.com/v4/mapbox.mapbox-terrain-v2/tilequery/6.86517,45.83264.json?layers=contour&limit=100&access_token=<token>"
+  ],
+  "all_facts_hold": false,
+  "facts": [
+    {
+      "fact": "Within 100 m of the Eiffel Tower, Streets returns features from several layers, one of them named for the tower",
+      "holds": true,
+      "numbers": {
+        "layers": [
+          "building",
+          "landuse",
+          "road",
+          "poi_label",
+          "housenum_label",
+          "structure"
+        ],
+        "named": {
+          "layer": "poi_label",
+          "name": "Tour Eiffel 3e étage",
+          "metres": 15
+        }
+      }
+    },
+    {
+      "fact": "Mont Blanc's highest contour is within 20 m of 4,806 m",
+      "holds": false,
+      "numbers": {
+        "highest_contour_m": 3270
+      }
+    },
+    {
+      "fact": "The Matterhorn's highest contour is within 20 m of 4,478 m",
+      "holds": false,
+      "numbers": {
+        "highest_contour_m": 2760
+      }
+    },
+    {
+      "fact": "Each summit query came back with exactly the 50 contours asked for",
+      "holds": true,
+      "numbers": {
+        "Mont Blanc": {
+          "returned": 50,
+          "lowest": 2780,
+          "highest": 3270,
+          "steps_m": [
+            10
+          ],
+          "geometry": [
+            "Point"
+          ],
+          "distances_m": [
+            0
+          ]
+        },
+        "Matterhorn": {
+          "returned": 50,
+          "lowest": 2270,
+          "highest": 2760,
+          "steps_m": [
+            10
+          ],
+          "geometry": [
+            "Point"
+          ],
+          "distances_m": [
+            0
+          ]
+        }
+      }
+    },
+    {
+      "fact": "Asking for 100 is refused, so 50 is the most one query returns",
+      "holds": true,
+      "numbers": {
+        "status": 422,
+        "message": "options.limit must be a number between 1 and 50"
+      }
+    }
+  ],
+  "reasons": [],
+  "screenshots": [
+    "results/tilequery-eiffel.png"
+  ],
+  "use": {
+    "map_loads": 1,
+    "web_service_requests": 4,
+    "requests_by_host": {
+      "127.0.0.1:57963": 1,
+      "api.mapbox.com": 63,
+      "": 2,
+      "events.mapbox.com": 4
+    }
+  },
+  "errors": {
+    "console": [
+      "Failed to load resource: the server responded with a status of 422 ()"
+    ],
+    "page": [],
+    "requests": [
+      "422 https://api.mapbox.com/v4/mapbox.mapbox-terrain-v2/tilequery/6.86517,45.83264.json?layers=contour&limit=100&access_token=<token>"
+    ]
+  },
+  "seconds": 9.7
+}

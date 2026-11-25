@@ -1,0 +1,70 @@
+{
+  "experiment": "api/isochrone",
+  "question": "Does the Isochrone API return nested 10, 20 and 30 minute driving areas around a point, called from a browser page?",
+  "ran_at": "2026-11-25T03:27:20.292Z",
+  "gl_js": "3.35.2",
+  "served_by_mapbox": true,
+  "refusals": [],
+  "refusals_asked_for": [],
+  "all_facts_hold": true,
+  "facts": [
+    {
+      "fact": "The API answered 200 with three areas, for 10, 20 and 30 minutes",
+      "holds": true,
+      "numbers": {
+        "contours": [
+          10,
+          20,
+          30
+        ]
+      }
+    },
+    {
+      "fact": "Each longer time covers a larger area",
+      "holds": true,
+      "numbers": {
+        "km2": {
+          "10": 37,
+          "20": 478,
+          "30": 1667
+        }
+      }
+    },
+    {
+      "fact": "Every area contains the starting point",
+      "holds": true
+    }
+  ],
+  "numbers": {
+    "feature_properties": [
+      "fill-opacity",
+      "fillColor",
+      "opacity",
+      "fill",
+      "fillOpacity",
+      "color",
+      "contour",
+      "metric"
+    ]
+  },
+  "reasons": [],
+  "screenshots": [
+    "results/isochrone-denver.png"
+  ],
+  "use": {
+    "map_loads": 1,
+    "web_service_requests": 1,
+    "requests_by_host": {
+      "127.0.0.1:57921": 1,
+      "api.mapbox.com": 16,
+      "": 2,
+      "events.mapbox.com": 4
+    }
+  },
+  "errors": {
+    "console": [],
+    "page": [],
+    "requests": []
+  },
+  "seconds": 6
+}

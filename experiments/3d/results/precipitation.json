@@ -1,0 +1,94 @@
+{
+  "experiment": "3d/precipitation",
+  "question": "Do setSnow and setRain draw anything, and does the map still go idle while they fall?",
+  "ran_at": "2026-11-25T03:26:14.491Z",
+  "gl_js": "3.35.2",
+  "served_by_mapbox": true,
+  "refusals": [],
+  "refusals_asked_for": [],
+  "all_facts_hold": false,
+  "facts": [
+    {
+      "fact": "Snow whitens at least 0.2% of the pixels",
+      "holds": true,
+      "numbers": {
+        "snow_vs_clear": 2.2,
+        "snow_frame_to_frame": 0.9,
+        "rain_vs_clear": 6.4,
+        "rain_frame_to_frame": 3.3,
+        "snow_whitened_pct": 0.27,
+        "rain_whitened_pct": 0.04
+      }
+    },
+    {
+      "fact": "Snow moves: two frames 300 ms apart differ (mean difference over 0.5)",
+      "holds": true
+    },
+    {
+      "fact": "Rain changes the picture (mean difference over 5 from the clear map)",
+      "holds": true
+    },
+    {
+      "fact": "Rain moves between frames",
+      "holds": true
+    },
+    {
+      "fact": "With snow falling the map still fires idle within 5 s",
+      "holds": false,
+      "numbers": {
+        "idle_with_snow": false,
+        "idle_with_rain": false
+      }
+    }
+  ],
+  "numbers": {
+    "snow_read_back": {
+      "density": 1,
+      "intensity": 1,
+      "color": "#ffffff",
+      "opacity": 1,
+      "vignette": [
+        "interpolate",
+        [
+          "linear"
+        ],
+        [
+          "zoom"
+        ],
+        11,
+        0,
+        13,
+        0.3
+      ],
+      "vignette-color": "#ffffff",
+      "center-thinning": 0.4,
+      "direction": [
+        0,
+        50
+      ],
+      "flake-size": 0.71
+    }
+  },
+  "reasons": [],
+  "screenshots": [
+    "results/precipitation-clear.png",
+    "results/precipitation-snow.png",
+    "results/precipitation-rain.png"
+  ],
+  "use": {
+    "map_loads": 1,
+    "web_service_requests": 0,
+    "requests_by_host": {
+      "127.0.0.1:57862": 1,
+      "api.mapbox.com": 60,
+      "": 2,
+      "events.mapbox.com": 4
+    }
+  },
+  "errors": {
+    "console": [],
+    "page": [],
+    "requests": []
+  },
+  "seconds": 48.4
+}

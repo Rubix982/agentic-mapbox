@@ -1,0 +1,3549 @@
+{
+ "mcp_commit": "ea129dc7e3e98b0818ccb19b682c1b357cc6c398",
+ "mcp_version": "0.18.1",
+ "docs_read": "2026-11-25",
+ "tools": {
+  "search-and-geocode-tool": {
+   "code": "search-and-geocode-tool/buildSearchAndGeocodeRequestUrl.ts:37-80",
+   "inputs": [
+    "q",
+    "language",
+    "proximity",
+    "bbox",
+    "country",
+    "types",
+    "poi_category",
+    "auto_complete",
+    "eta_type",
+    "navigation_profile",
+    "origin"
+   ],
+   "local": [],
+   "unaccounted_inputs": [],
+   "calls": [
+    {
+     "page": "docs.mapbox.com/api/search/search-box/",
+     "section": "Text search",
+     "endpoint": [
+      "GET /search/searchbox/v1/forward"
+     ],
+     "documented": 25,
+     "exposed": 11,
+     "fixed": 1,
+     "absent": 13,
+     "exposed_not_in_docs": [],
+     "params": [
+      {
+       "name": "q",
+       "type": "string",
+       "table": "required",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "q",
+       "docs_values": [],
+       "disagreements": [
+        {
+         "kind": "range",
+         "detail": "tool maxLength 200; the docs' description does not state 200"
+        }
+       ]
+      },
+      {
+       "name": "language",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "language",
+       "docs_default": "English",
+       "docs_values": [],
+       "disagreements": []
+      },
+      {
+       "name": "limit",
+       "type": "integer",
+       "table": "optional",
+       "flags": [],
+       "status": "fixed",
+       "tool_sends": "10",
+       "docs_values": []
+      },
+      {
+       "name": "proximity",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "proximity",
+       "docs_default": "IP",
+       "docs_values": [
+        "ip",
+        "proximity",
+        "origin"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "near",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "near",
+        "proximity",
+        "origin",
+        "bbox"
+       ]
+      },
+      {
+       "name": "bbox",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "bbox",
+       "docs_values": [],
+       "disagreements": []
+      },
+      {
+       "name": "radius",
+       "type": "number",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "proximity"
+       ]
+      },
+      {
+       "name": "country",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "country",
+       "docs_values": [],
+       "disagreements": []
+      },
+      {
+       "name": "types",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "types",
+       "docs_values": [
+        "country",
+        "region",
+        "postcode",
+        "district",
+        "place",
+        "city",
+        "locality",
+        "neighborhood",
+        "block",
+        "street",
+        "address",
+        "poi",
+        "category"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "poi_category",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "poi_category",
+       "docs_values": [],
+       "disagreements": []
+      },
+      {
+       "name": "poi_category_exclusions",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": []
+      },
+      {
+       "name": "show_closed_pois",
+       "type": "boolean",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "true"
+       ]
+      },
+      {
+       "name": "open_now",
+       "type": "boolean",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "true"
+       ]
+      },
+      {
+       "name": "minimum_rating",
+       "type": "number",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": []
+      },
+      {
+       "name": "price_levels",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": []
+      },
+      {
+       "name": "exclude_fields",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "photos",
+        "reviews"
+       ]
+      },
+      {
+       "name": "rank_strategy",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "distance",
+        "relevance"
+       ]
+      },
+      {
+       "name": "sar_type",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "route",
+        "isochrone"
+       ]
+      },
+      {
+       "name": "route",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "route_geometry"
+       ]
+      },
+      {
+       "name": "route_geometry",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_default": "polyline",
+       "docs_values": [
+        "polyline",
+        "polyline6",
+        "route",
+        "route_geometry"
+       ]
+      },
+      {
+       "name": "time_deviation",
+       "type": "number",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": []
+      },
+      {
+       "name": "auto_complete",
+       "type": "boolean",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "auto_complete",
+       "docs_values": [
+        "true"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "eta_type",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "eta_type",
+       "docs_values": [
+        "navigation",
+        "navigation_profile",
+        "origin",
+        "proximity"
+       ],
+       "disagreements": [
+        {
+         "kind": "values",
+         "detail": "docs name navigation_profile, origin, proximity, not in the tool's list"
+        }
+       ]
+      },
+      {
+       "name": "navigation_profile",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "navigation_profile",
+       "docs_values": [
+        "driving",
+        "walking",
+        "cycling"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "origin",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "origin",
+       "docs_values": [
+        "proximity",
+        "origin"
+       ],
+       "disagreements": []
+      }
+     ]
+    }
+   ]
+  },
+  "reverse-geocode-tool": {
+   "code": "reverse-geocode-tool/ReverseGeocodeTool.ts:111-134",
+   "inputs": [
+    "longitude",
+    "latitude",
+    "permanent",
+    "country",
+    "language",
+    "limit",
+    "types",
+    "worldview",
+    "format"
+   ],
+   "local": [
+    "format"
+   ],
+   "unaccounted_inputs": [],
+   "calls": [
+    {
+     "page": "docs.mapbox.com/api/search/geocoding/",
+     "section": "Reverse geocoding",
+     "endpoint": [
+      "GET /search/geocode/v6/reverse"
+     ],
+     "documented": 8,
+     "exposed": 8,
+     "fixed": 0,
+     "absent": 0,
+     "exposed_not_in_docs": [],
+     "params": [
+      {
+       "name": "longitude",
+       "type": "number",
+       "table": "required",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "longitude",
+       "docs_values": [
+        "longitude"
+       ],
+       "disagreements": [
+        {
+         "kind": "range",
+         "detail": "tool maximum 180; the docs' description does not state 180"
+        },
+        {
+         "kind": "range",
+         "detail": "tool minimum -180; the docs' description does not state -180"
+        }
+       ]
+      },
+      {
+       "name": "latitude",
+       "type": "number",
+       "table": "required",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "latitude",
+       "docs_values": [
+        "latitude"
+       ],
+       "disagreements": [
+        {
+         "kind": "range",
+         "detail": "tool maximum 90; the docs' description does not state 90"
+        },
+        {
+         "kind": "range",
+         "detail": "tool minimum -90; the docs' description does not state -90"
+        }
+       ]
+      },
+      {
+       "name": "permanent",
+       "type": "boolean",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "permanent",
+       "docs_default": "false",
+       "docs_values": [
+        "true",
+        "false"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "country",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "country",
+       "docs_values": [],
+       "disagreements": []
+      },
+      {
+       "name": "language",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "language",
+       "docs_values": [],
+       "disagreements": []
+      },
+      {
+       "name": "limit",
+       "type": "integer",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "limit",
+       "docs_default": "1",
+       "docs_values": [
+        "address",
+        "limit",
+        "types"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "types",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "types",
+       "docs_values": [
+        "country",
+        "region",
+        "postcode",
+        "district",
+        "place",
+        "locality",
+        "neighborhood",
+        "street",
+        "address"
+       ],
+       "disagreements": [
+        {
+         "kind": "values",
+         "detail": "docs name street, not in the tool's list"
+        }
+       ]
+      },
+      {
+       "name": "worldview",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "worldview",
+       "docs_values": [
+        "ar",
+        "cn",
+        "in",
+        "jp",
+        "ma",
+        "rs",
+        "ru",
+        "tr",
+        "us",
+        "worldview"
+       ],
+       "disagreements": [
+        {
+         "kind": "values",
+         "detail": "docs name ar, ma, rs, ru, tr, worldview, not in the tool's list"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "category-search-tool": {
+   "code": "category-search-tool/buildCategorySearchRequestUrl.ts:34-68",
+   "inputs": [
+    "category",
+    "language",
+    "limit",
+    "proximity",
+    "bbox",
+    "country",
+    "poi_category_exclusions",
+    "format"
+   ],
+   "local": [
+    "format"
+   ],
+   "unaccounted_inputs": [],
+   "calls": [
+    {
+     "page": "docs.mapbox.com/api/search/search-box/",
+     "section": "Category search",
+     "endpoint": [
+      "GET /search/searchbox/v1/category/{canonical_category_id}"
+     ],
+     "documented": 19,
+     "exposed": 7,
+     "fixed": 0,
+     "absent": 12,
+     "exposed_not_in_docs": [],
+     "params": [
+      {
+       "name": "language",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "language",
+       "docs_default": "English",
+       "docs_values": [],
+       "disagreements": []
+      },
+      {
+       "name": "limit",
+       "type": "integer",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "limit",
+       "docs_values": [],
+       "disagreements": []
+      },
+      {
+       "name": "proximity",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "proximity",
+       "docs_default": "IP",
+       "docs_values": [
+        "ip",
+        "proximity",
+        "origin"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "near",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "near",
+        "proximity",
+        "origin",
+        "bbox"
+       ]
+      },
+      {
+       "name": "bbox",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "bbox",
+       "docs_values": [],
+       "disagreements": []
+      },
+      {
+       "name": "radius",
+       "type": "number",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "proximity"
+       ]
+      },
+      {
+       "name": "country",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "country",
+       "docs_values": [],
+       "disagreements": []
+      },
+      {
+       "name": "types",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "country",
+        "region",
+        "postcode",
+        "district",
+        "place",
+        "city",
+        "locality",
+        "neighborhood",
+        "block",
+        "street",
+        "address",
+        "poi",
+        "category"
+       ]
+      },
+      {
+       "name": "poi_category_exclusions",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "poi_category_exclusions",
+       "docs_values": [],
+       "disagreements": []
+      },
+      {
+       "name": "show_closed_pois",
+       "type": "boolean",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "true"
+       ]
+      },
+      {
+       "name": "exclude_fields",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "photos",
+        "reviews"
+       ]
+      },
+      {
+       "name": "sar_type",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "route",
+        "isochrone"
+       ]
+      },
+      {
+       "name": "route",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "route_geometry"
+       ]
+      },
+      {
+       "name": "route_geometry",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_default": "polyline",
+       "docs_values": [
+        "polyline",
+        "polyline6",
+        "route",
+        "route_geometry"
+       ]
+      },
+      {
+       "name": "time_deviation",
+       "type": "number",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": []
+      },
+      {
+       "name": "eta_type",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "navigation",
+        "navigation_profile",
+        "origin",
+        "proximity"
+       ]
+      },
+      {
+       "name": "navigation_profile",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "driving",
+        "walking",
+        "cycling"
+       ]
+      },
+      {
+       "name": "origin",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "proximity",
+        "origin"
+       ]
+      },
+      {
+       "name": "canonical_category_id",
+       "type": "",
+       "table": "path",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "category",
+       "docs_values": [],
+       "disagreements": []
+      }
+     ]
+    }
+   ]
+  },
+  "category-list-tool": {
+   "code": "category-list-tool/CategoryListTool.ts:57-64",
+   "inputs": [
+    "language",
+    "limit",
+    "offset"
+   ],
+   "local": [
+    "limit",
+    "offset"
+   ],
+   "unaccounted_inputs": [],
+   "calls": [
+    {
+     "page": "docs.mapbox.com/api/search/search-box/",
+     "section": "List categories",
+     "endpoint": [
+      "GET /search/searchbox/v1/list/category"
+     ],
+     "documented": 1,
+     "exposed": 1,
+     "fixed": 0,
+     "absent": 0,
+     "exposed_not_in_docs": [],
+     "params": [
+      {
+       "name": "language",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "language",
+       "docs_default": "English",
+       "docs_values": [],
+       "disagreements": []
+      }
+     ]
+    }
+   ]
+  },
+  "place-details-tool": {
+   "code": "place-details-tool/PlaceDetailsTool.ts:189-206, 225-246",
+   "inputs": [
+    "mapbox_id",
+    "attribute_sets",
+    "language",
+    "worldview"
+   ],
+   "local": [],
+   "unaccounted_inputs": [],
+   "calls": [
+    {
+     "page": "docs.mapbox.com/api/search/places/",
+     "section": "Retrieve a single Place",
+     "endpoint": [
+      "GET /places/v1/details/retrieve/{mapbox_id}"
+     ],
+     "documented": 1,
+     "exposed": 1,
+     "fixed": 0,
+     "absent": 0,
+     "exposed_not_in_docs": [],
+     "params": [
+      {
+       "name": "mapbox_id",
+       "type": "string",
+       "table": "parameter type description",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "mapbox_id",
+       "docs_values": [
+        "mapbox_id"
+       ],
+       "disagreements": [
+        {
+         "kind": "required",
+         "detail": "tool requires it; docs list it as optional"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "page": "docs.mapbox.com/api/search/details/",
+     "section": "Retrieve POI Details",
+     "endpoint": [
+      "GET /search/details/v1/retrieve/{mapbox_id}",
+      "GET /search/details/v1/retrieve/{mapbox_id}"
+     ],
+     "when": "only after the first answers 422 (a mapbox_id that is not a POI)",
+     "role": "fallback",
+     "documented": 4,
+     "exposed": 4,
+     "fixed": 0,
+     "absent": 0,
+     "exposed_not_in_docs": [],
+     "params": [
+      {
+       "name": "mapbox_id",
+       "type": "string",
+       "table": "required",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "mapbox_id",
+       "docs_values": [],
+       "disagreements": []
+      },
+      {
+       "name": "worldview",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "worldview",
+       "docs_values": [],
+       "disagreements": [
+        {
+         "kind": "values",
+         "detail": "tool allows cn, in, jp, ma, ru, us, not named in the docs"
+        }
+       ]
+      },
+      {
+       "name": "language",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "language",
+       "docs_default": "English",
+       "docs_values": [],
+       "disagreements": []
+      },
+      {
+       "name": "attribute_sets",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "attribute_sets",
+       "docs_values": [
+        "basic",
+        "visit",
+        "photos",
+        "venue"
+       ],
+       "disagreements": []
+      }
+     ]
+    }
+   ]
+  },
+  "ground-location-tool": {
+   "code": "ground-location-tool/GroundLocationTool.ts:184-236, buildReverseGeocodeUrl.ts:20-33",
+   "inputs": [
+    "longitude",
+    "latitude",
+    "query",
+    "profile",
+    "contours_minutes",
+    "limit",
+    "language",
+    "include"
+   ],
+   "local": [
+    "include"
+   ],
+   "unaccounted_inputs": [],
+   "calls": [
+    {
+     "page": "docs.mapbox.com/api/search/geocoding/",
+     "section": "Reverse geocoding",
+     "endpoint": [
+      "GET /search/geocode/v6/reverse"
+     ],
+     "documented": 8,
+     "exposed": 3,
+     "fixed": 2,
+     "absent": 3,
+     "exposed_not_in_docs": [],
+     "params": [
+      {
+       "name": "longitude",
+       "type": "number",
+       "table": "required",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "longitude",
+       "docs_values": [
+        "longitude"
+       ],
+       "disagreements": [
+        {
+         "kind": "range",
+         "detail": "tool maximum 180; the docs' description does not state 180"
+        },
+        {
+         "kind": "range",
+         "detail": "tool minimum -180; the docs' description does not state -180"
+        }
+       ]
+      },
+      {
+       "name": "latitude",
+       "type": "number",
+       "table": "required",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "latitude",
+       "docs_values": [
+        "latitude"
+       ],
+       "disagreements": [
+        {
+         "kind": "range",
+         "detail": "tool maximum 90; the docs' description does not state 90"
+        },
+        {
+         "kind": "range",
+         "detail": "tool minimum -90; the docs' description does not state -90"
+        }
+       ]
+      },
+      {
+       "name": "permanent",
+       "type": "boolean",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_default": "false",
+       "docs_values": [
+        "true",
+        "false"
+       ]
+      },
+      {
+       "name": "country",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": []
+      },
+      {
+       "name": "language",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "language",
+       "docs_values": [],
+       "disagreements": []
+      },
+      {
+       "name": "limit",
+       "type": "integer",
+       "table": "optional",
+       "flags": [],
+       "status": "fixed",
+       "tool_sends": "1",
+       "docs_default": "1",
+       "docs_values": [
+        "address",
+        "limit",
+        "types"
+       ]
+      },
+      {
+       "name": "types",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "fixed",
+       "tool_sends": "one per facet, set by the tool",
+       "docs_values": [
+        "country",
+        "region",
+        "postcode",
+        "district",
+        "place",
+        "locality",
+        "neighborhood",
+        "street",
+        "address"
+       ]
+      },
+      {
+       "name": "worldview",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "ar",
+        "cn",
+        "in",
+        "jp",
+        "ma",
+        "rs",
+        "ru",
+        "tr",
+        "us",
+        "worldview"
+       ]
+      }
+     ]
+    },
+    {
+     "page": "docs.mapbox.com/api/search/search-box/",
+     "section": "Category search",
+     "endpoint": [
+      "GET /search/searchbox/v1/category/{canonical_category_id}"
+     ],
+     "documented": 19,
+     "exposed": 4,
+     "fixed": 0,
+     "absent": 15,
+     "exposed_not_in_docs": [],
+     "params": [
+      {
+       "name": "language",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "language",
+       "docs_default": "English",
+       "docs_values": [],
+       "disagreements": []
+      },
+      {
+       "name": "limit",
+       "type": "integer",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "limit",
+       "docs_values": [],
+       "disagreements": []
+      },
+      {
+       "name": "proximity",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "longitude, latitude",
+       "docs_default": "IP",
+       "docs_values": [
+        "ip",
+        "proximity",
+        "origin"
+       ]
+      },
+      {
+       "name": "near",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "near",
+        "proximity",
+        "origin",
+        "bbox"
+       ]
+      },
+      {
+       "name": "bbox",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": []
+      },
+      {
+       "name": "radius",
+       "type": "number",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "proximity"
+       ]
+      },
+      {
+       "name": "country",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": []
+      },
+      {
+       "name": "types",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "country",
+        "region",
+        "postcode",
+        "district",
+        "place",
+        "city",
+        "locality",
+        "neighborhood",
+        "block",
+        "street",
+        "address",
+        "poi",
+        "category"
+       ]
+      },
+      {
+       "name": "poi_category_exclusions",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": []
+      },
+      {
+       "name": "show_closed_pois",
+       "type": "boolean",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "true"
+       ]
+      },
+      {
+       "name": "exclude_fields",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "photos",
+        "reviews"
+       ]
+      },
+      {
+       "name": "sar_type",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "route",
+        "isochrone"
+       ]
+      },
+      {
+       "name": "route",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "route_geometry"
+       ]
+      },
+      {
+       "name": "route_geometry",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_default": "polyline",
+       "docs_values": [
+        "polyline",
+        "polyline6",
+        "route",
+        "route_geometry"
+       ]
+      },
+      {
+       "name": "time_deviation",
+       "type": "number",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": []
+      },
+      {
+       "name": "eta_type",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "navigation",
+        "navigation_profile",
+        "origin",
+        "proximity"
+       ]
+      },
+      {
+       "name": "navigation_profile",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "driving",
+        "walking",
+        "cycling"
+       ]
+      },
+      {
+       "name": "origin",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "proximity",
+        "origin"
+       ]
+      },
+      {
+       "name": "canonical_category_id",
+       "type": "",
+       "table": "path",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "query",
+       "docs_values": [],
+       "disagreements": [
+        {
+         "kind": "required",
+         "detail": "docs require it; tool makes it optional with no default"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "page": "docs.mapbox.com/api/navigation/isochrone/",
+     "section": "Retrieve isochrones around a location",
+     "endpoint": [
+      "GET /isochrone/v1/{profile}/{coordinates}"
+     ],
+     "documented": 10,
+     "exposed": 3,
+     "fixed": 1,
+     "absent": 6,
+     "exposed_not_in_docs": [],
+     "params": [
+      {
+       "name": "profile",
+       "type": "string",
+       "table": "required",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "profile",
+       "docs_values": [
+        "mapbox/driving-traffic",
+        "mapbox/driving",
+        "mapbox/walking",
+        "mapbox/cycling"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "coordinates",
+       "type": "number",
+       "table": "required",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "longitude, latitude",
+       "docs_values": []
+      },
+      {
+       "name": "contours_minutes",
+       "type": "integer",
+       "table": "required",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "contours_minutes",
+       "docs_values": [],
+       "disagreements": []
+      },
+      {
+       "name": "contours_meters",
+       "type": "integer",
+       "table": "required",
+       "flags": [],
+       "status": "absent",
+       "docs_values": []
+      },
+      {
+       "name": "contours_colors",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "ff0000",
+        "contours_minutes",
+        "contours_meters"
+       ]
+      },
+      {
+       "name": "polygons",
+       "type": "boolean",
+       "table": "optional",
+       "flags": [],
+       "status": "fixed",
+       "tool_sends": "true",
+       "docs_default": "false",
+       "docs_values": [
+        "true",
+        "false"
+       ]
+      },
+      {
+       "name": "denoise",
+       "type": "number",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_default": "1.0",
+       "docs_values": []
+      },
+      {
+       "name": "generalize",
+       "type": "number",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": []
+      },
+      {
+       "name": "exclude",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_default": "to",
+       "docs_values": [
+        "motorway",
+        "mapbox/driving",
+        "mapbox/driving-traffic",
+        "toll",
+        "ferry",
+        "unpaved",
+        "cash_only_tolls"
+       ]
+      },
+      {
+       "name": "depart_at",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "depart_at"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "directions-tool": {
+   "code": "directions-tool/buildDirectionsRequestUrl.ts:34-93",
+   "inputs": [
+    "coordinates",
+    "routing_profile",
+    "geometries",
+    "overview",
+    "max_height",
+    "max_width",
+    "max_weight",
+    "alternatives",
+    "depart_at",
+    "arrive_by",
+    "exclude"
+   ],
+   "local": [],
+   "unaccounted_inputs": [],
+   "calls": [
+    {
+     "page": "docs.mapbox.com/api/navigation/directions/",
+     "section": "Retrieve directions",
+     "endpoint": [
+      "GET /directions/v5/{profile}/{coordinates}"
+     ],
+     "documented": 36,
+     "exposed": 11,
+     "fixed": 2,
+     "absent": 23,
+     "exposed_not_in_docs": [],
+     "params": [
+      {
+       "name": "profile",
+       "type": "string",
+       "table": "required",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "routing_profile",
+       "docs_values": [
+        "mapbox/driving-traffic",
+        "mapbox/driving",
+        "mapbox/walking",
+        "mapbox/cycling"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "coordinates",
+       "type": "number",
+       "table": "required",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "coordinates",
+       "docs_values": [],
+       "disagreements": []
+      },
+      {
+       "name": "alternatives",
+       "type": "boolean",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "alternatives",
+       "docs_default": "false",
+       "docs_values": [
+        "true",
+        "false",
+        "mapbox/driving-traffic",
+        "mapbox/driving",
+        "mapbox/cycling"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "annotations",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "fixed",
+       "tool_sends": "distance,speed (and congestion with overview=full)",
+       "docs_values": [
+        "distance",
+        "duration",
+        "speed",
+        "congestion",
+        "mapbox/driving-traffic",
+        "congestion_numeric",
+        "maxspeed",
+        "mapbox/driving",
+        "closure",
+        "state_of_charge"
+       ]
+      },
+      {
+       "name": "avoid_maneuver_radius",
+       "type": "number",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "avoid_maneuver_radius",
+        "mapbox/driving-traffic",
+        "mapbox/driving"
+       ]
+      },
+      {
+       "name": "bearings",
+       "type": "integer",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": []
+      },
+      {
+       "name": "layers",
+       "type": "integer",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "layer"
+       ]
+      },
+      {
+       "name": "continue_straight",
+       "type": "boolean",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_default": "true",
+       "docs_values": [
+        "true",
+        "false",
+        "mapbox/driving",
+        "mapbox/driving-traffic",
+        "mapbox/walking",
+        "mapbox/cycling"
+       ]
+      },
+      {
+       "name": "exclude",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "exclude",
+       "docs_default": "to",
+       "docs_values": [
+        "motorway",
+        "mapbox/driving",
+        "mapbox/driving-traffic",
+        "toll",
+        "ferry",
+        "mapbox/cycling",
+        "mapbox/walking",
+        "unpaved",
+        "cash_only_tolls",
+        "country_border",
+        "state_border",
+        "tunnel",
+        "violation"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "geometries",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "geometries",
+       "docs_values": [
+        "geojson",
+        "polyline",
+        "polyline6"
+       ],
+       "disagreements": [
+        {
+         "kind": "values",
+         "detail": "tool allows none, not named in the docs"
+        },
+        {
+         "kind": "values",
+         "detail": "docs name polyline, polyline6, not in the tool's list"
+        }
+       ]
+      },
+      {
+       "name": "include",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_default": "to",
+       "docs_values": [
+        "hov2",
+        "mapbox/driving",
+        "mapbox/driving-traffic",
+        "hov3",
+        "hot"
+       ]
+      },
+      {
+       "name": "overview",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "overview",
+       "docs_values": [
+        "full",
+        "simplified",
+        "false"
+       ],
+       "disagreements": [
+        {
+         "kind": "values",
+         "detail": "docs name false, not in the tool's list"
+        }
+       ]
+      },
+      {
+       "name": "radiuses",
+       "type": "number or string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "unlimited"
+       ]
+      },
+      {
+       "name": "approaches",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "unrestricted",
+        "curb",
+        "driving_side"
+       ]
+      },
+      {
+       "name": "steps",
+       "type": "boolean",
+       "table": "optional",
+       "flags": [],
+       "status": "fixed",
+       "tool_sends": "true",
+       "docs_default": "false",
+       "docs_values": [
+        "true",
+        "false",
+        "steps",
+        "banner_instructions",
+        "language",
+        "roundabout_exits",
+        "voice_instructions",
+        "voice_units",
+        "waypoint_names",
+        "waypoint_targets",
+        "waypoints"
+       ]
+      },
+      {
+       "name": "banner_instructions",
+       "type": "boolean",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_default": "false",
+       "docs_values": [
+        "true",
+        "false"
+       ]
+      },
+      {
+       "name": "language",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_default": "en",
+       "docs_values": [
+        "en"
+       ]
+      },
+      {
+       "name": "roundabout_exits",
+       "type": "boolean",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_default": "false",
+       "docs_values": [
+        "true",
+        "false"
+       ]
+      },
+      {
+       "name": "voice_instructions",
+       "type": "boolean",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_default": "false",
+       "docs_values": [
+        "true",
+        "false"
+       ]
+      },
+      {
+       "name": "voice_units",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_default": "imperial",
+       "docs_values": [
+        "imperial",
+        "british_imperial",
+        "metric"
+       ]
+      },
+      {
+       "name": "waypoints",
+       "type": "integer",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "leg",
+        "depart",
+        "arrive",
+        "waypoints"
+       ]
+      },
+      {
+       "name": "waypoints_per_route",
+       "type": "boolean",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_default": "false",
+       "docs_values": [
+        "true",
+        "false",
+        "mapbox/driving",
+        "mapbox/driving-traffic",
+        "mapbox/walking",
+        "waypoints_per_route"
+       ]
+      },
+      {
+       "name": "waypoint_names",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "coordinates",
+        "waypoint_names",
+        "waypoints"
+       ]
+      },
+      {
+       "name": "waypoint_external_ids",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "coordinates",
+        "external_id",
+        "a-z",
+        "waypoints"
+       ]
+      },
+      {
+       "name": "waypoint_targets",
+       "type": "number",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "coordinates",
+        "waypoint_targets",
+        "maneuver.modifier",
+        "waypoints"
+       ]
+      },
+      {
+       "name": "notifications",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_default": "all",
+       "docs_values": [
+        "mapbox/driving",
+        "mapbox/driving-traffic",
+        "all",
+        "none"
+       ]
+      },
+      {
+       "name": "walking_speed",
+       "type": "number",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_default": "1.42",
+       "docs_values": []
+      },
+      {
+       "name": "walkway_bias",
+       "type": "number",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_default": "0",
+       "docs_values": []
+      },
+      {
+       "name": "alley_bias",
+       "type": "number",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_default": "0",
+       "docs_values": []
+      },
+      {
+       "name": "arrive_by",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "arrive_by",
+       "docs_values": [
+        "duration"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "depart_at",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "depart_at",
+       "docs_values": [
+        "duration",
+        "depart_at"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "max_height",
+       "type": "number",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "max_height",
+       "docs_default": "1.6",
+       "docs_values": [
+        "max_height"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "max_width",
+       "type": "number",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "max_width",
+       "docs_default": "1.9",
+       "docs_values": [
+        "max_width"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "max_weight",
+       "type": "number",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "max_weight",
+       "docs_default": "2.5",
+       "docs_values": [
+        "max_weight"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "snapping_include_closures",
+       "type": "boolean",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_default": "false",
+       "docs_values": [
+        "true",
+        "false",
+        "snapping_include_closures"
+       ]
+      },
+      {
+       "name": "snapping_include_static_closures",
+       "type": "boolean",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_default": "false",
+       "docs_values": [
+        "true",
+        "false",
+        "snapping_include_static_closures"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "matrix-tool": {
+   "code": "matrix-tool/MatrixTool.ts:250-283",
+   "inputs": [
+    "coordinates",
+    "profile",
+    "annotations",
+    "approaches",
+    "bearings",
+    "destinations",
+    "sources"
+   ],
+   "local": [],
+   "unaccounted_inputs": [],
+   "calls": [
+    {
+     "page": "docs.mapbox.com/api/navigation/matrix/",
+     "section": "Retrieve a matrix",
+     "endpoint": [
+      "GET /directions-matrix/v1/{profile}/{coordinates}"
+     ],
+     "documented": 9,
+     "exposed": 7,
+     "fixed": 0,
+     "absent": 2,
+     "exposed_not_in_docs": [],
+     "params": [
+      {
+       "name": "profile",
+       "type": "string",
+       "table": "required",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "profile",
+       "docs_values": [
+        "mapbox/driving",
+        "mapbox/walking",
+        "mapbox/cycling",
+        "mapbox/driving-traffic"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "coordinates",
+       "type": "number",
+       "table": "required",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "coordinates",
+       "docs_values": [
+        "mapbox/driving-traffic"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "annotations",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "annotations",
+       "docs_default": "duration",
+       "docs_values": [
+        "duration",
+        "distance"
+       ],
+       "disagreements": [
+        {
+         "kind": "values",
+         "detail": "tool allows duration,distance, distance,duration, not named in the docs"
+        }
+       ]
+      },
+      {
+       "name": "approaches",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "approaches",
+       "docs_values": [
+        "unrestricted",
+        "curb",
+        "driving_side"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "bearings",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "bearings",
+       "docs_values": [],
+       "disagreements": []
+      },
+      {
+       "name": "destinations",
+       "type": "integer or string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "destinations",
+       "docs_default": "all",
+       "docs_values": [
+        "all"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "sources",
+       "type": "integer or string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "sources",
+       "docs_default": "all",
+       "docs_values": [
+        "all"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "fallback_speed",
+       "type": "integer",
+       "table": "optional",
+       "flags": [
+        "LEGACY"
+       ],
+       "status": "absent",
+       "docs_values": [
+        "null",
+        "fallback_speed"
+       ]
+      },
+      {
+       "name": "depart_at",
+       "type": "string",
+       "table": "optional",
+       "flags": [
+        "BETA"
+       ],
+       "status": "absent",
+       "docs_values": [
+        "depart_at"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "optimization-tool": {
+   "code": "optimization-tool/buildOptimizationRequestUrl.ts:41-70",
+   "inputs": [
+    "coordinates",
+    "profile",
+    "source",
+    "destination",
+    "roundtrip",
+    "geometries",
+    "overview",
+    "steps",
+    "annotations",
+    "language"
+   ],
+   "local": [],
+   "unaccounted_inputs": [],
+   "calls": [
+    {
+     "page": "docs.mapbox.com/api/navigation/optimization-v1/",
+     "section": "Retrieve an optimization",
+     "endpoint": [
+      "GET /optimized-trips/v1/{profile}/{coordinates}"
+     ],
+     "documented": 14,
+     "exposed": 10,
+     "fixed": 0,
+     "absent": 4,
+     "exposed_not_in_docs": [],
+     "params": [
+      {
+       "name": "profile",
+       "type": "string",
+       "table": "required",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "profile",
+       "docs_values": [
+        "mapbox/driving",
+        "mapbox/walking",
+        "mapbox/cycling",
+        "mapbox/driving-traffic"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "coordinates",
+       "type": "number",
+       "table": "required",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "coordinates",
+       "docs_values": [],
+       "disagreements": []
+      },
+      {
+       "name": "annotations",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "annotations",
+       "docs_values": [
+        "duration",
+        "distance",
+        "speed"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "approaches",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "unrestricted",
+        "curb",
+        "driving_side"
+       ]
+      },
+      {
+       "name": "bearings",
+       "type": "integer",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "radiuses"
+       ]
+      },
+      {
+       "name": "destination",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "destination",
+       "docs_default": "any",
+       "docs_values": [
+        "any",
+        "last"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "distributions",
+       "type": "integer",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": []
+      },
+      {
+       "name": "geometries",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "geometries",
+       "docs_values": [
+        "geojson",
+        "polyline",
+        "polyline6"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "language",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "language",
+       "docs_default": "en",
+       "docs_values": [
+        "en"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "overview",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "overview",
+       "docs_values": [
+        "full",
+        "simplified",
+        "false"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "radiuses",
+       "type": "number or string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "unlimited"
+       ]
+      },
+      {
+       "name": "source",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "source",
+       "docs_default": "any",
+       "docs_values": [
+        "any",
+        "first"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "steps",
+       "type": "boolean",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "steps",
+       "docs_default": "false",
+       "docs_values": [
+        "true",
+        "false"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "roundtrip",
+       "type": "boolean",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "roundtrip",
+       "docs_default": "true",
+       "docs_values": [
+        "true",
+        "false",
+        "source",
+        "destination"
+       ],
+       "disagreements": []
+      }
+     ]
+    }
+   ]
+  },
+  "isochrone-tool": {
+   "code": "isochrone-tool/buildIsochroneRequestUrl.ts:31-60",
+   "inputs": [
+    "profile",
+    "coordinates",
+    "contours_minutes",
+    "contours_meters",
+    "contours_colors",
+    "polygons",
+    "denoise",
+    "generalize",
+    "exclude",
+    "depart_at"
+   ],
+   "local": [],
+   "unaccounted_inputs": [],
+   "calls": [
+    {
+     "page": "docs.mapbox.com/api/navigation/isochrone/",
+     "section": "Retrieve isochrones around a location",
+     "endpoint": [
+      "GET /isochrone/v1/{profile}/{coordinates}"
+     ],
+     "documented": 10,
+     "exposed": 10,
+     "fixed": 0,
+     "absent": 0,
+     "exposed_not_in_docs": [],
+     "params": [
+      {
+       "name": "profile",
+       "type": "string",
+       "table": "required",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "profile",
+       "docs_values": [
+        "mapbox/driving-traffic",
+        "mapbox/driving",
+        "mapbox/walking",
+        "mapbox/cycling"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "coordinates",
+       "type": "number",
+       "table": "required",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "coordinates",
+       "docs_values": [],
+       "disagreements": []
+      },
+      {
+       "name": "contours_minutes",
+       "type": "integer",
+       "table": "required",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "contours_minutes",
+       "docs_values": [],
+       "disagreements": [
+        {
+         "kind": "required",
+         "detail": "docs require it; tool makes it optional with no default"
+        }
+       ]
+      },
+      {
+       "name": "contours_meters",
+       "type": "integer",
+       "table": "required",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "contours_meters",
+       "docs_values": [],
+       "disagreements": [
+        {
+         "kind": "required",
+         "detail": "docs require it; tool makes it optional with no default"
+        }
+       ]
+      },
+      {
+       "name": "contours_colors",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "contours_colors",
+       "docs_values": [
+        "ff0000",
+        "contours_minutes",
+        "contours_meters"
+       ],
+       "disagreements": [
+        {
+         "kind": "range",
+         "detail": "tool maxItems 4; the docs' description does not state 4"
+        }
+       ]
+      },
+      {
+       "name": "polygons",
+       "type": "boolean",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "polygons",
+       "docs_default": "false",
+       "docs_values": [
+        "true",
+        "false"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "denoise",
+       "type": "number",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "denoise",
+       "docs_default": "1.0",
+       "docs_values": [],
+       "disagreements": []
+      },
+      {
+       "name": "generalize",
+       "type": "number",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "generalize",
+       "docs_values": [],
+       "disagreements": [
+        {
+         "kind": "required",
+         "detail": "tool requires it; docs list it as optional"
+        }
+       ]
+      },
+      {
+       "name": "exclude",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "exclude",
+       "docs_default": "to",
+       "docs_values": [
+        "motorway",
+        "mapbox/driving",
+        "mapbox/driving-traffic",
+        "toll",
+        "ferry",
+        "unpaved",
+        "cash_only_tolls"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "depart_at",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "depart_at",
+       "docs_values": [
+        "depart_at"
+       ],
+       "disagreements": []
+      }
+     ]
+    }
+   ]
+  },
+  "map-matching-tool": {
+   "code": "map-matching-tool/buildMapMatchingRequestUrl.ts:30-46",
+   "inputs": [
+    "coordinates",
+    "profile",
+    "timestamps",
+    "radiuses",
+    "annotations",
+    "overview",
+    "geometries"
+   ],
+   "local": [],
+   "unaccounted_inputs": [],
+   "calls": [
+    {
+     "page": "docs.mapbox.com/api/navigation/map-matching/",
+     "section": "Retrieve a match",
+     "endpoint": [
+      "GET /matching/v5/{profile}/{coordinates}.json"
+     ],
+     "documented": 22,
+     "exposed": 7,
+     "fixed": 0,
+     "absent": 15,
+     "exposed_not_in_docs": [],
+     "params": [
+      {
+       "name": "profile",
+       "type": "string",
+       "table": "required",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "profile",
+       "docs_values": [
+        "mapbox/driving",
+        "mapbox/walking",
+        "mapbox/cycling",
+        "mapbox/driving-traffic"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "coordinates",
+       "type": "number or string",
+       "table": "required",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "coordinates",
+       "docs_values": [
+        "openlr_spec",
+        "openlr_format"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "annotations",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "annotations",
+       "docs_values": [
+        "distance",
+        "duration",
+        "speed",
+        "congestion",
+        "mapbox/driving-traffic",
+        "congestion_numeric",
+        "maxspeed",
+        "mapbox/driving"
+       ],
+       "disagreements": [
+        {
+         "kind": "values",
+         "detail": "docs name congestion_numeric, maxspeed, not in the tool's list"
+        }
+       ]
+      },
+      {
+       "name": "approaches",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "unrestricted",
+        "curb",
+        "driving_side",
+        "waypoints"
+       ]
+      },
+      {
+       "name": "geometries",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "geometries",
+       "docs_values": [
+        "geojson",
+        "polyline",
+        "polyline6"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "overview",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "overview",
+       "docs_values": [
+        "full",
+        "simplified",
+        "false"
+       ],
+       "disagreements": []
+      },
+      {
+       "name": "radiuses",
+       "type": "number",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "radiuses",
+       "docs_default": "5",
+       "docs_values": [],
+       "disagreements": []
+      },
+      {
+       "name": "steps",
+       "type": "boolean",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_default": "false",
+       "docs_values": [
+        "true",
+        "false",
+        "steps",
+        "banner_instructions",
+        "language",
+        "roundabout_exits",
+        "voice_instructions",
+        "voice_units",
+        "waypoint_names",
+        "waypoints"
+       ]
+      },
+      {
+       "name": "banner_instructions",
+       "type": "boolean",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_default": "false",
+       "docs_values": [
+        "true",
+        "false"
+       ]
+      },
+      {
+       "name": "language",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_default": "en",
+       "docs_values": [
+        "en"
+       ]
+      },
+      {
+       "name": "roundabout_exits",
+       "type": "boolean",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_default": "false",
+       "docs_values": [
+        "true",
+        "false"
+       ]
+      },
+      {
+       "name": "voice_instructions",
+       "type": "boolean",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_default": "false",
+       "docs_values": [
+        "true",
+        "false"
+       ]
+      },
+      {
+       "name": "voice_units",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_default": "imperial",
+       "docs_values": [
+        "imperial",
+        "british_imperial",
+        "metric"
+       ]
+      },
+      {
+       "name": "tidy",
+       "type": "boolean",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_default": "false",
+       "docs_values": [
+        "true",
+        "false"
+       ]
+      },
+      {
+       "name": "timestamps",
+       "type": "number",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "timestamps",
+       "docs_values": [],
+       "disagreements": []
+      },
+      {
+       "name": "waypoint_names",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "waypoint_names",
+        "waypoints"
+       ]
+      },
+      {
+       "name": "waypoints",
+       "type": "integer",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": []
+      },
+      {
+       "name": "ignore",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "ignore",
+        "access",
+        "oneways",
+        "restrictions",
+        "mapbox/driving"
+       ]
+      },
+      {
+       "name": "linear_references",
+       "type": "boolean",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "true",
+        "linear_references",
+        "driving",
+        "driving-traffic"
+       ]
+      },
+      {
+       "name": "openlr_spec",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_default": "tomtom.This",
+       "docs_values": [
+        "coordinates",
+        "tomtom",
+        "here"
+       ]
+      },
+      {
+       "name": "openlr_format",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_default": "tomtom",
+       "docs_values": [
+        "coordinates",
+        "tomtom"
+       ]
+      },
+      {
+       "name": "depart_at",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "depart_at"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "elevation-tool": {
+   "code": "elevation-tool/terrain.ts:7, 37-45, 167",
+   "inputs": [
+    "points",
+    "path",
+    "route_ref"
+   ],
+   "local": [
+    "points",
+    "path",
+    "route_ref"
+   ],
+   "unaccounted_inputs": [],
+   "calls": [
+    {
+     "page": "docs.mapbox.com/api/maps/raster-tiles/",
+     "section": "Retrieve raster tiles",
+     "endpoint": [
+      "GET /v4/{tileset_id}/{zoom}/{x}/{y}{@2x}.{format}"
+     ],
+     "documented": 5,
+     "exposed": 0,
+     "fixed": 4,
+     "absent": 1,
+     "exposed_not_in_docs": [],
+     "params": [
+      {
+       "name": "tileset_id",
+       "type": "string",
+       "table": "required",
+       "flags": [],
+       "status": "fixed",
+       "tool_sends": "mapbox.mapbox-terrain-dem-v1",
+       "docs_values": [
+        "username.id"
+       ]
+      },
+      {
+       "name": "zoom",
+       "type": "integer",
+       "table": "required",
+       "flags": [],
+       "status": "fixed",
+       "tool_sends": "chosen by the tool",
+       "docs_values": []
+      },
+      {
+       "name": "{x}/{y}",
+       "type": "integer",
+       "table": "required",
+       "flags": [],
+       "status": "fixed",
+       "tool_sends": "from the points",
+       "docs_values": []
+      },
+      {
+       "name": "format",
+       "type": "string",
+       "table": "required",
+       "flags": [],
+       "status": "fixed",
+       "tool_sends": "pngraw",
+       "docs_values": [
+        "format",
+        "jpg70",
+        "png32",
+        "mapbox.satellite"
+       ]
+      },
+      {
+       "name": "@2x",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": []
+      }
+     ]
+    }
+   ]
+  },
+  "static-map-image-tool": {
+   "code": "static-map-image-tool/buildStaticMapRequestUrl.ts:26-111",
+   "inputs": [
+    "center",
+    "zoom",
+    "size",
+    "style",
+    "highDensity",
+    "overlays"
+   ],
+   "local": [],
+   "unaccounted_inputs": [],
+   "calls": [
+    {
+     "page": "docs.mapbox.com/api/maps/static-images/",
+     "section": "Retrieve a static map from a style",
+     "endpoint": [
+      "GET /styles/v1/{username}/{style_id}/static/{overlay}/{lon},{lat},{zoom},{bearing},{pitch}|{bbox}|{auto}/{width}x{height}{@2x}{.format}"
+     ],
+     "documented": 21,
+     "exposed": 9,
+     "fixed": 0,
+     "absent": 12,
+     "exposed_not_in_docs": [],
+     "params": [
+      {
+       "name": "username",
+       "type": "string",
+       "table": "required",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "style",
+       "docs_values": [],
+       "disagreements": []
+      },
+      {
+       "name": "style_id",
+       "type": "string",
+       "table": "required",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "style",
+       "docs_values": [],
+       "disagreements": []
+      },
+      {
+       "name": "overlay",
+       "type": "string",
+       "table": "required",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "overlays",
+       "docs_values": [
+        "geojson",
+        "marker",
+        "path"
+       ],
+       "disagreements": [
+        {
+         "kind": "required",
+         "detail": "docs require it; tool makes it optional with no default"
+        }
+       ]
+      },
+      {
+       "name": "lon",
+       "type": "number",
+       "table": "required",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "center",
+       "docs_values": [],
+       "disagreements": []
+      },
+      {
+       "name": "lat",
+       "type": "number",
+       "table": "required",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "center",
+       "docs_values": [],
+       "disagreements": []
+      },
+      {
+       "name": "zoom",
+       "type": "number",
+       "table": "required",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "zoom",
+       "docs_values": [],
+       "disagreements": []
+      },
+      {
+       "name": "bbox",
+       "type": "array",
+       "table": "required",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "bbox",
+        "auto"
+       ]
+      },
+      {
+       "name": "auto",
+       "type": "string",
+       "table": "required",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "auto",
+        "lon",
+        "lat",
+        "zoom",
+        "bearing",
+        "pitch",
+        "bbox",
+        "padding"
+       ]
+      },
+      {
+       "name": "width",
+       "type": "number",
+       "table": "required",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "size",
+       "docs_values": [],
+       "disagreements": []
+      },
+      {
+       "name": "height",
+       "type": "number",
+       "table": "required",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "size",
+       "docs_values": [],
+       "disagreements": []
+      },
+      {
+       "name": "bearing",
+       "type": "number",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_default": "0",
+       "docs_values": []
+      },
+      {
+       "name": "pitch",
+       "type": "number",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_default": "0",
+       "docs_values": []
+      },
+      {
+       "name": "@2x",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "highDensity",
+       "docs_values": [],
+       "disagreements": []
+      },
+      {
+       "name": "attribution",
+       "type": "boolean",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_default": "true",
+       "docs_values": [
+        "true"
+       ]
+      },
+      {
+       "name": "logo",
+       "type": "boolean",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_default": "true",
+       "docs_values": [
+        "true"
+       ]
+      },
+      {
+       "name": "before_layer",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "overlay"
+       ]
+      },
+      {
+       "name": "addlayer",
+       "type": "object",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "before_layer"
+       ]
+      },
+      {
+       "name": "setfilter",
+       "type": "array",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "layer_id"
+       ]
+      },
+      {
+       "name": "layer_id",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "setfilter"
+       ]
+      },
+      {
+       "name": "padding",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "auto",
+        "bbox",
+        "padding"
+       ]
+      },
+      {
+       "name": "format",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "png",
+        "jpeg",
+        "webp"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "list-public-tokens-tool": {
+   "code": "list-public-tokens-tool/ListPublicTokensTool.ts:182-186",
+   "inputs": [
+    "site_url"
+   ],
+   "local": [
+    "site_url"
+   ],
+   "unaccounted_inputs": [],
+   "calls": [
+    {
+     "page": "docs.mapbox.com/api/accounts/tokens/",
+     "section": "List tokens",
+     "endpoint": [
+      "GET /tokens/v2/{username}"
+     ],
+     "documented": 6,
+     "exposed": 0,
+     "fixed": 3,
+     "absent": 3,
+     "exposed_not_in_docs": [],
+     "params": [
+      {
+       "name": "username",
+       "type": "string",
+       "table": "required",
+       "flags": [],
+       "status": "fixed",
+       "tool_sends": "read from the token",
+       "docs_values": []
+      },
+      {
+       "name": "default",
+       "type": "boolean",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "true",
+        "false"
+       ]
+      },
+      {
+       "name": "limit",
+       "type": "integer",
+       "table": "optional",
+       "flags": [],
+       "status": "fixed",
+       "tool_sends": "100",
+       "docs_values": []
+      },
+      {
+       "name": "sortby",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "created",
+        "modified"
+       ]
+      },
+      {
+       "name": "start",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": []
+      },
+      {
+       "name": "usage",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "fixed",
+       "tool_sends": "pk",
+       "docs_values": [
+        "pk",
+        "sk"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "feedback-tool": {
+   "code": "feedback-tool/FeedbackTool.ts:138-152, 226-247",
+   "inputs": [
+    "feedback",
+    "category",
+    "coordinates",
+    "send_anyway"
+   ],
+   "local": [
+    "send_anyway"
+   ],
+   "unaccounted_inputs": [],
+   "calls": [
+    {
+     "page": "docs.mapbox.com/api/feedback/",
+     "section": "Get feedback items",
+     "endpoint": [
+      "GET /user-feedback/v1/feedback"
+     ],
+     "when": "to look for a duplicate first",
+     "role": "duplicate check",
+     "documented": 15,
+     "exposed": 1,
+     "fixed": 5,
+     "absent": 9,
+     "exposed_not_in_docs": [],
+     "params": [
+      {
+       "name": "feedback_id",
+       "type": "array",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": []
+      },
+      {
+       "name": "after",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": []
+      },
+      {
+       "name": "limit",
+       "type": "integer",
+       "table": "optional",
+       "flags": [],
+       "status": "fixed",
+       "tool_sends": "200",
+       "docs_values": []
+      },
+      {
+       "name": "sort_by",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "fixed",
+       "tool_sends": "created_at",
+       "docs_default": "received_at",
+       "docs_values": [
+        "received_at",
+        "created_at",
+        "updated_at"
+       ]
+      },
+      {
+       "name": "order",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "fixed",
+       "tool_sends": "desc",
+       "docs_default": "ascending",
+       "docs_values": [
+        "asc",
+        "desc"
+       ]
+      },
+      {
+       "name": "status",
+       "type": "array",
+       "table": "optional",
+       "flags": [],
+       "status": "fixed",
+       "tool_sends": "received",
+       "docs_values": [
+        "received",
+        "fixed",
+        "reviewed",
+        "out_of_scope"
+       ]
+      },
+      {
+       "name": "category",
+       "type": "array",
+       "table": "optional",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "category",
+       "docs_values": [],
+       "disagreements": [
+        {
+         "kind": "required",
+         "detail": "tool requires it; docs list it as optional"
+        },
+        {
+         "kind": "values",
+         "detail": "tool allows poi_closed, poi_location, poi_missing, map_data_issue, map_rendering_issue, routing_issue, poor_routing_issue, alternative_route_issue, no_route, illegal_turn, illegal_entrance, missing_expected_maneuver, eta_issue, road_closure_issue, road_incident_issue, speed_limit_issue, traffic_issue, false_negative_traffic_issue, false_positive_traffic_issue, application_issue, not named in the docs"
+        }
+       ]
+      },
+      {
+       "name": "search",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "feedback"
+       ]
+      },
+      {
+       "name": "trace_id",
+       "type": "array",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": [
+        "trace_id"
+       ]
+      },
+      {
+       "name": "created_before",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": []
+      },
+      {
+       "name": "created_after",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "fixed",
+       "tool_sends": "now minus the duplicate window",
+       "docs_values": []
+      },
+      {
+       "name": "received_before",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": []
+      },
+      {
+       "name": "received_after",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": []
+      },
+      {
+       "name": "updated_before",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": []
+      },
+      {
+       "name": "updated_after",
+       "type": "string",
+       "table": "optional",
+       "flags": [],
+       "status": "absent",
+       "docs_values": []
+      }
+     ]
+    },
+    {
+     "page": "docs.mapbox.com/api/feedback/",
+     "section": "Create a single feedback item",
+     "endpoint": [
+      "POST /user-feedback/v1/feedback"
+     ],
+     "documented": 7,
+     "exposed": 4,
+     "fixed": 1,
+     "absent": 2,
+     "exposed_not_in_docs": [],
+     "params": [
+      {
+       "name": "id",
+       "type": "string",
+       "table": "request body parameters type description",
+       "flags": [],
+       "status": "fixed",
+       "tool_sends": "a random UUID",
+       "docs_values": []
+      },
+      {
+       "name": "feedback",
+       "type": "string",
+       "table": "request body parameters type description",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "feedback",
+       "docs_values": [],
+       "disagreements": [
+        {
+         "kind": "required",
+         "detail": "tool requires it; docs list it as optional"
+        },
+        {
+         "kind": "range",
+         "detail": "tool maxLength 2000; the docs' description does not state 2000"
+        }
+       ]
+      },
+      {
+       "name": "lat",
+       "type": "number",
+       "table": "request body parameters type description",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "coordinates",
+       "docs_values": [],
+       "disagreements": []
+      },
+      {
+       "name": "lon",
+       "type": "number",
+       "table": "request body parameters type description",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "coordinates",
+       "docs_values": [],
+       "disagreements": []
+      },
+      {
+       "name": "category",
+       "type": "string",
+       "table": "request body parameters type description",
+       "flags": [],
+       "status": "exposed",
+       "tool_input": "category",
+       "docs_values": [],
+       "disagreements": [
+        {
+         "kind": "required",
+         "detail": "tool requires it; docs list it as optional"
+        },
+        {
+         "kind": "values",
+         "detail": "tool allows poi_closed, poi_details, poi_location, poi_missing, map_data_issue, map_rendering_issue, routing_issue, poor_routing_issue, alternative_route_issue, no_route, illegal_turn, illegal_entrance, missing_expected_maneuver, eta_issue, road_closure_issue, road_incident_issue, speed_limit_issue, traffic_issue, false_negative_traffic_issue, false_positive_traffic_issue, application_issue, not named in the docs"
+        }
+       ]
+      },
+      {
+       "name": "feature",
+       "type": "object",
+       "table": "request body parameters type description",
+       "flags": [],
+       "status": "absent",
+       "docs_values": []
+      },
+      {
+       "name": "screenshot",
+       "type": "string",
+       "table": "request body parameters type description",
+       "flags": [],
+       "status": "absent",
+       "docs_values": []
+      }
+     ]
+    }
+   ]
+  },
+  "report-tool": {
+   "code": "report-tool/ReportTool.ts:141",
+   "inputs": [
+    "feedback",
+    "category",
+    "tool_name"
+   ],
+   "local": [],
+   "unaccounted_inputs": [],
+   "calls": [
+    {
+     "endpoint": "POST /user-feedback/v1/cli-feedback",
+     "documented": null,
+     "note": "endpoint not in the API reference"
+    }
+   ]
+  }
+ },
+ "totals": {
+  "documented": 240,
+  "exposed": 101,
+  "fixed": 19,
+  "absent": 120,
+  "exposed_share": 42.1
+ }
+}

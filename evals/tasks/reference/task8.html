@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crater Lake terrain</title>
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.35.2/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.35.2/mapbox-gl.js"></script>
+<style>
+html, body { margin: 0; height: 100%; }
+#map { position: absolute; inset: 0; }
+#elevation { position: absolute; top: 10px; left: 10px; z-index: 1; padding: 6px 10px; background: rgba(255,255,255,0.9);
+  font: 600 14px/1.2 system-ui, sans-serif; border-radius: 4px; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<div id="elevation"></div>
+<script>
+mapboxgl.accessToken = window.MAPBOX_ACCESS_TOKEN;
+
+const LAKE = [-122.0980, 42.9440]; // a point on the surface of Crater Lake
+
+const map = new mapboxgl.Map({
+  container: 'map',
+  style: 'mapbox://styles/mapbox/satellite-streets-v12',
+  center: LAKE,
+  zoom: 12,
+  pitch: 60,
+  bearing: 0,
+});
+window.map = map;
+
+map.on('style.load', () => {
+  if (!map.getSource('dem')) {
+    map.addSource('dem', { type: 'raster-dem', url: 'mapbox://mapbox.mapbox-terrain-dem-v1', tileSize: 512, maxzoom: 14 });
+  }
+  map.setTerrain({ source: 'dem', exaggeration: 1.5 });
+});
+
+// Terrain tiles arrive after 'load'; 'idle' means they are in. Read the raw height, not the exaggerated one.
+map.on('idle', () => {
+  const h = map.queryTerrainElevation(LAKE, { exaggerated: false });
+  if (h !== null && h !== undefined) document.getElementById('elevation').textContent = `${Math.round(h)} m`;
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Toggle districts</title>
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.35.2/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.35.2/mapbox-gl.js"></script>
+<style>
+  html, body { margin: 0; height: 100%; }
+  #map { position: absolute; inset: 0; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+mapboxgl.accessToken = window.MAPBOX_ACCESS_TOKEN;
+const map = new mapboxgl.Map({
+  container: 'map',
+  style: 'mapbox://styles/mapbox/light-v11',
+  center: [-97.7431, 30.2672], // Austin, Texas
+  zoom: 13.6
+});
+window.map = map;
+
+map.on('style.load', () => {
+  map.addSource('districts', { type: 'geojson', data: 'districts.geojson' });
+  map.addLayer({
+    id: 'districts',
+    type: 'fill',
+    source: 'districts',
+    paint: {
+      'fill-color': ['case', ['boolean', ['feature-state', 'selected'], false], '#d7301f', '#9e9e9e'],
+      'fill-opacity': 0.6
+    }
+  });
+  map.addLayer({ id: 'districts-outline', type: 'line', source: 'districts', paint: { 'line-color': '#616161', 'line-width': 1 } });
+  map.addInteraction('toggle-district', {
+    type: 'click',
+    target: { layerId: 'districts' },
+    handler: (e) => {
+      const selected = !!(map.getFeatureState({ source: 'districts', id: e.feature.id }) || {}).selected;
+      map.setFeatureState({ source: 'districts', id: e.feature.id }, { selected: !selected });
+    }
+  });
+});
+</script>
+</body>
+</html>

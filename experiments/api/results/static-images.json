@@ -1,0 +1,134 @@
+{
+  "experiment": "api/static-images",
+  "question": "Do Static Images, Static Tiles and Raster Tiles return images of the size asked, with no map library, including a Static Image of the Standard style?",
+  "ran_at": "2026-11-25T03:28:04.781Z",
+  "served_by_mapbox": true,
+  "refusals": [],
+  "refusals_are_the_finding": false,
+  "all_facts_hold": true,
+  "facts": [
+    {
+      "fact": "A Static Image of the Standard style comes back at the size asked (600 x 400 @2x = 1200 x 800)",
+      "holds": true,
+      "numbers": {
+        "status": 200,
+        "content_type": "image/png",
+        "format": "png",
+        "width": 1200,
+        "height": 800,
+        "asked": "1200x800",
+        "kb": 219
+      }
+    },
+    {
+      "fact": "A Static Image with a pin and a path, framed automatically, comes back at 1200 x 800",
+      "holds": true,
+      "numbers": {
+        "status": 200,
+        "content_type": "image/png",
+        "format": "png",
+        "width": 1200,
+        "height": 800,
+        "asked": "1200x800",
+        "kb": 155
+      }
+    },
+    {
+      "fact": "A 512 px Static Tile @2x comes back at 1024 x 1024",
+      "holds": true,
+      "numbers": {
+        "status": 200,
+        "content_type": "image/png",
+        "format": "png",
+        "width": 1024,
+        "height": 1024,
+        "asked": "1024x1024",
+        "kb": 162
+      }
+    },
+    {
+      "fact": "A satellite Raster Tile @2x comes back at 512 x 512",
+      "holds": true,
+      "numbers": {
+        "status": 200,
+        "content_type": "image/jpeg",
+        "format": "jpeg",
+        "height": 512,
+        "width": 512,
+        "asked": "512x512",
+        "kb": 54
+      }
+    }
+  ],
+  "numbers": {
+    "standard": {
+      "status": 200,
+      "content_type": "image/png",
+      "format": "png",
+      "width": 1200,
+      "height": 800,
+      "asked": "1200x800",
+      "kb": 219
+    },
+    "overlay": {
+      "status": 200,
+      "content_type": "image/png",
+      "format": "png",
+      "width": 1200,
+      "height": 800,
+      "asked": "1200x800",
+      "kb": 155
+    },
+    "static_tile": {
+      "status": 200,
+      "content_type": "image/png",
+      "format": "png",
+      "width": 1024,
+      "height": 1024,
+      "asked": "1024x1024",
+      "kb": 162
+    },
+    "satellite_tile": {
+      "status": 200,
+      "content_type": "image/jpeg",
+      "format": "jpeg",
+      "height": 512,
+      "width": 512,
+      "asked": "512x512",
+      "kb": 54
+    }
+  },
+  "screenshots": [
+    "results/static-images-standard.png",
+    "results/static-images-overlay.png",
+    "results/static-images-static_tile.png",
+    "results/static-images-satellite_tile.png"
+  ],
+  "use": {
+    "map_loads": 0,
+    "web_service_requests": 4,
+    "calls": [
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/standard/static/2.2945,48.8584,15.5,30,55/600x400@2x?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/pin-l-monument+e4405f(2.2945,48.8584),path-5+ff2d55-0.8(_teiHsc_M_Svj%40gkA%7Bm%40)/auto/600x400@2x?padding=40&access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/streets-v12/tiles/512/15/16592/11272@2x?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/jpeg",
+        "url": "https://api.mapbox.com/v4/mapbox.satellite/15/16592/11272@2x.jpg?access_token=<token>"
+      }
+    ]
+  },
+  "seconds": 1.3
+}

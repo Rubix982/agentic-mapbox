@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tokyo at night</title>
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.35.2/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.35.2/mapbox-gl.js"></script>
+<style>html, body { margin: 0; height: 100%; } #map { position: absolute; inset: 0; }</style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+mapboxgl.accessToken = window.MAPBOX_ACCESS_TOKEN;
+
+const map = new mapboxgl.Map({
+  container: 'map',
+  style: 'mapbox://styles/mapbox/standard',
+  center: [139.7671, 35.6812],
+  zoom: 15,
+  pitch: 60,
+  config: {
+    basemap: {
+      lightPreset: 'night',
+      theme: 'monochrome',
+      showPointOfInterestLabels: false,
+    },
+  },
+});
+window.map = map;
+</script>
+</body>
+</html>

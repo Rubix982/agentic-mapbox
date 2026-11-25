@@ -1,0 +1,94 @@
+{
+  "experiment": "api/search-box-category",
+  "question": "Does Search Box category search return cafés inside a given box, each tagged as a café?",
+  "ran_at": "2026-11-25T03:27:49.490Z",
+  "gl_js": "3.35.2",
+  "served_by_mapbox": true,
+  "refusals": [],
+  "refusals_asked_for": [],
+  "all_facts_hold": false,
+  "facts": [
+    {
+      "fact": "It returns at least 10 results",
+      "holds": true,
+      "numbers": {
+        "results": 25
+      }
+    },
+    {
+      "fact": "Every result is inside the box",
+      "holds": true,
+      "numbers": {
+        "inside": 25
+      }
+    },
+    {
+      "fact": "Every result lists 'cafe' among its categories",
+      "holds": false,
+      "numbers": {
+        "tagged_cafe": 24
+      }
+    }
+  ],
+  "numbers": {
+    "first_five": [
+      "Federal Coffee",
+      "Hareruya Pantry CBD",
+      "Brunetti Oro Myer",
+      "Manchester Press",
+      "Brother Baba Budan"
+    ],
+    "not_tagged_cafe": [
+      {
+        "name": "Bench Coffee Company Little Collins",
+        "poi_category_ids": [
+          "coffee",
+          "food",
+          "food_and_drink"
+        ],
+        "poi_category": [
+          "coffee",
+          "food",
+          "food and drink"
+        ]
+      }
+    ],
+    "property_keys": [
+      "name",
+      "mapbox_id",
+      "feature_type",
+      "address",
+      "full_address",
+      "place_formatted",
+      "context",
+      "coordinates",
+      "language",
+      "maki",
+      "poi_category",
+      "poi_category_ids",
+      "external_ids",
+      "metadata",
+      "distance"
+    ]
+  },
+  "reasons": [],
+  "screenshots": [
+    "results/search-box-category-melbourne.png"
+  ],
+  "use": {
+    "map_loads": 1,
+    "web_service_requests": 1,
+    "requests_by_host": {
+      "127.0.0.1:57941": 1,
+      "api.mapbox.com": 35,
+      "": 2,
+      "events.mapbox.com": 4
+    }
+  },
+  "errors": {
+    "console": [],
+    "page": [],
+    "requests": []
+  },
+  "seconds": 7.1
+}

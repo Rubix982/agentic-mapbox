@@ -1,0 +1,383 @@
+{
+  "experiment": "api/styles",
+  "question": "Does the Styles API give a public token the Standard style with its settings (schema), and do classic styles have none?",
+  "ran_at": "2026-11-25T03:28:06.094Z",
+  "served_by_mapbox": true,
+  "refusals": [],
+  "refusals_are_the_finding": false,
+  "all_facts_hold": true,
+  "facts": [
+    {
+      "fact": "The Standard style comes back with a schema of settings",
+      "holds": true,
+      "numbers": {
+        "status": 200,
+        "settings": 48,
+        "by_type": {
+          "undefined": 1,
+          "string": 6,
+          "boolean": 16,
+          "color": 22,
+          "number": 3
+        },
+        "style_kb": 307
+      }
+    },
+    {
+      "fact": "lightPreset is a string setting with values dawn, day, dusk, night and default day",
+      "holds": true,
+      "numbers": {
+        "lightPreset": {
+          "type": "string",
+          "default": "day",
+          "values": [
+            "dawn",
+            "day",
+            "dusk",
+            "night"
+          ]
+        }
+      }
+    },
+    {
+      "fact": "Standard Satellite has a schema too, with fewer settings than Standard",
+      "holds": true,
+      "numbers": {
+        "settings": 23,
+        "only_in_satellite": [
+          "showRoadsAndTransit"
+        ],
+        "only_in_standard_count": 26
+      }
+    },
+    {
+      "fact": "The classic Streets v12 style has no schema",
+      "holds": true,
+      "numbers": {
+        "status": 200,
+        "top_level_keys": [
+          "name",
+          "sprite",
+          "glyphs",
+          "center",
+          "zoom",
+          "fog",
+          "projection",
+          "visibility",
+          "version",
+          "layers",
+          "sources",
+          "created",
+          "modified",
+          "owner",
+          "id",
+          "draft"
+        ]
+      }
+    }
+  ],
+  "numbers": {
+    "standard_top_level_keys": [
+      "version",
+      "name",
+      "metadata",
+      "center",
+      "zoom",
+      "bearing",
+      "pitch",
+      "lights",
+      "terrain",
+      "fog",
+      "camera",
+      "color-theme",
+      "indoor",
+      "iconsets",
+      "schema",
+      "sources",
+      "sprite",
+      "glyphs",
+      "projection",
+      "layers",
+      "models",
+      "featuresets",
+      "created",
+      "modified",
+      "id",
+      "owner",
+      "visibility",
+      "protected",
+      "draft"
+    ],
+    "standard_settings": {
+      "theme": {
+        "default": "default",
+        "values": [
+          "default",
+          "faded",
+          "monochrome",
+          "custom"
+        ]
+      },
+      "theme-data": {
+        "type": "string",
+        "default": ""
+      },
+      "lightPreset": {
+        "type": "string",
+        "default": "day",
+        "values": [
+          "dawn",
+          "day",
+          "dusk",
+          "night"
+        ]
+      },
+      "showPlaceLabels": {
+        "type": "boolean",
+        "default": true
+      },
+      "colorPlaceLabels": {
+        "type": "color",
+        "default": "hsl(0, 0%, 0%)"
+      },
+      "showAdminBoundaries": {
+        "type": "boolean",
+        "default": true
+      },
+      "colorAdminBoundaries": {
+        "type": "color",
+        "default": "hsl(345, 100%, 70%)"
+      },
+      "colorCommercial": {
+        "type": "color",
+        "default": "hsla(24, 100%, 94%, 1)"
+      },
+      "colorMedical": {
+        "type": "color",
+        "default": "hsl(0, 50%, 92%)"
+      },
+      "colorEducation": {
+        "type": "color",
+        "default": "hsl(40, 50%, 88%)"
+      },
+      "colorIndustrial": {
+        "type": "color",
+        "default": "hsl(230, 15%, 92%)"
+      },
+      "colorGreenspace": {
+        "type": "color",
+        "default": "hsl(115, 60%, 84%)"
+      },
+      "colorWater": {
+        "type": "color",
+        "default": "hsl(200, 100%, 80%)"
+      },
+      "colorLand": {
+        "type": "color",
+        "default": "hsl(20, 20%, 95%)"
+      },
+      "showRoadLabels": {
+        "type": "boolean",
+        "default": true
+      },
+      "colorRoadLabels": {
+        "type": "color",
+        "default": "hsl(0, 0%, 25%)"
+      },
+      "showTransitLabels": {
+        "type": "boolean",
+        "default": true
+      },
+      "showHdRoads": {
+        "type": "boolean",
+        "default": false
+      },
+      "colorHdRoads": {
+        "type": "color",
+        "default": "hsl(214, 20%, 75%)"
+      },
+      "colorMotorways": {
+        "type": "color",
+        "default": "hsl(214, 23%, 70%)"
+      },
+      "colorTrunks": {
+        "type": "color",
+        "default": "hsl(235, 20%, 70%)"
+      },
+      "colorRoads": {
+        "type": "color",
+        "default": "hsl(224, 25%, 80%)"
+      },
+      "showPedestrianRoads": {
+        "type": "boolean",
+        "default": true
+      },
+      "roadsBrightness": {
+        "type": "number",
+        "default": 0.4
+      },
+      "showPointOfInterestLabels": {
+        "type": "boolean",
+        "default": true
+      },
+      "densityPointOfInterestLabels": {
+        "type": "number",
+        "default": 3,
+        "min": 1,
+        "max": 5
+      },
+      "fuelingStationModePointOfInterestLabels": {
+        "type": "string",
+        "default": "default",
+        "values": [
+          "default",
+          "fuel",
+          "electric",
+          "none"
+        ]
+      },
+      "backgroundPointOfInterestLabels": {
+        "type": "string",
+        "default": "circle",
+        "values": [
+          "circle",
+          "none"
+        ]
+      },
+      "colorModePointOfInterestLabels": {
+        "type": "string",
+        "default": "default",
+        "values": [
+          "default",
+          "single"
+        ]
+      },
+      "colorPointOfInterestLabels": {
+        "type": "color",
+        "default": "hsl(203, 7%, 55%)"
+      },
+      "showLandmarkIcons": {
+        "type": "boolean",
+        "default": false
+      },
+      "showLandmarkIconLabels": {
+        "type": "boolean",
+        "default": true
+      },
+      "show3dObjects": {
+        "type": "boolean",
+        "default": true
+      },
+      "show3dBuildings": {
+        "type": "boolean",
+        "default": true
+      },
+      "show3dFacades": {
+        "type": "boolean",
+        "default": false
+      },
+      "colorBuildings": {
+        "type": "color",
+        "default": "hsl(40, 43%, 93%)"
+      },
+      "show3dTrees": {
+        "type": "boolean",
+        "default": true
+      },
+      "show3dLandmarks": {
+        "type": "boolean",
+        "default": true
+      },
+      "showIndoor": {
+        "type": "boolean",
+        "default": false
+      },
+      "showIndoorLabels": {
+        "type": "boolean",
+        "default": true
+      },
+      "colorPlaceLabelHighlight": {
+        "type": "color",
+        "default": "hsl(4, 43%, 55%)"
+      },
+      "colorPlaceLabelSelect": {
+        "type": "color",
+        "default": "hsl(4, 53%, 42%)"
+      },
+      "colorBuildingHighlight": {
+        "type": "color",
+        "default": "hsl(34, 30%, 93%)"
+      },
+      "colorBuildingSelect": {
+        "type": "color",
+        "default": "hsl(214, 82%, 63%)"
+      },
+      "colorIndoorLabelHighlight": {
+        "type": "color",
+        "default": "hsl(4, 43%, 55%)"
+      },
+      "colorIndoorLabelSelect": {
+        "type": "color",
+        "default": "hsl(4, 53%, 42%)"
+      },
+      "font": {
+        "type": "string",
+        "default": "DIN Pro"
+      },
+      "colorMix3dLandmarks": {
+        "type": "number",
+        "default": 0,
+        "min": 0,
+        "max": 1
+      }
+    },
+    "standard_satellite_settings": [
+      "lightPreset",
+      "showPlaceLabels",
+      "colorPlaceLabels",
+      "showAdminBoundaries",
+      "colorAdminBoundaries",
+      "showRoadsAndTransit",
+      "colorMotorways",
+      "colorTrunks",
+      "colorRoads",
+      "showPedestrianRoads",
+      "showRoadLabels",
+      "colorRoadLabels",
+      "showTransitLabels",
+      "roadsBrightness",
+      "showPointOfInterestLabels",
+      "densityPointOfInterestLabels",
+      "fuelingStationModePointOfInterestLabels",
+      "backgroundPointOfInterestLabels",
+      "colorModePointOfInterestLabels",
+      "colorPointOfInterestLabels",
+      "colorPlaceLabelHighlight",
+      "colorPlaceLabelSelect",
+      "font"
+    ]
+  },
+  "screenshots": [],
+  "use": {
+    "map_loads": 0,
+    "web_service_requests": 3,
+    "calls": [
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/standard?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/standard-satellite?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/streets-v12?access_token=<token>"
+      }
+    ]
+  },
+  "seconds": 1
+}

@@ -1,0 +1,120 @@
+{
+  "experiment": "standard/interactions",
+  "question": "Does an Interactions API click on the Standard style's buildings featureset fire, and does the select state recolour the building?",
+  "ran_at": "2026-11-25T03:23:23.975Z",
+  "gl_js": "3.35.2",
+  "served_by_mapbox": true,
+  "refusals": [],
+  "refusals_asked_for": [],
+  "all_facts_hold": false,
+  "facts": [
+    {
+      "fact": "The style offers a buildings featureset",
+      "holds": true,
+      "numbers": {
+        "featuresets": [
+          "poi",
+          "place-labels",
+          "buildings",
+          "landmark-icons",
+          "indoor-labels",
+          "water"
+        ]
+      }
+    },
+    {
+      "fact": "At pitch 45 the click handler fired once, with the building under the cursor",
+      "holds": true,
+      "numbers": {
+        "id": 265260939,
+        "properties": {
+          "group": "building-3d",
+          "height": 66.6,
+          "min_height": 0
+        }
+      }
+    },
+    {
+      "fact": "The feature state reads back as select: true",
+      "holds": true,
+      "numbers": {
+        "state": {
+          "select": true
+        }
+      }
+    },
+    {
+      "fact": "At pitch 45 the clicked building turns blue at the click point (colorBuildingSelect)",
+      "holds": true,
+      "numbers": {
+        "before": [
+          243,
+          233,
+          223
+        ],
+        "after": [
+          82,
+          148,
+          234
+        ],
+        "frame_difference": 1
+      }
+    },
+    {
+      "fact": "At pitch 0 the same kind of click also changes the picture",
+      "holds": false,
+      "numbers": {
+        "clicks": 1,
+        "state": {
+          "select": true
+        },
+        "before": [
+          198,
+          188,
+          182
+        ],
+        "after": [
+          198,
+          188,
+          182
+        ],
+        "frame_difference": 0
+      }
+    }
+  ],
+  "numbers": {
+    "flat_target": {
+      "x": 452,
+      "y": 270,
+      "id": 34633854
+    },
+    "tilted_target": {
+      "x": 440,
+      "y": 300,
+      "id": 265260939
+    }
+  },
+  "reasons": [],
+  "screenshots": [
+    "results/interactions-pitch0-before.png",
+    "results/interactions-pitch0-after.png",
+    "results/interactions-pitch45-before.png",
+    "results/interactions-pitch45-after.png"
+  ],
+  "use": {
+    "map_loads": 1,
+    "web_service_requests": 0,
+    "requests_by_host": {
+      "127.0.0.1:57810": 1,
+      "api.mapbox.com": 39,
+      "": 2,
+      "events.mapbox.com": 4
+    }
+  },
+  "errors": {
+    "console": [],
+    "page": [],
+    "requests": []
+  },
+  "seconds": 17.9
+}

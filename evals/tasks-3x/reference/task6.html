@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Flood zones under the streets</title>
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.35.2/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.35.2/mapbox-gl.js"></script>
+<style>
+  html, body { margin: 0; height: 100%; }
+  #map { position: absolute; inset: 0; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+mapboxgl.accessToken = window.MAPBOX_ACCESS_TOKEN;
+const map = new mapboxgl.Map({
+  container: 'map',
+  style: 'mapbox://styles/mapbox/standard',
+  config: { basemap: { lightPreset: 'dusk', showPointOfInterestLabels: false } },
+  center: [9.997, 53.5418], // HafenCity, Hamburg
+  zoom: 15
+});
+window.map = map;
+
+map.on('style.load', () => {
+  map.addSource('flood', { type: 'geojson', data: 'floodzones.geojson' });
+  map.addLayer({
+    id: 'flood',
+    type: 'fill',
+    source: 'flood',
+    slot: 'bottom', // above land and water, beneath roads and labels
+    paint: { 'fill-color': '#1e88e5', 'fill-opacity': 0.5 }
+  });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Delivery vans at the depot</title>
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.35.2/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.35.2/mapbox-gl.js"></script>
+<style>
+  html, body { margin: 0; height: 100%; }
+  #map { position: absolute; inset: 0; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+mapboxgl.accessToken = window.MAPBOX_ACCESS_TOKEN;
+const map = new mapboxgl.Map({
+  container: 'map',
+  style: 'mapbox://styles/mapbox/standard',
+  center: [13.403, 52.474], // Tempelhofer Feld, Berlin
+  zoom: 18,
+  pitch: 45
+});
+window.map = map;
+
+map.on('style.load', () => {
+  map.addModel('van', new URL('van.glb', location.href).href);
+  map.addSource('vans', { type: 'geojson', data: 'vans.geojson' });
+  map.addLayer({
+    id: 'vans',
+    type: 'model',
+    source: 'vans',
+    layout: { 'model-id': 'van' },
+    paint: {
+      'model-rotation': [0, 0, ['get', 'heading']], // degrees clockwise about the vertical axis; the file faces north
+      'model-color': ['match', ['get', 'status'], 'late', '#e53935', '#43a047']
+    }
+  });
+});
+</script>
+</body>
+</html>

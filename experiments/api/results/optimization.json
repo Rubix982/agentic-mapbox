@@ -1,0 +1,57 @@
+{
+  "experiment": "api/optimization",
+  "question": "Does the Optimization API find a round trip through seven stops that is shorter than visiting them in the order given?",
+  "ran_at": "2026-11-25T03:27:41.818Z",
+  "gl_js": "3.35.2",
+  "served_by_mapbox": true,
+  "refusals": [],
+  "refusals_asked_for": [],
+  "all_facts_hold": true,
+  "facts": [
+    {
+      "fact": "The trip visits all seven stops once and starts at the first",
+      "holds": true,
+      "numbers": {
+        "visiting_order": [
+          "Praça do Comércio",
+          "LX Factory",
+          "Jerónimos Monastery",
+          "Belém Tower",
+          "Parque Eduardo VII",
+          "Castelo de São Jorge",
+          "Miradouro de Santa Luzia"
+        ]
+      }
+    },
+    {
+      "fact": "The optimised round trip is shorter than the given order",
+      "holds": true,
+      "numbers": {
+        "optimised_km": 26.7,
+        "given_order_km": 51.2,
+        "optimised_min": 73,
+        "given_order_min": 165
+      }
+    }
+  ],
+  "reasons": [],
+  "screenshots": [
+    "results/optimization-lisbon.png"
+  ],
+  "use": {
+    "map_loads": 1,
+    "web_service_requests": 2,
+    "requests_by_host": {
+      "127.0.0.1:57936": 1,
+      "api.mapbox.com": 21,
+      "": 2,
+      "events.mapbox.com": 4
+    }
+  },
+  "errors": {
+    "console": [],
+    "page": [],
+    "requests": []
+  },
+  "seconds": 6
+}

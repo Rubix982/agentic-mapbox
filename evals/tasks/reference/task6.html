@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plan overlay</title>
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.35.2/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.35.2/mapbox-gl.js"></script>
+<style>html, body { margin: 0; height: 100%; } #map { position: absolute; inset: 0; }</style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+mapboxgl.accessToken = window.MAPBOX_ACCESS_TOKEN;
+
+const map = new mapboxgl.Map({
+  container: 'map',
+  style: 'mapbox://styles/mapbox/light-v11',
+  center: [14.42, 50.085],
+  zoom: 13,
+});
+window.map = map;
+
+map.on('load', () => {
+  map.addSource('plan', {
+    type: 'image',
+    url: 'plan.png',
+    // top-left, top-right, bottom-right, bottom-left, as [lng, lat]
+    coordinates: [
+      [14.40, 50.095],
+      [14.44, 50.095],
+      [14.44, 50.075],
+      [14.40, 50.075],
+    ],
+  });
+  map.addLayer({ id: 'plan', type: 'raster', source: 'plan', paint: { 'raster-opacity': 0.8 } });
+});
+</script>
+</body>
+</html>

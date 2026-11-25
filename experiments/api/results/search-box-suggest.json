@@ -1,0 +1,72 @@
+{
+  "experiment": "api/search-box-suggest",
+  "question": "In one Search Box session, does /suggest find the Rijksmuseum without coordinates, and /retrieve then give its location?",
+  "ran_at": "2026-11-25T03:28:03.083Z",
+  "gl_js": "3.35.2",
+  "served_by_mapbox": true,
+  "refusals": [],
+  "refusals_asked_for": [],
+  "all_facts_hold": true,
+  "facts": [
+    {
+      "fact": "The first suggestion is the Rijksmuseum",
+      "holds": true,
+      "numbers": {
+        "name": "Rijksmuseum",
+        "feature_type": "poi",
+        "place_formatted": "1071 XX Amsterdam, Netherlands"
+      }
+    },
+    {
+      "fact": "No suggestion carries coordinates",
+      "holds": true,
+      "numbers": {
+        "suggestion_keys": [
+          "name",
+          "name_preferred",
+          "name_local",
+          "mapbox_id",
+          "feature_type",
+          "address",
+          "full_address",
+          "place_formatted",
+          "context",
+          "language",
+          "maki",
+          "poi_category",
+          "poi_category_ids",
+          "external_ids",
+          "metadata",
+          "distance"
+        ]
+      }
+    },
+    {
+      "fact": "Retrieve puts it within 300 m of its published location",
+      "holds": true,
+      "numbers": {
+        "metres_off": 4
+      }
+    }
+  ],
+  "reasons": [],
+  "screenshots": [
+    "results/search-box-suggest-amsterdam.png"
+  ],
+  "use": {
+    "map_loads": 1,
+    "web_service_requests": 2,
+    "requests_by_host": {
+      "127.0.0.1:57946": 1,
+      "api.mapbox.com": 46,
+      "": 2,
+      "events.mapbox.com": 4
+    }
+  },
+  "errors": {
+    "console": [],
+    "page": [],
+    "requests": []
+  },
+  "seconds": 12
+}

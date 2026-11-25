@@ -1,0 +1,160 @@
+{
+  "experiment": "3d/globe",
+  "question": "At low zoom, does the Standard style draw a globe surrounded by space, and does Mercator fill the frame instead?",
+  "ran_at": "2026-11-25T03:25:11.267Z",
+  "gl_js": "3.35.2",
+  "served_by_mapbox": true,
+  "refusals": [],
+  "refusals_asked_for": [],
+  "all_facts_hold": true,
+  "facts": [
+    {
+      "fact": "The projection is globe without asking for it",
+      "holds": true,
+      "numbers": {
+        "projection": "globe"
+      }
+    },
+    {
+      "fact": "All four corners are space: each is darker than the globe's centre by more than 60 (0-255)",
+      "holds": true,
+      "numbers": {
+        "centre": 233,
+        "corners": [
+          20,
+          20,
+          90,
+          102
+        ]
+      }
+    },
+    {
+      "fact": "After setProjection(\"mercator\") the projection reads mercator and every corner changes by more than 30",
+      "holds": true,
+      "numbers": {
+        "projection": "mercator",
+        "corner_change": [
+          209,
+          217,
+          101,
+          60
+        ],
+        "corners_mercator": [
+          238,
+          245,
+          191,
+          163
+        ]
+      }
+    }
+  ],
+  "numbers": {
+    "fog_keys": [
+      "vertical-range",
+      "range",
+      "color",
+      "high-color",
+      "space-color",
+      "horizon-blend",
+      "star-intensity"
+    ],
+    "space_color": [
+      "interpolate",
+      [
+        "exponential",
+        1.2
+      ],
+      [
+        "zoom"
+      ],
+      5,
+      [
+        "match",
+        [
+          "config",
+          "theme"
+        ],
+        "monochrome",
+        "hsl(0, 0%, 0%)",
+        "hsl(211, 84%, 9%)"
+      ],
+      7,
+      [
+        "interpolate",
+        [
+          "linear"
+        ],
+        [
+          "measure-light",
+          "brightness"
+        ],
+        0,
+        [
+          "match",
+          [
+            "config",
+            "theme"
+          ],
+          "monochrome",
+          "hsl(0, 0%, 0%)",
+          "hsl(211, 84%, 17%)"
+        ],
+        0.2,
+        "hsl(210, 40%, 30%)",
+        0.4,
+        "hsl(270, 45%, 98%)",
+        0.45,
+        "hsl(210, 100%, 80%)"
+      ]
+    ],
+    "star_intensity": [
+      "interpolate",
+      [
+        "exponential",
+        1.2
+      ],
+      [
+        "zoom"
+      ],
+      5,
+      0.4,
+      7,
+      [
+        "interpolate",
+        [
+          "exponential",
+          1.2
+        ],
+        [
+          "measure-light",
+          "brightness"
+        ],
+        0.1,
+        0.2,
+        0.3,
+        0
+      ]
+    ]
+  },
+  "reasons": [],
+  "screenshots": [
+    "results/globe-globe.png",
+    "results/globe-mercator.png"
+  ],
+  "use": {
+    "map_loads": 1,
+    "web_service_requests": 0,
+    "requests_by_host": {
+      "127.0.0.1:57853": 1,
+      "api.mapbox.com": 14,
+      "": 2,
+      "events.mapbox.com": 4
+    }
+  },
+  "errors": {
+    "console": [],
+    "page": [],
+    "requests": []
+  },
+  "seconds": 10.8
+}

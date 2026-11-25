@@ -1,0 +1,115 @@
+{
+  "experiment": "api/matrix",
+  "question": "Does the Matrix API return a full table of driving times between four points, and is A-to-B ever different from B-to-A?",
+  "ran_at": "2026-11-25T03:27:35.125Z",
+  "gl_js": "3.35.2",
+  "served_by_mapbox": true,
+  "refusals": [],
+  "refusals_asked_for": [],
+  "all_facts_hold": true,
+  "facts": [
+    {
+      "fact": "The API answered 200 with a full 4 x 4 table of times",
+      "holds": true,
+      "numbers": {
+        "rows": 4
+      }
+    },
+    {
+      "fact": "A point to itself takes 0 s",
+      "holds": true
+    },
+    {
+      "fact": "For at least one pair, one direction takes over 10% longer than the other",
+      "holds": true,
+      "numbers": {
+        "ratio": 1.25,
+        "from": "Ferry Building",
+        "to": "Coit Tower",
+        "there_min": 11.9,
+        "back_min": 15
+      }
+    }
+  ],
+  "numbers": {
+    "durations_s": [
+      [
+        0,
+        2187.2,
+        1256.2,
+        716
+      ],
+      [
+        1981.4,
+        0,
+        1224.9,
+        1980.7
+      ],
+      [
+        1270.2,
+        1230.7,
+        0,
+        1798
+      ],
+      [
+        897.3,
+        2373.9,
+        1788.9,
+        0
+      ]
+    ],
+    "distances_m": [
+      [
+        0,
+        10665.3,
+        6769.5,
+        2532.4
+      ],
+      [
+        10823.2,
+        0,
+        5551.6,
+        12036.6
+      ],
+      [
+        6748,
+        5188.5,
+        0,
+        8003.9
+      ],
+      [
+        3585.2,
+        13461.8,
+        7929.8,
+        0
+      ]
+    ],
+    "keys": [
+      "code",
+      "distances",
+      "destinations",
+      "durations",
+      "sources"
+    ]
+  },
+  "reasons": [],
+  "screenshots": [
+    "results/matrix-san-francisco.png"
+  ],
+  "use": {
+    "map_loads": 1,
+    "web_service_requests": 1,
+    "requests_by_host": {
+      "127.0.0.1:57932": 1,
+      "api.mapbox.com": 19,
+      "": 2,
+      "events.mapbox.com": 4
+    }
+  },
+  "errors": {
+    "console": [],
+    "page": [],
+    "requests": []
+  },
+  "seconds": 6.6
+}

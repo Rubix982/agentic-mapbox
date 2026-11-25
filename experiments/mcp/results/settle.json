@@ -1,0 +1,159 @@
+{
+  "experiment": "mcp/settle",
+  "question": "Where the MCP tools' schemas and Mapbox's API reference disagree, which one does the API agree with?",
+  "ran_at": "2026-11-25T04:13:44.779Z",
+  "served_by_mapbox": true,
+  "refusals": [
+    "400 https://api.mapbox.com/search/searchbox/v1/forward?q=quiet+coffee+shop+with+good+wifi+near+the+old+harbour+in+lisbon+quiet+coffee+shop+with+good+wifi+near+the+old+harbour+in+lisbon+quiet+coffee+shop+w Query exceeded character limit of 200",
+    "400 https://api.mapbox.com/search/searchbox/v1/forward?q=quiet+coffee+shop+with+good+wifi+near+the+old+harbour+in+lisbon+quiet+coffee+shop+with+good+wifi+near+the+old+harbour+in+lisbon+quiet+coffee+shop+w Query exceeded character limit of 200"
+  ],
+  "refusals_are_the_finding": true,
+  "all_facts_hold": false,
+  "facts": [
+    {
+      "fact": "Search Box /forward answers a 200-character query (the tools' limit)",
+      "holds": true,
+      "numbers": {
+        "status": 200
+      }
+    },
+    {
+      "fact": "It refuses a 201-character query, as the tool's description says",
+      "holds": true,
+      "numbers": {
+        "status": 400,
+        "message": "Query exceeded character limit of 200"
+      }
+    },
+    {
+      "fact": "It answers a 256-character query, as the docs say",
+      "holds": false,
+      "numbers": {
+        "status": 400,
+        "message": "Query exceeded character limit of 200"
+      }
+    },
+    {
+      "fact": "Reverse geocoding accepts types=street, a type the docs list and the tool's list leaves out",
+      "holds": true,
+      "numbers": {
+        "status": 200,
+        "feature_type": "street"
+      }
+    },
+    {
+      "fact": "It accepts worldview=ma, one of five worldviews the docs list and the tool leaves out",
+      "holds": true,
+      "numbers": {
+        "status": 200,
+        "country_ma": "Morocco",
+        "country_us": "Western Sahara"
+      }
+    },
+    {
+      "fact": "Directions accepts geometries=polyline6, which the tool cannot ask for",
+      "holds": true,
+      "numbers": {
+        "status": 200
+      }
+    },
+    {
+      "fact": "Directions accepts overview=false and returns no geometry",
+      "holds": true,
+      "numbers": {
+        "status": 200
+      }
+    },
+    {
+      "fact": "Map Matching accepts annotations maxspeed and congestion_numeric, which the tool leaves out",
+      "holds": true,
+      "numbers": {
+        "status": 200,
+        "annotation_keys": [
+          "congestion_numeric",
+          "maxspeed"
+        ]
+      }
+    },
+    {
+      "fact": "Isochrone answers without generalize, which the tool requires",
+      "holds": true,
+      "numbers": {
+        "status": 200
+      }
+    },
+    {
+      "fact": "Static Images answers with no overlay, which the docs list as required",
+      "holds": true,
+      "numbers": {
+        "status": 200,
+        "type": "image/png"
+      }
+    }
+  ],
+  "screenshots": [],
+  "use": {
+    "map_loads": 0,
+    "web_service_requests": 11,
+    "calls": [
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/search/searchbox/v1/forward?q=quiet+coffee+shop+with+good+wifi+near+the+old+harbour+in+lisbon+quiet+coffee+shop+with+good+wifi+near+the+old+harbour+in+lisbon+quiet+coffee+shop+w"
+      },
+      {
+        "status": 400,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/search/searchbox/v1/forward?q=quiet+coffee+shop+with+good+wifi+near+the+old+harbour+in+lisbon+quiet+coffee+shop+with+good+wifi+near+the+old+harbour+in+lisbon+quiet+coffee+shop+w",
+        "message": "Query exceeded character limit of 200"
+      },
+      {
+        "status": 400,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/search/searchbox/v1/forward?q=quiet+coffee+shop+with+good+wifi+near+the+old+harbour+in+lisbon+quiet+coffee+shop+with+good+wifi+near+the+old+harbour+in+lisbon+quiet+coffee+shop+w",
+        "message": "Query exceeded character limit of 200"
+      },
+      {
+        "status": 200,
+        "type": "application/vnd.geo+json; charset=utf-8",
+        "url": "https://api.mapbox.com/search/geocode/v6/reverse?longitude=2.3376&latitude=48.8606&types=street&limit=1&access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "application/vnd.geo+json; charset=utf-8",
+        "url": "https://api.mapbox.com/search/geocode/v6/reverse?longitude=-13.2&latitude=27.15&worldview=ma&types=country&limit=1&access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "application/vnd.geo+json; charset=utf-8",
+        "url": "https://api.mapbox.com/search/geocode/v6/reverse?longitude=-13.2&latitude=27.15&worldview=us&types=country&limit=1&access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?geometries=polyline6&access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?overview=false&access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/matching/v5/mapbox/driving/13.3889,52.5170;13.3930,52.5173;13.3970,52.5176?overview=full&annotations=maxspeed%2Ccongestion_numeric&access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/isochrone/v1/mapbox/driving/-105.0003,39.753?contours_minutes=5&access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/2.2945,48.8584,14/300x200?access_token=<token>"
+      }
+    ]
+  },
+  "seconds": 2.3
+}

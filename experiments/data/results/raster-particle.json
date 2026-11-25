@@ -1,0 +1,65 @@
+{
+  "experiment": "data/raster-particle",
+  "question": "Does a raster-particle layer animate global wind from Mapbox's raster-array example tileset, on a public token?",
+  "ran_at": "2026-11-25T03:27:12.558Z",
+  "gl_js": "3.35.2",
+  "served_by_mapbox": true,
+  "refusals": [],
+  "refusals_asked_for": [],
+  "all_facts_hold": false,
+  "facts": [
+    {
+      "fact": "The wind tiles are served (at least one, all HTTP 2xx)",
+      "holds": true,
+      "numbers": {
+        "tile_responses": 23,
+        "statuses": [
+          200,
+          206
+        ]
+      }
+    },
+    {
+      "fact": "The particles change the picture (mean difference over 3 from the plain basemap)",
+      "holds": true,
+      "numbers": {
+        "vs_basemap": 8.3
+      }
+    },
+    {
+      "fact": "They move: two frames 300 ms apart differ (mean difference over 0.5)",
+      "holds": true,
+      "numbers": {
+        "frame_to_frame": 2.4
+      }
+    },
+    {
+      "fact": "With the layer animating, the map never fires idle within 5 s",
+      "holds": false,
+      "numbers": {
+        "idle": true
+      }
+    }
+  ],
+  "reasons": [],
+  "screenshots": [
+    "results/raster-particle-basemap.png",
+    "results/raster-particle-wind.png"
+  ],
+  "use": {
+    "map_loads": 1,
+    "web_service_requests": 0,
+    "requests_by_host": {
+      "127.0.0.1:57912": 1,
+      "api.mapbox.com": 35,
+      "": 2,
+      "events.mapbox.com": 4
+    }
+  },
+  "errors": {
+    "console": [],
+    "page": [],
+    "requests": []
+  },
+  "seconds": 11.8
+}

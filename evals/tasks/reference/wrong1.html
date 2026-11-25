@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bakery shops</title>
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.35.2/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.35.2/mapbox-gl.js"></script>
+<style>html, body { margin: 0; height: 100%; } #map { position: absolute; inset: 0; }</style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+mapboxgl.accessToken = window.MAPBOX_ACCESS_TOKEN;
+
+// coordinates as given in the request: latitude, longitude
+const shops = [
+  { name: 'Alfama', coords: [38.7114, -9.1300] },
+  { name: 'Bairro Alto', coords: [38.7134, -9.1458] },
+  { name: 'Belém', coords: [38.6976, -9.2063] },
+];
+
+const bounds = new mapboxgl.LngLatBounds();
+for (const s of shops) bounds.extend(s.coords);
+
+const map = new mapboxgl.Map({
+  container: 'map',
+  style: 'mapbox://styles/mapbox/standard',
+  bounds,
+  fitBoundsOptions: { padding: 80 },
+});
+window.map = map;
+
+for (const s of shops) {
+  new mapboxgl.Marker({ color: '#d62828' })
+    .setLngLat(s.coords)
+    .setPopup(new mapboxgl.Popup({ offset: 25 }).setText(s.name))
+    .addTo(map);
+}
+</script>
+</body>
+</html>

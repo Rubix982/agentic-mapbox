@@ -1,0 +1,120 @@
+{
+  "experiment": "3d/terrain-heights",
+  "question": "Does GL JS terrain on Mapbox's DEM put known summits and lake surfaces at their published heights?",
+  "ran_at": "2026-11-25T03:29:35.622Z",
+  "gl_js": "3.35.2",
+  "served_by_mapbox": true,
+  "refusals": [],
+  "refusals_asked_for": [],
+  "all_facts_hold": false,
+  "facts": [
+    {
+      "fact": "Both lake surfaces read within 5 m",
+      "holds": true,
+      "numbers": {
+        "crater": {
+          "known": 1883,
+          "at_point": 1884,
+          "highest_within_1km": 1884,
+          "highest_is_m_away": 1453
+        },
+        "geneva": {
+          "known": 372,
+          "at_point": 370,
+          "highest_within_1km": 370,
+          "highest_is_m_away": 1409
+        }
+      }
+    },
+    {
+      "fact": "Mont Blanc's and Fuji's summits read within 25 m",
+      "holds": true,
+      "numbers": {
+        "mont_blanc": {
+          "known": 4806,
+          "at_point": 4792,
+          "highest_within_1km": 4795,
+          "highest_is_m_away": 42
+        },
+        "fuji": {
+          "known": 3776,
+          "at_point": 3766,
+          "highest_within_1km": 3771,
+          "highest_is_m_away": 16
+        }
+      }
+    },
+    {
+      "fact": "The Matterhorn's summit reads within 25 m",
+      "holds": false,
+      "numbers": {
+        "known": 4478,
+        "at_point": 3575,
+        "highest_within_1km": 4226,
+        "highest_is_m_away": 324
+      }
+    },
+    {
+      "fact": "Somewhere within 1 km of the Matterhorn the DEM reaches within 25 m of 4,478 m",
+      "holds": false,
+      "numbers": {
+        "known": 4478,
+        "at_point": 3575,
+        "highest_within_1km": 4226,
+        "highest_is_m_away": 324
+      }
+    }
+  ],
+  "numbers": {
+    "Mont Blanc": {
+      "known": 4806,
+      "at_point": 4792,
+      "highest_within_1km": 4795,
+      "highest_is_m_away": 42
+    },
+    "Mount Fuji": {
+      "known": 3776,
+      "at_point": 3766,
+      "highest_within_1km": 3771,
+      "highest_is_m_away": 16
+    },
+    "Matterhorn": {
+      "known": 4478,
+      "at_point": 3575,
+      "highest_within_1km": 4226,
+      "highest_is_m_away": 324
+    },
+    "Crater Lake, surface": {
+      "known": 1883,
+      "at_point": 1884,
+      "highest_within_1km": 1884,
+      "highest_is_m_away": 1453
+    },
+    "Lake Geneva, surface": {
+      "known": 372,
+      "at_point": 370,
+      "highest_within_1km": 370,
+      "highest_is_m_away": 1409
+    }
+  },
+  "reasons": [],
+  "screenshots": [
+    "results/terrain-heights-matterhorn.png"
+  ],
+  "use": {
+    "map_loads": 1,
+    "web_service_requests": 0,
+    "requests_by_host": {
+      "127.0.0.1:58006": 1,
+      "api.mapbox.com": 182,
+      "": 2,
+      "events.mapbox.com": 4
+    }
+  },
+  "errors": {
+    "console": [],
+    "page": [],
+    "requests": []
+  },
+  "seconds": 14.3
+}

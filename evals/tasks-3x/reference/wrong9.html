@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What's this place?</title>
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.35.2/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.35.2/mapbox-gl.js"></script>
+<style>
+  html, body { margin: 0; height: 100%; }
+  #map { position: absolute; inset: 0; }
+</style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+mapboxgl.accessToken = window.MAPBOX_ACCESS_TOKEN;
+const map = new mapboxgl.Map({
+  container: 'map',
+  style: 'mapbox://styles/mapbox/standard',
+  center: [-73.9897, 40.7411], // Flatiron, New York
+  zoom: 16.5
+});
+window.map = map;
+
+map.on('style.load', () => {
+  map.on('click', 'poi-label', (e) => {
+    const f = e.features[0];
+    new mapboxgl.Popup()
+      .setLngLat(f.geometry.coordinates)
+      .setText(f.properties.name)
+      .addTo(map);
+  });
+});
+</script>
+</body>
+</html>

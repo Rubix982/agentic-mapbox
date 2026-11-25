@@ -1,0 +1,58 @@
+{
+  "experiment": "api/map-matching",
+  "question": "Does the Map Matching API snap a noisy GPS trace back onto the road it was taken from?",
+  "ran_at": "2026-11-25T03:27:27.581Z",
+  "gl_js": "3.35.2",
+  "served_by_mapbox": true,
+  "refusals": [],
+  "refusals_asked_for": [],
+  "all_facts_hold": true,
+  "facts": [
+    {
+      "fact": "The trace came back as one matching",
+      "holds": true,
+      "numbers": {
+        "matchings": 1,
+        "confidence": 0.951064,
+        "trace_points": 57
+      }
+    },
+    {
+      "fact": "The noisy points sit up to 20 m off the route, and 95% of the matched line lies within 5 m of it",
+      "holds": true,
+      "numbers": {
+        "trace_off_route_p95_m": 16.4,
+        "matched_off_route_p95_m": 0,
+        "matched_off_route_max_m": 10.9
+      }
+    },
+    {
+      "fact": "The matched distance is within 5% of the route's",
+      "holds": true,
+      "numbers": {
+        "route_m": 6763,
+        "matched_m": 6749
+      }
+    }
+  ],
+  "reasons": [],
+  "screenshots": [
+    "results/map-matching-chicago.png"
+  ],
+  "use": {
+    "map_loads": 1,
+    "web_service_requests": 2,
+    "requests_by_host": {
+      "127.0.0.1:57930": 1,
+      "api.mapbox.com": 19,
+      "": 2,
+      "events.mapbox.com": 4
+    }
+  },
+  "errors": {
+    "console": [],
+    "page": [],
+    "requests": []
+  },
+  "seconds": 5.7
+}
