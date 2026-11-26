@@ -272,3 +272,50 @@ with five different roof shapes. I have not checked each shape against its build
   Haiku.
 - **Map loads:** 3, to grade the pages.
 
+## C-014: task 5 three more times, with no network (2026-11-26)
+
+`node evals/run_eval.mjs --set tasks-3x --tasks 5 --arms offline --runs 3 --concurrency 1`, with the offline arm exactly
+as in C-013; its settings had not changed since the last probe passed. Records: `results/c014-20261126-053718.jsonl`.
+Screenshots: `results/c014-task5-offline-run0.png` to `-run2.png`.
+
+**1 of the 3 was right first time, and 1 of 4 with C-013's session.** Each session tried once to download GL JS, and
+the sandbox refused it.
+
+| Run | Right? | Turns | Minutes | Cost, USD | What the page drew with |
+|---|---|---|---|---|---|
+| C-013 | no | 10 | 16 | 3.20 | its own WebGL custom layer, 580 lines |
+| 0 | no | 12 | 16 | 3.22 | a fill-extrusion for the walls and its own WebGL layer for the roofs, 588 lines |
+| 1 | yes | 7 | 18 | 3.32 | GL JS's `building` layer, with a hand-drawn WebGL fallback, 682 lines |
+| 2 | no | 33 | 18 | 3.72 | its own WebGL custom layer, 766 lines |
+| **These 3** | **1 of 3** | | | **10.26** | |
+
+**Why the failing pages avoided the layer.** Both sessions said so in their last message.
+- Run 0: "Mapbox v3 seems to have an experimental `building` layer type with a roof-shape setting that matches these roof
+  names exactly, and I suspect the task was designed around it. I didn't use it because I couldn't confirm its exact
+  property names, whether it accepts GeoJSON, or how to colour roofs and walls separately."
+- Run 2: "I didn't use Mapbox's newer procedural `building` layer with its `building-roof-shape` property. I had no
+  network access to check how it behaves in v3.35.2, including whether it accepts GeoJSON or can colour roofs and walls
+  separately."
+
+**The passing page used the layer from memory, and kept a way out.** Its first choice was a `building` layer over the
+GeoJSON source, with `building-roof-shape` from `roof`, the height from `height_m`, and the colour chosen by
+`['get', 'building-part']`. The check found all five heights, roof shapes and colours right. Then it tested the rendered
+pixels where each roof should be. If fewer than 3 of the 5 showed terracotta, or the layer type was rejected, it removed
+the layer and drew the buildings itself. In the harness the layer stayed. The session said the part it trusted least
+was the `building-part` colouring.
+
+**What this does and does not show.**
+- Offline, the model got task 5 right 1 time in 4. With a network it got it right 2 of 2 times (C-005, C-006), after
+  reading GL JS's code.
+- The failures do not come from the model not knowing the layer: run 1 wrote it right from memory, `building-part`
+  included. They come from it not trusting what it remembers about a feature it cannot check, as two sessions said.
+- So the candidate entry confirms something: that GL JS 3.35.2 has the procedural `building` layer, that it takes a
+  GeoJSON source, and how roofs and walls are coloured. Whether naming the layer is enough is T-014.
+- All three failing pages show the five buildings in terracotta and cream with different roof shapes. I have not checked
+  each shape against its building. The check counts them wrong because it accepts only GL JS's layer, which the task's
+  wording does not name.
+- Offline, task 5 cost $3.20 to $3.72 a session, right or wrong, against $1.06 and $1.47 with a network.
+- Four sessions on one task, on one model.
+
+**Use.** $10.26 for the 3 sessions; 3 map loads to grade them.
+

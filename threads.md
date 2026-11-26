@@ -9,7 +9,8 @@ skills opened in 0 of 3 tasks the model did not know; the pitch-0 building was a
 median 104 m low; the MCP elevation tool gives the Matterhorn 3,587 m; the API was stricter than its docs on 2 of 100
 limits. C-013 closed on 2026-11-26 (with no network, 2 of the 3 looked-up tasks right; for the third the model drew the
 roofs itself rather than trust GL JS's building layer). C-012 (T-010) is parked until the user says yes to its
-sessions. One card at a time.
+sessions. C-014 closed on 2026-11-26 (task 5 offline: 1 of 4 right; the failing sessions doubted GL JS's building
+layer and drew the roofs by hand). One card at a time.
 
 ### T-001 · What does each Mapbox capability look like when it is actually run?
 
@@ -170,13 +171,15 @@ would say whether the description's wording is what decides, or whether skills a
 
 ### T-013 · Does task 5 fail the same way every time with no network?
 
-**Status:** open
+**Status:** answered (C-014)
 **Parent:** T-011
 **Opened:** 2026-11-26
 **Question:** In C-013 the one offline session on task 5 avoided GL JS's building layer and drew the roofs in WebGL.
 C-013's pre-stated next step is three more offline runs of task 5 (`run_eval.mjs --set tasks-3x --tasks 5 --arms
 offline --runs 3 --concurrency 1`, about $3 a session) before any guide entry is written.
-**Answer:** —
+**Answer:** mostly (`evals/results.md`, C-014): 1 of 3 right, so 1 of 4 with C-013's session. The failing sessions
+avoided the building layer, saying they could not confirm it. The passing one wrote the layer right from memory, but
+kept a hand-drawn fallback.
 
 ### T-014 · Told to use GL JS's building layer, does the model get task 5 right offline?
 
@@ -185,5 +188,6 @@ offline --runs 3 --concurrency 1`, about $3 a session) before any guide entry is
 **Opened:** 2026-11-26
 **Question:** Task 5's wording asks for the picture, and only its check names the procedural `building` layer. A version
 of the task that says to use that layer, run offline, would say whether the model knows how to use it (`building-part`
-for roof and wall colours) or only doubted that it exists.
+for roof and wall colours) or only doubted that it exists. C-014's passing session wrote the layer right from memory,
+so the question is now whether naming the layer is enough to make the model trust it.
 **Answer:** —

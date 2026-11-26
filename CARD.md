@@ -705,3 +705,64 @@ What stays unknown: whether task 5 goes this way every time offline, whether the
 told to use it, and any model but Opus 5.5.
 
 **Use:** $4.52 for the 3 sessions, and about $0.10 for five probe sessions and six one-command test sessions on Haiku.
+
+---
+
+### C-014 · Does task 5 fail the same way every time with no network?
+
+**Opened:** 2026-11-26 · **Closed:** 2026-11-26
+
+1. **WHERE WE ARE.** In C-013 the one offline session on task 5 (planned buildings with real roofs) said it could not
+   confirm that GL JS 3.35.2 has a procedural building layer. It drew the roofs in its own 580-line WebGL layer, and the
+   check failed it. With a network, 2 of 2 sessions (C-005, C-006) read GL JS's code and used the building layer.
+2. **WHAT WE ARE DOING.** Run task 5 three more times in the offline arm, exactly as C-013 did (`run_eval.mjs --set
+   tasks-3x --tasks 5 --arms offline --runs 3 --concurrency 1`), grade each page once, and for each failing page record
+   what it drew with: GL JS's `building` layer, a custom WebGL layer, or something else.
+3. **WHY.** Unknown now: whether avoiding the building layer offline is what the model does, or C-013's session was one
+   draw. After: a count out of 3, and with C-013's, out of 4.
+4. **WHAT IS AFFECTED.** T-013 is answered. C-013's result names "GL JS 3.35.2 has a procedural building layer" as a
+   candidate guide entry; it becomes an entry worth writing, or is dropped. The C-013 lines in `evals/results.md`, the
+   README and `kb/catalog.md` gain the rate.
+5. **CONCLUSION.** Counting C-013's session, out of 4:
+   - **3 or 4 of 4 fail** (0 or 1 of these 3 right): offline, the model reliably does not get task 5. The entry is worth
+     writing, and the next card writes it and tests it offline (T-014's form, naming the layer).
+   - **2 of 4 fail** (2 of these 3 right): it fails about half the time. The entry is still worth writing, but showing
+     that it helps will take more runs than a handful.
+   - **1 of 4 fails** (3 of these 3 right): C-013's failure was the rare case, and task 5 gets no entry.
+   - Whatever the count, the failing pages say what the entry is. If they avoid the building layer, as C-013's did, the
+     entry is that the layer exists. If they use it and get the colours wrong, the entry is `building-part`.
+6. **CONSEQUENCE OF NOT DOING IT.** The candidate entry rests on one session. Writing it would build the first guide
+   entry on one draw; dropping it would leave offline agents possibly drawing roofs by hand at $3 a page.
+
+**Needs before it can run:** 3 Claude sessions on claude-opus-5-5. C-013's task 5 session cost $3.20, so about $10.
+The user said to go ahead on 2026-11-26 ("continue with 013"). The offline arm's settings have not changed since its
+last probe passed (C-013).
+
+**Result:** 1 of the 3 right first time (`evals/results.md`, C-014). With C-013's session, task 5 failed 3 of 4 times
+with no network. That is field 5's first branch: offline, the model does not reliably get task 5, and the entry is
+worth writing.
+
+The two failing pages avoided GL JS's building layer, as C-013's had, and drew the five buildings in their own WebGL
+layers, 588 and 766 lines long. Both said why. Run 0 suspected the layer existed, and that the task was built around it,
+but could not confirm its property names, whether it takes GeoJSON, or how to colour roofs and walls separately. Run 2
+named the same doubts. So the entry is that the layer exists, with those three facts.
+
+The passing session changes what the entry is for. From memory, it put GL JS's `building` layer first, with
+`building-roof-shape` from the `roof` property and the colour chosen by `building-part`, and the check found every
+height, roof shape and colour right. It still did not trust the layer. The page carries a hand-drawn WebGL fallback,
+and a pixel test that switches to it if no terracotta shows. The session said the part it trusted least was the
+`building-part` colouring. So the model has the right answer in memory, and what fails offline is its confidence in
+it. An entry would confirm what the model half-knows, not teach it something new, which is a smaller claim than "the
+model does not know the building layer".
+
+The branch's next step stands: write the entry and test it offline, naming the layer (T-014).
+
+In plain words: with no network, the model got the planned buildings right 1 time in 4. Each time it failed, it said it
+suspected GL JS had a layer for roofs but could not check, and drew the roofs by hand. The one time it used the layer,
+from memory, it got it right.
+
+What stays unknown: whether a sentence naming the layer is enough to make the model use it (T-014), and other models.
+
+**Use:** $10.26 for the 3 sessions. Every offline session on task 5 cost $3.20 to $3.72 and took 16 to 18 minutes, right
+or wrong, against $1.06 and $1.47 with a network.
+

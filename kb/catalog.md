@@ -99,8 +99,9 @@ an agent could trip on:
 
 With no help, the model got ten blind tasks on these areas right (C-005, `evals/results.md`). It knew seven; for the
 model colour mix, `clip` and the procedural building's colours it downloaded GL JS's own code and read it. With no
-network (C-013) it wrote the colour mix and `clip` from memory. For the building it doubted that GL JS 3.35.2 has a
-building layer, and drew the roofs in its own WebGL layer instead.
+network (C-013, C-014) it wrote the colour mix and `clip` from memory. The building came out right 1 time in 4. Three
+times it doubted that GL JS 3.35.2 has a building layer and drew the roofs in its own WebGL layer. The one time it used
+the layer, from memory, it was right.
 
 ## Agent tooling Mapbox publishes
 
