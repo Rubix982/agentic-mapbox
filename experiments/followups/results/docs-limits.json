@@ -1,0 +1,2680 @@
+{
+  "experiment": "followups/docs-limits",
+  "question": "How often does a numeric limit stated in Mapbox's API reference disagree with the API?",
+  "ran_at": "2026-11-25T18:09:58.582Z",
+  "served_by_mapbox": true,
+  "refusals": [
+    "422 https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/180.5,52.52,1,0,0/100x100?access_token=<token> Longitude must be between -180-180.",
+    "422 https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/-180.5,52.52,1,0,0/100x100?access_token=<token> Longitude must be between -180-180.",
+    "422 https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/13.405,85.06,1,0,0/100x100?access_token=<token> Latitude must be between -85.0511-85.0511.",
+    "422 https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/13.405,-85.06,1,0,0/100x100?access_token=<token> Latitude must be between -85.0511-85.0511.",
+    "422 https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/13.405,52.52,22.5,0,0/100x100?access_token=<token> Zoom level must be between 0-22.",
+    "422 https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/13.405,52.52,-1,0,0/100x100?access_token=<token> Zoom level must be between 0-22.",
+    "422 https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/13.405,52.52,10,0,0/1281x100?access_token=<token> Width must be between 1-1280.",
+    "422 https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/13.405,52.52,10,0,0/0x100?access_token=<token> Width must be between 1-1280.",
+    "422 https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/13.405,52.52,10,0,0/100x1281?access_token=<token> Height must be between 1-1280.",
+    "422 https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/13.405,52.52,10,0,0/100x0?access_token=<token> Height must be between 1-1280.",
+    "422 https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/13.405,52.52,10,0,61/100x100?access_token=<token> Pitch must be between 0-60.",
+    "422 https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/13.405,52.52,10,0,-1/100x100?access_token=<token> Pitch must be between 0-60.",
+    "422 https://api.mapbox.com/v4/mapbox.mapbox-streets-v8/tilequery/13.405,52.52.json?radius=500&limit=51&access_token=<token> options.limit must be a number between 1 and 50",
+    "422 https://api.mapbox.com/v4/mapbox.mapbox-streets-v8/tilequery/13.405,52.52.json?radius=500&limit=0&access_token=<token> options.limit must be a number between 1 and 50",
+    "400 https://api.mapbox.com/v4/mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8 26 tilesets is greater than compositing limit of 25",
+    "400 https://api.mapbox.com/v4/mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8 16 tilesets is greater than compositing limit of 15",
+    "400 https://api.mapbox.com/v4/mapbox.satellite,mapbox.satellite,mapbox.satellite,mapbox.satellite,mapbox.satellite,mapbox.satellite,mapbox.satellite,mapbox.satellite,mapbox.satellite,mapbox.satellite,mapb 16 tilesets is greater than compositing limit of 15",
+    "422 https://api.mapbox.com/directions/v5/mapbox/driving/13.37000,52.5163;13.37090,52.5163;13.37180,52.5163;13.37270,52.5163;13.37360,52.5163;13.37450,52.5163;13.37540,52.5163;13.37630,52.5163;13.37720,52. Too many coordinates; maximum number of coordinates is 25",
+    "422 https://api.mapbox.com/directions/v5/mapbox/driving/13.37000,52.5163?access_token=<token> Not enough input coordinates given; minimum number of coordinates is 2.",
+    "422 https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?avoid_maneuver_radius=1001&access_token=<token> must be <= 1000",
+    "422 https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?avoid_maneuver_radius=0&access_token=<token> must be >= 1",
+    "422 https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?bearings=361%2C45%3B&access_token=<token> Number of bearing elements must match number of coordinates provided.",
+    "422 https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?bearings=-1%2C45%3B&access_token=<token> Number of bearing elements must match number of coordinates provided.",
+    "422 https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?exclude=point%2813.300+52.60%29%2Cpoint%2813.301+52.60%29%2Cpoint%2813.302+52.60%29%2Cpoint%2813.303+52.60%29%2Cpoin May only provide at most 50 exclude locations",
+    "422 https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?waypoint_external_ids=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa Each waypoint external_id must be at most 128 characters",
+    "422 https://api.mapbox.com/directions/v5/mapbox/walking/13.3777,52.5163;13.4050,52.5200?walking_speed=6.95&access_token=<token> Invalid walking_speed value",
+    "422 https://api.mapbox.com/directions/v5/mapbox/walking/13.3777,52.5163;13.4050,52.5200?walking_speed=0.13&access_token=<token> Invalid walking_speed value",
+    "422 https://api.mapbox.com/directions/v5/mapbox/walking/13.3777,52.5163;13.4050,52.5200?walkway_bias=1.1&access_token=<token> Invalid walking_bias value",
+    "422 https://api.mapbox.com/directions/v5/mapbox/walking/13.3777,52.5163;13.4050,52.5200?walkway_bias=-1.1&access_token=<token> Invalid walking_bias value",
+    "422 https://api.mapbox.com/directions/v5/mapbox/walking/13.3777,52.5163;13.4050,52.5200?alley_bias=1.1&access_token=<token> Invalid alley_bias value",
+    "422 https://api.mapbox.com/directions/v5/mapbox/walking/13.3777,52.5163;13.4050,52.5200?alley_bias=-1.1&access_token=<token> Invalid alley_bias value",
+    "422 https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?max_height=10.1&access_token=<token> Invalid max_height value",
+    "422 https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?max_height=-0.1&access_token=<token> Invalid max_height value",
+    "422 https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?max_width=10.1&access_token=<token> Invalid max_width value",
+    "422 https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?max_width=-0.1&access_token=<token> Invalid max_width value",
+    "422 https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?max_weight=100.1&access_token=<token> Invalid max_weight value",
+    "422 https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?max_weight=-0.1&access_token=<token> Invalid max_weight value",
+    "422 https://api.mapbox.com/isochrone/v1/mapbox/driving/13.3777,52.5163?contours_minutes=61&access_token=<token> contours_minutes must be an integer between 1 and 60",
+    "422 https://api.mapbox.com/isochrone/v1/mapbox/driving/13.3777,52.5163?contours_minutes=5%2C10%2C15%2C20%2C25&access_token=<token> May only provide at most 4 contours_minutes",
+    "422 https://api.mapbox.com/isochrone/v1/mapbox/driving/13.3777,52.5163?contours_meters=100001&access_token=<token> contours_meters must be an integer between 1 and 100000",
+    "422 https://api.mapbox.com/isochrone/v1/mapbox/driving/13.3777,52.5163?contours_meters=1000%2C2000%2C3000%2C4000%2C5000&access_token=<token> May only provide at most 4 contours_meters",
+    "422 https://api.mapbox.com/isochrone/v1/mapbox/driving/13.3777,52.5163?contours_minutes=5&denoise=1.1&access_token=<token> must be <= 1",
+    "422 https://api.mapbox.com/isochrone/v1/mapbox/driving/13.3777,52.5163?contours_minutes=5&denoise=-0.1&access_token=<token> must be >= 0",
+    "422 https://api.mapbox.com/matching/v5/mapbox/driving/13.37770,52.517;13.37790,52.517;13.37810,52.517;13.37830,52.517;13.37850,52.517;13.37870,52.517;13.37890,52.517;13.37910,52.517;13.37930,52.517;13.379 Too many coordinates; maximum number of coordinates is 100",
+    "422 https://api.mapbox.com/matching/v5/mapbox/driving/13.37770,52.517?access_token=<token> Not enough input coordinates given; minimum number of coordinates is 2.",
+    "422 https://api.mapbox.com/matching/v5/mapbox/driving/13.37770,52.517;13.37790,52.517;13.37810,52.517?radiuses=0%3B0%3B0&access_token=<token> Radius values must be an integer distance in meters greater than 0 or unlimited",
+    "422 https://api.mapbox.com/matching/v5/mapbox/driving/13.37770,52.517;13.37790,52.517;13.37810,52.517?radiuses=-1%3B-1%3B-1&access_token=<token> Radius values must be an integer distance in meters greater than 0 or unlimited",
+    "422 https://api.mapbox.com/directions-matrix/v1/mapbox/driving/13.37000,52.5163;13.37090,52.5163;13.37180,52.5163;13.37270,52.5163;13.37360,52.5163;13.37450,52.5163;13.37540,52.5163;13.37630,52.5163;13.37 Too many coordinates; maximum number of coordinates is 25.",
+    "422 https://api.mapbox.com/directions-matrix/v1/mapbox/driving/13.37000,52.5163?access_token=<token> Not enough input coordinates given; minimum number of coordinates is 2.",
+    "422 https://api.mapbox.com/directions-matrix/v1/mapbox/driving-traffic/13.37000,52.5163;13.37090,52.5163;13.37180,52.5163;13.37270,52.5163;13.37360,52.5163;13.37450,52.5163;13.37540,52.5163;13.37630,52.51 Too many coordinates; maximum number of coordinates is 10.",
+    "422 https://api.mapbox.com/directions-matrix/v1/mapbox/driving/13.37000,52.5163;13.37090,52.5163?bearings=361%2C45%3B&access_token=<token> Bearings must be direction,range integer with 0 <= direction <= 360 and 0 <= range <= 180",
+    "422 https://api.mapbox.com/directions-matrix/v1/mapbox/driving/13.37000,52.5163;13.37090,52.5163?bearings=-1%2C45%3B&access_token=<token> Bearings must be direction,range integer with 0 <= direction <= 360 and 0 <= range <= 180",
+    "422 https://api.mapbox.com/optimized-trips/v1/mapbox/driving/13.37000,52.5163;13.37090,52.5163;13.37180,52.5163;13.37270,52.5163;13.37360,52.5163;13.37450,52.5163;13.37540,52.5163;13.37630,52.5163;13.3772 Too many coordinates; maximum number of coordinates is 12.",
+    "422 https://api.mapbox.com/optimized-trips/v1/mapbox/driving/13.37000,52.5163?access_token=<token> Not enough input coordinates given; minimum number of coordinates is 2.",
+    "422 https://api.mapbox.com/optimized-trips/v1/mapbox/driving/13.37000,52.5163;13.37090,52.5163?bearings=361%2C45%3B&access_token=<token> Bearings must be direction,range integer with 0 <= direction <= 360 and 0 <= range <= 180",
+    "422 https://api.mapbox.com/optimized-trips/v1/mapbox/driving/13.37000,52.5163;13.37090,52.5163?bearings=-1%2C45%3B&access_token=<token> Bearings must be direction,range integer with 0 <= direction <= 360 and 0 <= range <= 180",
+    "422 https://api.mapbox.com/search/geocode/v6/forward?q=unter+den+linden+berlin+germany+unter+den+linden+berlin+germany+unter+den+linden+berlin+germany+unter+den+linden+berlin+germany+unter+den+linden+berl Query too long - 257/256 characters",
+    "422 https://api.mapbox.com/geocoding/v5/mapbox.places/unter%20den%20linden%20berlin%20germany%20unter%20den%20linden%20berlin%20germany%20unter%20den%20linden%20berlin%20germany%20unter%20den%20linden%20b Query too long - 257/256 characters",
+    "400 https://api.mapbox.com/search/searchbox/v1/forward?q=unter+den+linden+berlin+germany+unter+den+linden+berlin+germany+unter+den+linden+berlin+germany+unter+den+linden+berlin+germany+unter+den+linden+be Query exceeded character limit of 200",
+    "400 https://api.mapbox.com/search/searchbox/v1/forward?q=unter+den+linden+berlin+germany+unter+den+linden+berlin+germany+unter+den+linden+berlin+germany+unter+den+linden+berlin+germany+unter+den+linden+be Query exceeded character limit of 200",
+    "400 https://api.mapbox.com/search/searchbox/v1/forward?q=cafe&proximity=13.405%2C52.52&limit=11&access_token=<token> [object Object]",
+    "400 https://api.mapbox.com/search/searchbox/v1/forward?q=cafe&proximity=13.405%2C52.52&radius=10.1&limit=1&access_token=<token> [object Object]",
+    "400 https://api.mapbox.com/search/searchbox/v1/forward?q=cafe&proximity=13.405%2C52.52&radius=0.000009&limit=1&access_token=<token> [object Object]",
+    "400 https://api.mapbox.com/search/searchbox/v1/forward?q=cafe&proximity=13.405%2C52.52&minimum_rating=5.1&limit=1&access_token=<token> [object Object]",
+    "400 https://api.mapbox.com/search/searchbox/v1/forward?q=cafe&proximity=13.405%2C52.52&minimum_rating=-0.1&limit=1&access_token=<token> [object Object]",
+    "400 https://api.mapbox.com/search/searchbox/v1/category/cafe?proximity=13.405%2C52.52&limit=26&access_token=<token> [object Object]",
+    "400 https://api.mapbox.com/search/searchbox/v1/category/cafe?proximity=13.405%2C52.52&radius=10.1&limit=1&access_token=<token> [object Object]",
+    "400 https://api.mapbox.com/search/searchbox/v1/category/cafe?proximity=13.405%2C52.52&radius=0.000009&limit=1&access_token=<token> [object Object]",
+    "400 https://api.mapbox.com/search/searchbox/v1/reverse?longitude=13.405&latitude=52.52&limit=11&access_token=<token> [object Object]",
+    "422 https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu must be >= 0",
+    "422 https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu must be >= 0",
+    "422 https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu must be >= 0",
+    "422 https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu must be <= 1",
+    "422 https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu must be >= 0",
+    "422 https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu must be <= 10000",
+    "422 https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu must be >= 0",
+    "422 https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu ev_pre_conditioning_time must be positive",
+    "422 https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.9671,50.5000;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energ waypoints.minimal_stop_time values must be numbers between 0 and 7200 seconds",
+    "400 https://api.mapbox.com/fonts/v1/mapbox/DIN%20Pro%20Regular%2CDIN%20Pro%20Regular%2CDIN%20Pro%20Regular%2CDIN%20Pro%20Regular%2CDIN%20Pro%20Regular%2CDIN%20Pro%20Regular%2CDIN%20Pro%20Regular%2CDIN%20P Maximum of 10 font faces permitted",
+    "404 https://api.mapbox.com/fonts/v1/mapbox/DIN%20Pro%20Regular/65536-65791.pbf?access_token=<token> Font in font stack \"DIN Pro Regular\" not found",
+    "400 https://api.mapbox.com/fonts/v1/mapbox/DIN%20Pro%20Regular/-256--1.pbf?access_token=<token> Invalid Range",
+    "401 https://api.mapbox.com/ev/v1/locations?latitude=52.52&longitude=13.405&distance=100&access_token=<token> {\"status_message\": \"invalid access token\", \"timestamp\":\"2026-11-25T18:09:59Z\"}",
+    "401 https://api.mapbox.com/ev/v1/locations?latitude=52.52&longitude=13.405&distance=101&access_token=<token> {\"status_message\": \"invalid access token\", \"timestamp\":\"2026-11-25T18:09:59Z\"}",
+    "401 https://api.mapbox.com/ev/v1/locations?latitude=52.52&longitude=13.405&limit=100&access_token=<token> {\"status_message\": \"invalid access token\", \"timestamp\":\"2026-11-25T18:09:59Z\"}",
+    "401 https://api.mapbox.com/ev/v1/locations?latitude=52.52&longitude=13.405&limit=101&access_token=<token> {\"status_message\": \"invalid access token\", \"timestamp\":\"2026-11-25T18:09:59Z\"}",
+    "401 https://api.mapbox.com/ev/v1/locations?latitude=90&longitude=13.405&access_token=<token> {\"status_message\": \"invalid access token\", \"timestamp\":\"2026-11-25T18:10:00Z\"}",
+    "401 https://api.mapbox.com/ev/v1/locations?latitude=90.1&longitude=13.405&access_token=<token> {\"status_message\": \"invalid access token\", \"timestamp\":\"2026-11-25T18:10:00Z\"}",
+    "401 https://api.mapbox.com/ev/v1/locations?latitude=52.52&longitude=180&access_token=<token> {\"status_message\": \"invalid access token\", \"timestamp\":\"2026-11-25T18:10:00Z\"}",
+    "401 https://api.mapbox.com/ev/v1/locations?latitude=52.52&longitude=180.1&access_token=<token> {\"status_message\": \"invalid access token\", \"timestamp\":\"2026-11-25T18:10:00Z\"}"
+  ],
+  "refusals_are_the_finding": true,
+  "all_facts_hold": false,
+  "facts": [
+    {
+      "fact": "Every tested limit was sent at and past the limit",
+      "holds": true,
+      "numbers": {
+        "tests": 104
+      }
+    },
+    {
+      "fact": "The API is stricter than the docs on 5% or fewer of the limits tested",
+      "holds": true,
+      "numbers": {
+        "tested": 100,
+        "api_stricter": [
+          "map-matching radiuses min 0: 422 Radius values must be an integer distance in meters greater than 0 or unlimited",
+          "search-box q (forward) max 256: 400 Query exceeded character limit of 200"
+        ]
+      }
+    },
+    {
+      "fact": "The API accepted no request past a stated limit",
+      "holds": false,
+      "numbers": {
+        "api_looser": [
+          "static-images bearing max 361: 200",
+          "static-images bearing min -1: 200",
+          "directions waypoint_names max 501: 200",
+          "map-matching radiuses max 50.1: 200",
+          "map-matching waypoint_names max 501: 200",
+          "geocoding (v6) q max 21: 200",
+          "geocoding (v6) limit (forward) max 11: 200",
+          "geocoding (v6) limit (reverse) max 6: 200",
+          "geocoding-v5 search_text max 21: 200",
+          "geocoding-v5 limit (forward) max 11: 200",
+          "geocoding-v5 limit (reverse) max 11: 200",
+          "directions (EV) ev_min_charge_at_destination max 80001: 200",
+          "directions (EV) ev_min_charge_at_charging_station max 80001: 200",
+          "directions (EV) ev_min_energy_increment_at_charging_station max 80001: 200",
+          "directions (EV) ev_pre_conditioning_time max 241: 200",
+          "directions (EV) ev_exclude_station_ids max 41: 200",
+          "directions (EV) ev_exclude_charge_point_provider_ids max 41: 200",
+          "directions (EV) ev_prefer_charge_point_provider_ids max 31: 200",
+          "directions (EV) ev_prefer_charge_point_provider_weights max 1.1: 200",
+          "directions (EV) ev_prefer_charge_point_provider_weights min 0: 200",
+          "directions (EV) waypoints.charging_station_power min 999: 200"
+        ]
+      }
+    }
+  ],
+  "numbers": {
+    "counts": {
+      "sent": 104,
+      "tested": 100,
+      "agrees": 77,
+      "api_stricter": 2,
+      "api_looser": 21,
+      "untested_no_access": 4
+    },
+    "ev_probe": {
+      "status": 200,
+      "message": null
+    },
+    "rows": [
+      {
+        "page": "static-images",
+        "param": "lon",
+        "stated": "between -180 and 180",
+        "end": "max",
+        "at": 180,
+        "past": 180.5,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Longitude must be between -180-180.",
+        "verdict": "agrees"
+      },
+      {
+        "page": "static-images",
+        "param": "lon",
+        "stated": "between -180 and 180",
+        "end": "min",
+        "at": -180,
+        "past": -180.5,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Longitude must be between -180-180.",
+        "verdict": "agrees"
+      },
+      {
+        "page": "static-images",
+        "param": "lat",
+        "stated": "between -85.0511 and 85.0511",
+        "end": "max",
+        "at": 85.0511,
+        "past": 85.06,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Latitude must be between -85.0511-85.0511.",
+        "verdict": "agrees"
+      },
+      {
+        "page": "static-images",
+        "param": "lat",
+        "stated": "between -85.0511 and 85.0511",
+        "end": "min",
+        "at": -85.0511,
+        "past": -85.06,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Latitude must be between -85.0511-85.0511.",
+        "verdict": "agrees"
+      },
+      {
+        "page": "static-images",
+        "param": "zoom",
+        "stated": "between 0 and 22",
+        "end": "max",
+        "at": 22,
+        "past": 22.5,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Zoom level must be between 0-22.",
+        "verdict": "agrees"
+      },
+      {
+        "page": "static-images",
+        "param": "zoom",
+        "stated": "between 0 and 22",
+        "end": "min",
+        "at": 0,
+        "past": -1,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Zoom level must be between 0-22.",
+        "verdict": "agrees"
+      },
+      {
+        "page": "static-images",
+        "param": "width",
+        "stated": "between 1 and 1280",
+        "end": "max",
+        "at": 1280,
+        "past": 1281,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Width must be between 1-1280.",
+        "verdict": "agrees"
+      },
+      {
+        "page": "static-images",
+        "param": "width",
+        "stated": "between 1 and 1280",
+        "end": "min",
+        "at": 1,
+        "past": 0,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Width must be between 1-1280.",
+        "verdict": "agrees"
+      },
+      {
+        "page": "static-images",
+        "param": "height",
+        "stated": "between 1 and 1280",
+        "end": "max",
+        "at": 1280,
+        "past": 1281,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Height must be between 1-1280.",
+        "verdict": "agrees"
+      },
+      {
+        "page": "static-images",
+        "param": "height",
+        "stated": "between 1 and 1280",
+        "end": "min",
+        "at": 1,
+        "past": 0,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Height must be between 1-1280.",
+        "verdict": "agrees"
+      },
+      {
+        "page": "static-images",
+        "param": "bearing",
+        "stated": "between 0 and 360",
+        "end": "max",
+        "at": 360,
+        "past": 361,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 200,
+        "past_message": null,
+        "verdict": "api looser"
+      },
+      {
+        "page": "static-images",
+        "param": "bearing",
+        "stated": "between 0 and 360",
+        "end": "min",
+        "at": 0,
+        "past": -1,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 200,
+        "past_message": null,
+        "verdict": "api looser"
+      },
+      {
+        "page": "static-images",
+        "param": "pitch",
+        "stated": "between 0 and 60",
+        "end": "max",
+        "at": 60,
+        "past": 61,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Pitch must be between 0-60.",
+        "verdict": "agrees"
+      },
+      {
+        "page": "static-images",
+        "param": "pitch",
+        "stated": "between 0 and 60",
+        "end": "min",
+        "at": 0,
+        "past": -1,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Pitch must be between 0-60.",
+        "verdict": "agrees"
+      },
+      {
+        "page": "tilequery",
+        "param": "limit",
+        "stated": "between 1-50",
+        "end": "max",
+        "at": 50,
+        "past": 51,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "options.limit must be a number between 1 and 50",
+        "verdict": "agrees"
+      },
+      {
+        "page": "tilequery",
+        "param": "limit",
+        "stated": "between 1-50",
+        "end": "min",
+        "at": 1,
+        "past": 0,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "options.limit must be a number between 1 and 50",
+        "verdict": "agrees"
+      },
+      {
+        "page": "tilequery",
+        "param": "tileset_id",
+        "stated": "up to 25 (composited)",
+        "end": "max",
+        "at": 25,
+        "past": 26,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 400,
+        "past_message": "26 tilesets is greater than compositing limit of 25",
+        "verdict": "agrees"
+      },
+      {
+        "page": "vector-tiles",
+        "param": "tileset_id",
+        "stated": "up to 15 (composited)",
+        "end": "max",
+        "at": 15,
+        "past": 16,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 400,
+        "past_message": "16 tilesets is greater than compositing limit of 15",
+        "verdict": "agrees"
+      },
+      {
+        "page": "raster-tiles",
+        "param": "tileset_id",
+        "stated": "up to 15 (composited)",
+        "end": "max",
+        "at": 15,
+        "past": 16,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 400,
+        "past_message": "16 tilesets is greater than compositing limit of 15",
+        "verdict": "agrees"
+      },
+      {
+        "page": "directions",
+        "param": "coordinates",
+        "stated": "between two and 25",
+        "end": "max",
+        "at": 25,
+        "past": 26,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Too many coordinates; maximum number of coordinates is 25",
+        "verdict": "agrees"
+      },
+      {
+        "page": "directions",
+        "param": "coordinates",
+        "stated": "between two and 25",
+        "end": "min",
+        "at": 2,
+        "past": 1,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Not enough input coordinates given; minimum number of coordinates is 2.",
+        "verdict": "agrees"
+      },
+      {
+        "page": "directions",
+        "param": "avoid_maneuver_radius",
+        "stated": "range from 1 to 1000",
+        "end": "max",
+        "at": 1000,
+        "past": 1001,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "must be <= 1000",
+        "verdict": "agrees"
+      },
+      {
+        "page": "directions",
+        "param": "avoid_maneuver_radius",
+        "stated": "range from 1 to 1000",
+        "end": "min",
+        "at": 1,
+        "past": 0,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "must be >= 1",
+        "verdict": "agrees"
+      },
+      {
+        "page": "directions",
+        "param": "bearings",
+        "stated": "between 0 and 360",
+        "end": "max",
+        "at": 360,
+        "past": 361,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Number of bearing elements must match number of coordinates provided.",
+        "verdict": "agrees"
+      },
+      {
+        "page": "directions",
+        "param": "bearings",
+        "stated": "between 0 and 360",
+        "end": "min",
+        "at": 0,
+        "past": -1,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Number of bearing elements must match number of coordinates provided.",
+        "verdict": "agrees"
+      },
+      {
+        "page": "directions",
+        "param": "exclude",
+        "stated": "at most 50 points",
+        "end": "max",
+        "at": 50,
+        "past": 51,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "May only provide at most 50 exclude locations",
+        "verdict": "agrees"
+      },
+      {
+        "page": "directions",
+        "param": "waypoint_names",
+        "stated": "total characters cannot exceed 500",
+        "end": "max",
+        "at": 500,
+        "past": 501,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 200,
+        "past_message": null,
+        "verdict": "api looser"
+      },
+      {
+        "page": "directions",
+        "param": "waypoint_external_ids",
+        "stated": "each up to 128 characters",
+        "end": "max",
+        "at": 128,
+        "past": 129,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Each waypoint external_id must be at most 128 characters",
+        "verdict": "agrees"
+      },
+      {
+        "page": "directions",
+        "param": "walking_speed",
+        "stated": "minimum of 0.14, maximum of 6.94",
+        "end": "max",
+        "at": 6.94,
+        "past": 6.95,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Invalid walking_speed value",
+        "verdict": "agrees"
+      },
+      {
+        "page": "directions",
+        "param": "walking_speed",
+        "stated": "minimum of 0.14, maximum of 6.94",
+        "end": "min",
+        "at": 0.14,
+        "past": 0.13,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Invalid walking_speed value",
+        "verdict": "agrees"
+      },
+      {
+        "page": "directions",
+        "param": "walkway_bias",
+        "stated": "from -1 to 1",
+        "end": "max",
+        "at": 1,
+        "past": 1.1,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Invalid walking_bias value",
+        "verdict": "agrees"
+      },
+      {
+        "page": "directions",
+        "param": "walkway_bias",
+        "stated": "from -1 to 1",
+        "end": "min",
+        "at": -1,
+        "past": -1.1,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Invalid walking_bias value",
+        "verdict": "agrees"
+      },
+      {
+        "page": "directions",
+        "param": "alley_bias",
+        "stated": "from -1 to 1",
+        "end": "max",
+        "at": 1,
+        "past": 1.1,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Invalid alley_bias value",
+        "verdict": "agrees"
+      },
+      {
+        "page": "directions",
+        "param": "alley_bias",
+        "stated": "from -1 to 1",
+        "end": "min",
+        "at": -1,
+        "past": -1.1,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Invalid alley_bias value",
+        "verdict": "agrees"
+      },
+      {
+        "page": "directions",
+        "param": "max_height",
+        "stated": "must be between 0 and 10",
+        "end": "max",
+        "at": 10,
+        "past": 10.1,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Invalid max_height value",
+        "verdict": "agrees"
+      },
+      {
+        "page": "directions",
+        "param": "max_height",
+        "stated": "must be between 0 and 10",
+        "end": "min",
+        "at": 0,
+        "past": -0.1,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Invalid max_height value",
+        "verdict": "agrees"
+      },
+      {
+        "page": "directions",
+        "param": "max_width",
+        "stated": "must be between 0 and 10",
+        "end": "max",
+        "at": 10,
+        "past": 10.1,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Invalid max_width value",
+        "verdict": "agrees"
+      },
+      {
+        "page": "directions",
+        "param": "max_width",
+        "stated": "must be between 0 and 10",
+        "end": "min",
+        "at": 0,
+        "past": -0.1,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Invalid max_width value",
+        "verdict": "agrees"
+      },
+      {
+        "page": "directions",
+        "param": "max_weight",
+        "stated": "must be between 0 and 100",
+        "end": "max",
+        "at": 100,
+        "past": 100.1,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Invalid max_weight value",
+        "verdict": "agrees"
+      },
+      {
+        "page": "directions",
+        "param": "max_weight",
+        "stated": "must be between 0 and 100",
+        "end": "min",
+        "at": 0,
+        "past": -0.1,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Invalid max_weight value",
+        "verdict": "agrees"
+      },
+      {
+        "page": "isochrone",
+        "param": "contours_minutes",
+        "stated": "the maximum time is 60 minutes",
+        "end": "max",
+        "at": 60,
+        "past": 61,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "contours_minutes must be an integer between 1 and 60",
+        "verdict": "agrees"
+      },
+      {
+        "page": "isochrone",
+        "param": "contours_minutes",
+        "stated": "up to four contours",
+        "end": "max",
+        "at": 4,
+        "past": 5,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "May only provide at most 4 contours_minutes",
+        "verdict": "agrees"
+      },
+      {
+        "page": "isochrone",
+        "param": "contours_meters",
+        "stated": "the maximum distance is 100000 meters",
+        "end": "max",
+        "at": 100000,
+        "past": 100001,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "contours_meters must be an integer between 1 and 100000",
+        "verdict": "agrees"
+      },
+      {
+        "page": "isochrone",
+        "param": "contours_meters",
+        "stated": "up to four contours",
+        "end": "max",
+        "at": 4,
+        "past": 5,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "May only provide at most 4 contours_meters",
+        "verdict": "agrees"
+      },
+      {
+        "page": "isochrone",
+        "param": "denoise",
+        "stated": "from 0.0 to 1.0",
+        "end": "max",
+        "at": 1,
+        "past": 1.1,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "must be <= 1",
+        "verdict": "agrees"
+      },
+      {
+        "page": "isochrone",
+        "param": "denoise",
+        "stated": "from 0.0 to 1.0",
+        "end": "min",
+        "at": 0,
+        "past": -0.1,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "must be >= 0",
+        "verdict": "agrees"
+      },
+      {
+        "page": "map-matching",
+        "param": "coordinates",
+        "stated": "between 2 and 100",
+        "end": "max",
+        "at": 100,
+        "past": 101,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Too many coordinates; maximum number of coordinates is 100",
+        "verdict": "agrees"
+      },
+      {
+        "page": "map-matching",
+        "param": "coordinates",
+        "stated": "between 2 and 100",
+        "end": "min",
+        "at": 2,
+        "past": 1,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Not enough input coordinates given; minimum number of coordinates is 2.",
+        "verdict": "agrees"
+      },
+      {
+        "page": "map-matching",
+        "param": "radiuses",
+        "stated": "between 0.0 and 50.00",
+        "end": "max",
+        "at": 50,
+        "past": 50.1,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 200,
+        "past_message": null,
+        "verdict": "api looser"
+      },
+      {
+        "page": "map-matching",
+        "param": "radiuses",
+        "stated": "between 0.0 and 50.00",
+        "end": "min",
+        "at": 0,
+        "past": -1,
+        "at_status": 422,
+        "at_message": "Radius values must be an integer distance in meters greater than 0 or unlimited",
+        "past_status": 422,
+        "past_message": "Radius values must be an integer distance in meters greater than 0 or unlimited",
+        "verdict": "api stricter"
+      },
+      {
+        "page": "map-matching",
+        "param": "waypoint_names",
+        "stated": "total characters (including semicolons) cannot exceed 500",
+        "end": "max",
+        "at": 500,
+        "past": 501,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 200,
+        "past_message": null,
+        "verdict": "api looser"
+      },
+      {
+        "page": "matrix",
+        "param": "coordinates",
+        "stated": "between two and 25",
+        "end": "max",
+        "at": 25,
+        "past": 26,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Too many coordinates; maximum number of coordinates is 25.",
+        "verdict": "agrees"
+      },
+      {
+        "page": "matrix",
+        "param": "coordinates",
+        "stated": "between two and 25",
+        "end": "min",
+        "at": 2,
+        "past": 1,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Not enough input coordinates given; minimum number of coordinates is 2.",
+        "verdict": "agrees"
+      },
+      {
+        "page": "matrix",
+        "param": "coordinates",
+        "stated": "for driving-traffic the maximum is 10",
+        "end": "max",
+        "at": 10,
+        "past": 11,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Too many coordinates; maximum number of coordinates is 10.",
+        "verdict": "agrees"
+      },
+      {
+        "page": "matrix",
+        "param": "bearings",
+        "stated": "between 0 and 360",
+        "end": "max",
+        "at": 360,
+        "past": 361,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Bearings must be direction,range integer with 0 <= direction <= 360 and 0 <= range <= 180",
+        "verdict": "agrees"
+      },
+      {
+        "page": "matrix",
+        "param": "bearings",
+        "stated": "between 0 and 360",
+        "end": "min",
+        "at": 0,
+        "past": -1,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Bearings must be direction,range integer with 0 <= direction <= 360 and 0 <= range <= 180",
+        "verdict": "agrees"
+      },
+      {
+        "page": "optimization-v1",
+        "param": "coordinates",
+        "stated": "between two and 12",
+        "end": "max",
+        "at": 12,
+        "past": 13,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Too many coordinates; maximum number of coordinates is 12.",
+        "verdict": "agrees"
+      },
+      {
+        "page": "optimization-v1",
+        "param": "coordinates",
+        "stated": "between two and 12",
+        "end": "min",
+        "at": 2,
+        "past": 1,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Not enough input coordinates given; minimum number of coordinates is 2.",
+        "verdict": "agrees"
+      },
+      {
+        "page": "optimization-v1",
+        "param": "bearings",
+        "stated": "between 0 and 360",
+        "end": "max",
+        "at": 360,
+        "past": 361,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Bearings must be direction,range integer with 0 <= direction <= 360 and 0 <= range <= 180",
+        "verdict": "agrees"
+      },
+      {
+        "page": "optimization-v1",
+        "param": "bearings",
+        "stated": "between 0 and 360",
+        "end": "min",
+        "at": 0,
+        "past": -1,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Bearings must be direction,range integer with 0 <= direction <= 360 and 0 <= range <= 180",
+        "verdict": "agrees"
+      },
+      {
+        "page": "geocoding (v6)",
+        "param": "q",
+        "stated": "at most 20 words",
+        "end": "max",
+        "at": 20,
+        "past": 21,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 200,
+        "past_message": null,
+        "verdict": "api looser"
+      },
+      {
+        "page": "geocoding (v6)",
+        "param": "q",
+        "stated": "at most 256 characters",
+        "end": "max",
+        "at": 256,
+        "past": 257,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Query too long - 257/256 characters",
+        "verdict": "agrees"
+      },
+      {
+        "page": "geocoding (v6)",
+        "param": "limit (forward)",
+        "stated": "the maximum supported is 10",
+        "end": "max",
+        "at": 10,
+        "past": 11,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 200,
+        "past_message": null,
+        "verdict": "api looser"
+      },
+      {
+        "page": "geocoding (v6)",
+        "param": "limit (reverse)",
+        "stated": "the maximum supported is 5",
+        "end": "max",
+        "at": 5,
+        "past": 6,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 200,
+        "past_message": null,
+        "verdict": "api looser"
+      },
+      {
+        "page": "geocoding-v5",
+        "param": "search_text",
+        "stated": "at most 20 words",
+        "end": "max",
+        "at": 20,
+        "past": 21,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 200,
+        "past_message": null,
+        "verdict": "api looser"
+      },
+      {
+        "page": "geocoding-v5",
+        "param": "search_text",
+        "stated": "at most 256 characters",
+        "end": "max",
+        "at": 256,
+        "past": 257,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "Query too long - 257/256 characters",
+        "verdict": "agrees"
+      },
+      {
+        "page": "geocoding-v5",
+        "param": "limit (forward)",
+        "stated": "the maximum supported is 10",
+        "end": "max",
+        "at": 10,
+        "past": 11,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 200,
+        "past_message": null,
+        "verdict": "api looser"
+      },
+      {
+        "page": "geocoding-v5",
+        "param": "limit (reverse)",
+        "stated": "the maximum supported is 10",
+        "end": "max",
+        "at": 10,
+        "past": 11,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 200,
+        "past_message": null,
+        "verdict": "api looser"
+      },
+      {
+        "page": "search-box",
+        "param": "q (forward)",
+        "stated": "limited to 256 characters",
+        "end": "max",
+        "at": 256,
+        "past": 257,
+        "at_status": 400,
+        "at_message": "Query exceeded character limit of 200",
+        "past_status": 400,
+        "past_message": "Query exceeded character limit of 200",
+        "verdict": "api stricter"
+      },
+      {
+        "page": "search-box",
+        "param": "limit (forward)",
+        "stated": "up to 10",
+        "end": "max",
+        "at": 10,
+        "past": 11,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 400,
+        "past_message": "{\"status_code\":400,\"error\":\"Limit must be in range [1,10]\",\"version\":\"1147:ba9359ddce2cdc9b169e25076b56f55348d38b94\",\"code\":\"eJwrLkrWTyzI1M9IzEvJSS0q1i9LzMlMSSxJ1Ssq1jW2NAIAx50LiQ==\"}",
+        "verdict": "agrees"
+      },
+      {
+        "page": "search-box",
+        "param": "radius (forward)",
+        "stated": "between 0.00001 and 10",
+        "end": "max",
+        "at": 10,
+        "past": 10.1,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 400,
+        "past_message": "{\"status_code\":400,\"error\":\"Radius must be in range [0.0001,10]\",\"version\":\"1147:ba9359ddce2cdc9b169e25076b56f55348d38b94\",\"code\":\"eJwrLkrWTyzI1M9IzEvJSS0q1i9LzMlMSSxJ1Ssq1jUxtQAAx54LjA==\"}",
+        "verdict": "agrees"
+      },
+      {
+        "page": "search-box",
+        "param": "radius (forward)",
+        "stated": "between 0.00001 and 10",
+        "end": "min",
+        "at": 0.00001,
+        "past": 0.000009,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 400,
+        "past_message": "{\"status_code\":400,\"error\":\"Radius must be in range [0.0001,10]\",\"version\":\"1147:ba9359ddce2cdc9b169e25076b56f55348d38b94\",\"code\":\"eJwrLkrWTyzI1M9IzEvJSS0q1i9LzMlMSSxJ1Ssq1jUxtQAAx54LjA==\"}",
+        "verdict": "agrees"
+      },
+      {
+        "page": "search-box",
+        "param": "minimum_rating (forward)",
+        "stated": "between 0.0 and 5.0",
+        "end": "max",
+        "at": 5,
+        "past": 5.1,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 400,
+        "past_message": "{\"status_code\":400,\"error\":\"Minimum rating must be in range [0.0,5.0]\",\"version\":\"1147:ba9359ddce2cdc9b169e25076b56f55348d38b94\",\"code\":\"eJwrLkrWTyzI1M9IzEvJSS0q1i9LzMlMSSxJ1Ssq1jUxMQUAx5kLiA==\"}",
+        "verdict": "agrees"
+      },
+      {
+        "page": "search-box",
+        "param": "minimum_rating (forward)",
+        "stated": "between 0.0 and 5.0",
+        "end": "min",
+        "at": 0,
+        "past": -0.1,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 400,
+        "past_message": "{\"status_code\":400,\"error\":\"Minimum rating must be in range [0.0,5.0]\",\"version\":\"1147:ba9359ddce2cdc9b169e25076b56f55348d38b94\",\"code\":\"eJwrLkrWTyzI1M9IzEvJSS0q1i9LzMlMSSxJ1Ssq1jUxMQUAx5kLiA==\"}",
+        "verdict": "agrees"
+      },
+      {
+        "page": "search-box",
+        "param": "limit (category)",
+        "stated": "up to 25",
+        "end": "max",
+        "at": 25,
+        "past": 26,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 400,
+        "past_message": "{\"status_code\":400,\"error\":\"Limit must be in range [1,25]\",\"version\":\"1147:ba9359ddce2cdc9b169e25076b56f55348d38b94\",\"code\":\"eJwrLkrWTyzI1M9IzEvJSS0q1i9LzMlMSSxJ1Ssq1jW2tAQAx6QLkA==\"}",
+        "verdict": "agrees"
+      },
+      {
+        "page": "search-box",
+        "param": "radius (category)",
+        "stated": "between 0.00001 and 10",
+        "end": "max",
+        "at": 10,
+        "past": 10.1,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 400,
+        "past_message": "{\"status_code\":400,\"error\":\"Radius must be in range [0.0001,10]\",\"version\":\"1147:ba9359ddce2cdc9b169e25076b56f55348d38b94\",\"code\":\"eJwrLkrWTyzI1M9IzEvJSS0q1i9LzMlMSSxJ1Ssq1jUxtQAAx54LjA==\"}",
+        "verdict": "agrees"
+      },
+      {
+        "page": "search-box",
+        "param": "radius (category)",
+        "stated": "between 0.00001 and 10",
+        "end": "min",
+        "at": 0.00001,
+        "past": 0.000009,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 400,
+        "past_message": "{\"status_code\":400,\"error\":\"Radius must be in range [0.0001,10]\",\"version\":\"1147:ba9359ddce2cdc9b169e25076b56f55348d38b94\",\"code\":\"eJwrLkrWTyzI1M9IzEvJSS0q1i9LzMlMSSxJ1Ssq1jUxtQAAx54LjA==\"}",
+        "verdict": "agrees"
+      },
+      {
+        "page": "search-box",
+        "param": "limit (reverse)",
+        "stated": "up to 10",
+        "end": "max",
+        "at": 10,
+        "past": 11,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 400,
+        "past_message": "{\"status_code\":400,\"error\":\"Limit must be in range [1,10]\",\"version\":\"1147:ba9359ddce2cdc9b169e25076b56f55348d38b94\",\"code\":\"eJwrLkrWTyzI1M9IzEvJSS0q1i9LzMlMSSxJ1Ssq1jW2NAIAx50LiQ==\"}",
+        "verdict": "agrees"
+      },
+      {
+        "page": "directions (EV)",
+        "param": "ev_min_charge_at_destination",
+        "stated": "must be between 0 and ev_max_charge (80000 here)",
+        "end": "max",
+        "at": 80000,
+        "past": 80001,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 200,
+        "past_message": null,
+        "verdict": "api looser"
+      },
+      {
+        "page": "directions (EV)",
+        "param": "ev_min_charge_at_destination",
+        "stated": "must be between 0 and ev_max_charge (80000 here)",
+        "end": "min",
+        "at": 0,
+        "past": -1,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "must be >= 0",
+        "verdict": "agrees"
+      },
+      {
+        "page": "directions (EV)",
+        "param": "ev_min_charge_at_charging_station",
+        "stated": "must be between 0 and ev_max_charge (80000 here)",
+        "end": "max",
+        "at": 80000,
+        "past": 80001,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 200,
+        "past_message": null,
+        "verdict": "api looser"
+      },
+      {
+        "page": "directions (EV)",
+        "param": "ev_min_charge_at_charging_station",
+        "stated": "must be between 0 and ev_max_charge (80000 here)",
+        "end": "min",
+        "at": 0,
+        "past": -1,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "must be >= 0",
+        "verdict": "agrees"
+      },
+      {
+        "page": "directions (EV)",
+        "param": "ev_min_energy_increment_at_charging_station",
+        "stated": "must be between 0 and ev_max_charge (80000 here)",
+        "end": "max",
+        "at": 80000,
+        "past": 80001,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 200,
+        "past_message": null,
+        "verdict": "api looser"
+      },
+      {
+        "page": "directions (EV)",
+        "param": "ev_min_energy_increment_at_charging_station",
+        "stated": "must be between 0 and ev_max_charge (80000 here)",
+        "end": "min",
+        "at": 0,
+        "past": -1,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "must be >= 0",
+        "verdict": "agrees"
+      },
+      {
+        "page": "directions (EV)",
+        "param": "ev_regeneration_efficiency",
+        "stated": "allowed range is [0.0, 1.0]",
+        "end": "max",
+        "at": 1,
+        "past": 1.1,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "must be <= 1",
+        "verdict": "agrees"
+      },
+      {
+        "page": "directions (EV)",
+        "param": "ev_regeneration_efficiency",
+        "stated": "allowed range is [0.0, 1.0]",
+        "end": "min",
+        "at": 0,
+        "past": -0.1,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "must be >= 0",
+        "verdict": "agrees"
+      },
+      {
+        "page": "directions (EV)",
+        "param": "auxiliary_consumption",
+        "stated": "the minimum value is 0 watts, the maximum value is 10000 watts",
+        "end": "max",
+        "at": 10000,
+        "past": 10001,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "must be <= 10000",
+        "verdict": "agrees"
+      },
+      {
+        "page": "directions (EV)",
+        "param": "auxiliary_consumption",
+        "stated": "the minimum value is 0 watts, the maximum value is 10000 watts",
+        "end": "min",
+        "at": 0,
+        "past": -1,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "must be >= 0",
+        "verdict": "agrees"
+      },
+      {
+        "page": "directions (EV)",
+        "param": "ev_pre_conditioning_time",
+        "stated": "the minimum value is 0 minutes, the maximum value is 240 minutes",
+        "end": "max",
+        "at": 240,
+        "past": 241,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 200,
+        "past_message": null,
+        "verdict": "api looser"
+      },
+      {
+        "page": "directions (EV)",
+        "param": "ev_pre_conditioning_time",
+        "stated": "the minimum value is 0 minutes, the maximum value is 240 minutes",
+        "end": "min",
+        "at": 0,
+        "past": -1,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "ev_pre_conditioning_time must be positive",
+        "verdict": "agrees"
+      },
+      {
+        "page": "directions (EV)",
+        "param": "ev_exclude_station_ids",
+        "stated": "a limit of 40 IDs",
+        "end": "max",
+        "at": 40,
+        "past": 41,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 200,
+        "past_message": null,
+        "verdict": "api looser"
+      },
+      {
+        "page": "directions (EV)",
+        "param": "ev_exclude_charge_point_provider_ids",
+        "stated": "the maximum number of IDs in a query is 40",
+        "end": "max",
+        "at": 40,
+        "past": 41,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 200,
+        "past_message": null,
+        "verdict": "api looser"
+      },
+      {
+        "page": "directions (EV)",
+        "param": "ev_prefer_charge_point_provider_ids",
+        "stated": "the maximum number of IDs in a query is 30",
+        "end": "max",
+        "at": 30,
+        "past": 31,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 200,
+        "past_message": null,
+        "verdict": "api looser"
+      },
+      {
+        "page": "directions (EV)",
+        "param": "ev_prefer_charge_point_provider_weights",
+        "stated": "each element is a number in (0.0, 1.0]",
+        "end": "max",
+        "at": 1,
+        "past": 1.1,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 200,
+        "past_message": null,
+        "verdict": "api looser"
+      },
+      {
+        "page": "directions (EV)",
+        "param": "ev_prefer_charge_point_provider_weights",
+        "stated": "each element is a number in (0.0, 1.0]",
+        "end": "min",
+        "at": 0.01,
+        "past": 0,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 200,
+        "past_message": null,
+        "verdict": "api looser"
+      },
+      {
+        "page": "directions (EV)",
+        "param": "waypoints.charging_station_power",
+        "stated": "must be greater than or equal to 1000 watts",
+        "end": "min",
+        "at": 1000,
+        "past": 999,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 200,
+        "past_message": null,
+        "verdict": "api looser"
+      },
+      {
+        "page": "directions (EV)",
+        "param": "waypoints.minimal_stop_time",
+        "stated": "the valid integer range is 0 through 7200",
+        "end": "max",
+        "at": 7200,
+        "past": 7201,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 422,
+        "past_message": "waypoints.minimal_stop_time values must be numbers between 0 and 7200 seconds",
+        "verdict": "agrees"
+      },
+      {
+        "page": "fonts",
+        "param": "font",
+        "stated": "a maximum of 10 comma-separated font names",
+        "end": "max",
+        "at": 10,
+        "past": 11,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 400,
+        "past_message": "Maximum of 10 font faces permitted",
+        "verdict": "agrees"
+      },
+      {
+        "page": "fonts",
+        "param": "start",
+        "stated": "a multiple of 256 between 0 and 65280",
+        "end": "max",
+        "at": 65280,
+        "past": 65536,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 404,
+        "past_message": "Font in font stack \"DIN Pro Regular\" not found",
+        "verdict": "agrees"
+      },
+      {
+        "page": "fonts",
+        "param": "start",
+        "stated": "a multiple of 256 between 0 and 65280",
+        "end": "min",
+        "at": 0,
+        "past": -256,
+        "at_status": 200,
+        "at_message": null,
+        "past_status": 400,
+        "past_message": "Invalid Range",
+        "verdict": "agrees"
+      },
+      {
+        "page": "ev-charge-finder",
+        "param": "distance",
+        "stated": "up to 100 kilometers",
+        "end": "max",
+        "at": 100,
+        "past": 101,
+        "at_status": 401,
+        "at_message": "{\"status_message\": \"invalid access token\", \"timestamp\":\"2026-11-25T18:09:59Z\"}",
+        "past_status": 401,
+        "past_message": "{\"status_message\": \"invalid access token\", \"timestamp\":\"2026-11-25T18:09:59Z\"}",
+        "verdict": "untested (no access)"
+      },
+      {
+        "page": "ev-charge-finder",
+        "param": "limit",
+        "stated": "up to 100",
+        "end": "max",
+        "at": 100,
+        "past": 101,
+        "at_status": 401,
+        "at_message": "{\"status_message\": \"invalid access token\", \"timestamp\":\"2026-11-25T18:09:59Z\"}",
+        "past_status": 401,
+        "past_message": "{\"status_message\": \"invalid access token\", \"timestamp\":\"2026-11-25T18:09:59Z\"}",
+        "verdict": "untested (no access)"
+      },
+      {
+        "page": "ev-charge-finder",
+        "param": "latitude",
+        "stated": "between -90.0 and 90.0",
+        "end": "max",
+        "at": 90,
+        "past": 90.1,
+        "at_status": 401,
+        "at_message": "{\"status_message\": \"invalid access token\", \"timestamp\":\"2026-11-25T18:10:00Z\"}",
+        "past_status": 401,
+        "past_message": "{\"status_message\": \"invalid access token\", \"timestamp\":\"2026-11-25T18:10:00Z\"}",
+        "verdict": "untested (no access)"
+      },
+      {
+        "page": "ev-charge-finder",
+        "param": "longitude",
+        "stated": "between -180.0 and 180.0",
+        "end": "max",
+        "at": 180,
+        "past": 180.1,
+        "at_status": 401,
+        "at_message": "{\"status_message\": \"invalid access token\", \"timestamp\":\"2026-11-25T18:10:00Z\"}",
+        "past_status": 401,
+        "past_message": "{\"status_message\": \"invalid access token\", \"timestamp\":\"2026-11-25T18:10:00Z\"}",
+        "verdict": "untested (no access)"
+      }
+    ],
+    "left_out": [
+      [
+        "datasets, uploads, Mapbox Tiling Service, user feedback, tokens",
+        "need a secret token, and most write"
+      ],
+      [
+        "search-box /suggest (q, limit, radius)",
+        "billed by session"
+      ],
+      [
+        "geocoding-v5 batch (50 queries, 20 words, 256 characters)",
+        "batch needs the paid permanent endpoint"
+      ],
+      [
+        "ev-charge-finder origin_latitude / origin_longitude, and the lower ends of its ranges",
+        "the same check as the upper ends, left out to save requests"
+      ],
+      [
+        "static-images auto and padding",
+        "the numbers describe the default padding, not a limit on a value"
+      ]
+    ]
+  },
+  "screenshots": [],
+  "use": {
+    "map_loads": 0,
+    "web_service_requests": 209,
+    "calls": [
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/180,52.52,1,0,0/100x100?access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/180.5,52.52,1,0,0/100x100?access_token=<token>",
+        "message": "Longitude must be between -180-180."
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/-180,52.52,1,0,0/100x100?access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/-180.5,52.52,1,0,0/100x100?access_token=<token>",
+        "message": "Longitude must be between -180-180."
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/13.405,85.0511,1,0,0/100x100?access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/13.405,85.06,1,0,0/100x100?access_token=<token>",
+        "message": "Latitude must be between -85.0511-85.0511."
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/13.405,-85.0511,1,0,0/100x100?access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/13.405,-85.06,1,0,0/100x100?access_token=<token>",
+        "message": "Latitude must be between -85.0511-85.0511."
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/13.405,52.52,22,0,0/100x100?access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/13.405,52.52,22.5,0,0/100x100?access_token=<token>",
+        "message": "Zoom level must be between 0-22."
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/13.405,52.52,0,0,0/100x100?access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/13.405,52.52,-1,0,0/100x100?access_token=<token>",
+        "message": "Zoom level must be between 0-22."
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/13.405,52.52,10,0,0/1280x100?access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/13.405,52.52,10,0,0/1281x100?access_token=<token>",
+        "message": "Width must be between 1-1280."
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/13.405,52.52,10,0,0/1x100?access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/13.405,52.52,10,0,0/0x100?access_token=<token>",
+        "message": "Width must be between 1-1280."
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/13.405,52.52,10,0,0/100x1280?access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/13.405,52.52,10,0,0/100x1281?access_token=<token>",
+        "message": "Height must be between 1-1280."
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/13.405,52.52,10,0,0/100x1?access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/13.405,52.52,10,0,0/100x0?access_token=<token>",
+        "message": "Height must be between 1-1280."
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/13.405,52.52,10,360,0/100x100?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/13.405,52.52,10,361,0/100x100?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/13.405,52.52,10,0,0/100x100?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/13.405,52.52,10,-1,0/100x100?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/13.405,52.52,10,0,60/100x100?access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/13.405,52.52,10,0,61/100x100?access_token=<token>",
+        "message": "Pitch must be between 0-60."
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/13.405,52.52,10,0,0/100x100?access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/styles/v1/mapbox/streets-v12/static/13.405,52.52,10,0,-1/100x100?access_token=<token>",
+        "message": "Pitch must be between 0-60."
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-streets-v8/tilequery/13.405,52.52.json?radius=500&limit=50&access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-streets-v8/tilequery/13.405,52.52.json?radius=500&limit=51&access_token=<token>",
+        "message": "options.limit must be a number between 1 and 50"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-streets-v8/tilequery/13.405,52.52.json?radius=500&limit=1&access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-streets-v8/tilequery/13.405,52.52.json?radius=500&limit=0&access_token=<token>",
+        "message": "options.limit must be a number between 1 and 50"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8"
+      },
+      {
+        "status": 400,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8",
+        "message": "26 tilesets is greater than compositing limit of 25"
+      },
+      {
+        "status": 200,
+        "type": "application/vnd.mapbox-vector-tile;pmtile=true",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8"
+      },
+      {
+        "status": 400,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8,mapbox.mapbox-streets-v8",
+        "message": "16 tilesets is greater than compositing limit of 15"
+      },
+      {
+        "status": 200,
+        "type": "image/jpeg",
+        "url": "https://api.mapbox.com/v4/mapbox.satellite,mapbox.satellite,mapbox.satellite,mapbox.satellite,mapbox.satellite,mapbox.satellite,mapbox.satellite,mapbox.satellite,mapbox.satellite,mapbox.satellite,mapb"
+      },
+      {
+        "status": 400,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/v4/mapbox.satellite,mapbox.satellite,mapbox.satellite,mapbox.satellite,mapbox.satellite,mapbox.satellite,mapbox.satellite,mapbox.satellite,mapbox.satellite,mapbox.satellite,mapb",
+        "message": "16 tilesets is greater than compositing limit of 15"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.37000,52.5163;13.37090,52.5163;13.37180,52.5163;13.37270,52.5163;13.37360,52.5163;13.37450,52.5163;13.37540,52.5163;13.37630,52.5163;13.37720,52."
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.37000,52.5163;13.37090,52.5163;13.37180,52.5163;13.37270,52.5163;13.37360,52.5163;13.37450,52.5163;13.37540,52.5163;13.37630,52.5163;13.37720,52.",
+        "message": "Too many coordinates; maximum number of coordinates is 25"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.37000,52.5163;13.37090,52.5163?access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.37000,52.5163?access_token=<token>",
+        "message": "Not enough input coordinates given; minimum number of coordinates is 2."
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?avoid_maneuver_radius=1000&access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?avoid_maneuver_radius=1001&access_token=<token>",
+        "message": "must be <= 1000"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?avoid_maneuver_radius=1&access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?avoid_maneuver_radius=0&access_token=<token>",
+        "message": "must be >= 1"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?bearings=360%2C45%3B&access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?bearings=361%2C45%3B&access_token=<token>",
+        "message": "Number of bearing elements must match number of coordinates provided."
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?bearings=0%2C45%3B&access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?bearings=-1%2C45%3B&access_token=<token>",
+        "message": "Number of bearing elements must match number of coordinates provided."
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?exclude=point%2813.300+52.60%29%2Cpoint%2813.301+52.60%29%2Cpoint%2813.302+52.60%29%2Cpoint%2813.303+52.60%29%2Cpoin"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?exclude=point%2813.300+52.60%29%2Cpoint%2813.301+52.60%29%2Cpoint%2813.302+52.60%29%2Cpoint%2813.303+52.60%29%2Cpoin",
+        "message": "May only provide at most 50 exclude locations"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?steps=true&waypoint_names=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?steps=true&waypoint_names=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?waypoint_external_ids=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?waypoint_external_ids=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "message": "Each waypoint external_id must be at most 128 characters"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/walking/13.3777,52.5163;13.4050,52.5200?walking_speed=6.94&access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/walking/13.3777,52.5163;13.4050,52.5200?walking_speed=6.95&access_token=<token>",
+        "message": "Invalid walking_speed value"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/walking/13.3777,52.5163;13.4050,52.5200?walking_speed=0.14&access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/walking/13.3777,52.5163;13.4050,52.5200?walking_speed=0.13&access_token=<token>",
+        "message": "Invalid walking_speed value"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/walking/13.3777,52.5163;13.4050,52.5200?walkway_bias=1&access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/walking/13.3777,52.5163;13.4050,52.5200?walkway_bias=1.1&access_token=<token>",
+        "message": "Invalid walking_bias value"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/walking/13.3777,52.5163;13.4050,52.5200?walkway_bias=-1&access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/walking/13.3777,52.5163;13.4050,52.5200?walkway_bias=-1.1&access_token=<token>",
+        "message": "Invalid walking_bias value"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/walking/13.3777,52.5163;13.4050,52.5200?alley_bias=1&access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/walking/13.3777,52.5163;13.4050,52.5200?alley_bias=1.1&access_token=<token>",
+        "message": "Invalid alley_bias value"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/walking/13.3777,52.5163;13.4050,52.5200?alley_bias=-1&access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/walking/13.3777,52.5163;13.4050,52.5200?alley_bias=-1.1&access_token=<token>",
+        "message": "Invalid alley_bias value"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?max_height=10&access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?max_height=10.1&access_token=<token>",
+        "message": "Invalid max_height value"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?max_height=0&access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?max_height=-0.1&access_token=<token>",
+        "message": "Invalid max_height value"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?max_width=10&access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?max_width=10.1&access_token=<token>",
+        "message": "Invalid max_width value"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?max_width=0&access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?max_width=-0.1&access_token=<token>",
+        "message": "Invalid max_width value"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?max_weight=100&access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?max_weight=100.1&access_token=<token>",
+        "message": "Invalid max_weight value"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?max_weight=0&access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;13.4050,52.5200?max_weight=-0.1&access_token=<token>",
+        "message": "Invalid max_weight value"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/isochrone/v1/mapbox/driving/13.3777,52.5163?contours_minutes=60&access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/isochrone/v1/mapbox/driving/13.3777,52.5163?contours_minutes=61&access_token=<token>",
+        "message": "contours_minutes must be an integer between 1 and 60"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/isochrone/v1/mapbox/driving/13.3777,52.5163?contours_minutes=5%2C10%2C15%2C20&access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/isochrone/v1/mapbox/driving/13.3777,52.5163?contours_minutes=5%2C10%2C15%2C20%2C25&access_token=<token>",
+        "message": "May only provide at most 4 contours_minutes"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/isochrone/v1/mapbox/driving/13.3777,52.5163?contours_meters=100000&access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/isochrone/v1/mapbox/driving/13.3777,52.5163?contours_meters=100001&access_token=<token>",
+        "message": "contours_meters must be an integer between 1 and 100000"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/isochrone/v1/mapbox/driving/13.3777,52.5163?contours_meters=1000%2C2000%2C3000%2C4000&access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/isochrone/v1/mapbox/driving/13.3777,52.5163?contours_meters=1000%2C2000%2C3000%2C4000%2C5000&access_token=<token>",
+        "message": "May only provide at most 4 contours_meters"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/isochrone/v1/mapbox/driving/13.3777,52.5163?contours_minutes=5&denoise=1&access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/isochrone/v1/mapbox/driving/13.3777,52.5163?contours_minutes=5&denoise=1.1&access_token=<token>",
+        "message": "must be <= 1"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/isochrone/v1/mapbox/driving/13.3777,52.5163?contours_minutes=5&denoise=0&access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/isochrone/v1/mapbox/driving/13.3777,52.5163?contours_minutes=5&denoise=-0.1&access_token=<token>",
+        "message": "must be >= 0"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/matching/v5/mapbox/driving/13.37770,52.517;13.37790,52.517;13.37810,52.517;13.37830,52.517;13.37850,52.517;13.37870,52.517;13.37890,52.517;13.37910,52.517;13.37930,52.517;13.379"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/matching/v5/mapbox/driving/13.37770,52.517;13.37790,52.517;13.37810,52.517;13.37830,52.517;13.37850,52.517;13.37870,52.517;13.37890,52.517;13.37910,52.517;13.37930,52.517;13.379",
+        "message": "Too many coordinates; maximum number of coordinates is 100"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/matching/v5/mapbox/driving/13.37770,52.517;13.37790,52.517?access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/matching/v5/mapbox/driving/13.37770,52.517?access_token=<token>",
+        "message": "Not enough input coordinates given; minimum number of coordinates is 2."
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/matching/v5/mapbox/driving/13.37770,52.517;13.37790,52.517;13.37810,52.517?radiuses=50%3B50%3B50&access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/matching/v5/mapbox/driving/13.37770,52.517;13.37790,52.517;13.37810,52.517?radiuses=50.1%3B50.1%3B50.1&access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/matching/v5/mapbox/driving/13.37770,52.517;13.37790,52.517;13.37810,52.517?radiuses=0%3B0%3B0&access_token=<token>",
+        "message": "Radius values must be an integer distance in meters greater than 0 or unlimited"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/matching/v5/mapbox/driving/13.37770,52.517;13.37790,52.517;13.37810,52.517?radiuses=-1%3B-1%3B-1&access_token=<token>",
+        "message": "Radius values must be an integer distance in meters greater than 0 or unlimited"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/matching/v5/mapbox/driving/13.37770,52.517;13.37790,52.517;13.37810,52.517?steps=true&waypoint_names=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/matching/v5/mapbox/driving/13.37770,52.517;13.37790,52.517;13.37810,52.517?steps=true&waypoint_names=aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions-matrix/v1/mapbox/driving/13.37000,52.5163;13.37090,52.5163;13.37180,52.5163;13.37270,52.5163;13.37360,52.5163;13.37450,52.5163;13.37540,52.5163;13.37630,52.5163;13.37"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions-matrix/v1/mapbox/driving/13.37000,52.5163;13.37090,52.5163;13.37180,52.5163;13.37270,52.5163;13.37360,52.5163;13.37450,52.5163;13.37540,52.5163;13.37630,52.5163;13.37",
+        "message": "Too many coordinates; maximum number of coordinates is 25."
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions-matrix/v1/mapbox/driving/13.37000,52.5163;13.37090,52.5163?access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions-matrix/v1/mapbox/driving/13.37000,52.5163?access_token=<token>",
+        "message": "Not enough input coordinates given; minimum number of coordinates is 2."
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions-matrix/v1/mapbox/driving-traffic/13.37000,52.5163;13.37090,52.5163;13.37180,52.5163;13.37270,52.5163;13.37360,52.5163;13.37450,52.5163;13.37540,52.5163;13.37630,52.51"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions-matrix/v1/mapbox/driving-traffic/13.37000,52.5163;13.37090,52.5163;13.37180,52.5163;13.37270,52.5163;13.37360,52.5163;13.37450,52.5163;13.37540,52.5163;13.37630,52.51",
+        "message": "Too many coordinates; maximum number of coordinates is 10."
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions-matrix/v1/mapbox/driving/13.37000,52.5163;13.37090,52.5163?bearings=360%2C45%3B&access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions-matrix/v1/mapbox/driving/13.37000,52.5163;13.37090,52.5163?bearings=361%2C45%3B&access_token=<token>",
+        "message": "Bearings must be direction,range integer with 0 <= direction <= 360 and 0 <= range <= 180"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions-matrix/v1/mapbox/driving/13.37000,52.5163;13.37090,52.5163?bearings=0%2C45%3B&access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions-matrix/v1/mapbox/driving/13.37000,52.5163;13.37090,52.5163?bearings=-1%2C45%3B&access_token=<token>",
+        "message": "Bearings must be direction,range integer with 0 <= direction <= 360 and 0 <= range <= 180"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/optimized-trips/v1/mapbox/driving/13.37000,52.5163;13.37090,52.5163;13.37180,52.5163;13.37270,52.5163;13.37360,52.5163;13.37450,52.5163;13.37540,52.5163;13.37630,52.5163;13.3772"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/optimized-trips/v1/mapbox/driving/13.37000,52.5163;13.37090,52.5163;13.37180,52.5163;13.37270,52.5163;13.37360,52.5163;13.37450,52.5163;13.37540,52.5163;13.37630,52.5163;13.3772",
+        "message": "Too many coordinates; maximum number of coordinates is 12."
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/optimized-trips/v1/mapbox/driving/13.37000,52.5163;13.37090,52.5163?access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/optimized-trips/v1/mapbox/driving/13.37000,52.5163?access_token=<token>",
+        "message": "Not enough input coordinates given; minimum number of coordinates is 2."
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/optimized-trips/v1/mapbox/driving/13.37000,52.5163;13.37090,52.5163?bearings=360%2C45%3B&access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/optimized-trips/v1/mapbox/driving/13.37000,52.5163;13.37090,52.5163?bearings=361%2C45%3B&access_token=<token>",
+        "message": "Bearings must be direction,range integer with 0 <= direction <= 360 and 0 <= range <= 180"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/optimized-trips/v1/mapbox/driving/13.37000,52.5163;13.37090,52.5163?bearings=0%2C45%3B&access_token=<token>"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/optimized-trips/v1/mapbox/driving/13.37000,52.5163;13.37090,52.5163?bearings=-1%2C45%3B&access_token=<token>",
+        "message": "Bearings must be direction,range integer with 0 <= direction <= 360 and 0 <= range <= 180"
+      },
+      {
+        "status": 200,
+        "type": "application/vnd.geo+json; charset=utf-8",
+        "url": "https://api.mapbox.com/search/geocode/v6/forward?q=main+street+berlin+cafe+park+main+street+berlin+cafe+park+main+street+berlin+cafe+park+main+street+berlin+cafe+park&limit=1&access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "application/vnd.geo+json; charset=utf-8",
+        "url": "https://api.mapbox.com/search/geocode/v6/forward?q=main+street+berlin+cafe+park+main+street+berlin+cafe+park+main+street+berlin+cafe+park+main+street+berlin+cafe+park+main&limit=1&access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "application/vnd.geo+json; charset=utf-8",
+        "url": "https://api.mapbox.com/search/geocode/v6/forward?q=unter+den+linden+berlin+germany+unter+den+linden+berlin+germany+unter+den+linden+berlin+germany+unter+den+linden+berlin+germany+unter+den+linden+berl"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/search/geocode/v6/forward?q=unter+den+linden+berlin+germany+unter+den+linden+berlin+germany+unter+den+linden+berlin+germany+unter+den+linden+berlin+germany+unter+den+linden+berl",
+        "message": "Query too long - 257/256 characters"
+      },
+      {
+        "status": 200,
+        "type": "application/vnd.geo+json; charset=utf-8",
+        "url": "https://api.mapbox.com/search/geocode/v6/forward?q=berlin&limit=10&access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "application/vnd.geo+json; charset=utf-8",
+        "url": "https://api.mapbox.com/search/geocode/v6/forward?q=berlin&limit=11&access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "application/vnd.geo+json; charset=utf-8",
+        "url": "https://api.mapbox.com/search/geocode/v6/reverse?longitude=13.405&latitude=52.52&types=address&limit=5&access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "application/vnd.geo+json; charset=utf-8",
+        "url": "https://api.mapbox.com/search/geocode/v6/reverse?longitude=13.405&latitude=52.52&types=address&limit=6&access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "application/vnd.geo+json; charset=utf-8",
+        "url": "https://api.mapbox.com/geocoding/v5/mapbox.places/main%20street%20berlin%20cafe%20park%20main%20street%20berlin%20cafe%20park%20main%20street%20berlin%20cafe%20park%20main%20street%20berlin%20cafe%20p"
+      },
+      {
+        "status": 200,
+        "type": "application/vnd.geo+json; charset=utf-8",
+        "url": "https://api.mapbox.com/geocoding/v5/mapbox.places/main%20street%20berlin%20cafe%20park%20main%20street%20berlin%20cafe%20park%20main%20street%20berlin%20cafe%20park%20main%20street%20berlin%20cafe%20p"
+      },
+      {
+        "status": 200,
+        "type": "application/vnd.geo+json; charset=utf-8",
+        "url": "https://api.mapbox.com/geocoding/v5/mapbox.places/unter%20den%20linden%20berlin%20germany%20unter%20den%20linden%20berlin%20germany%20unter%20den%20linden%20berlin%20germany%20unter%20den%20linden%20b"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/geocoding/v5/mapbox.places/unter%20den%20linden%20berlin%20germany%20unter%20den%20linden%20berlin%20germany%20unter%20den%20linden%20berlin%20germany%20unter%20den%20linden%20b",
+        "message": "Query too long - 257/256 characters"
+      },
+      {
+        "status": 200,
+        "type": "application/vnd.geo+json; charset=utf-8",
+        "url": "https://api.mapbox.com/geocoding/v5/mapbox.places/berlin.json?limit=10&access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "application/vnd.geo+json; charset=utf-8",
+        "url": "https://api.mapbox.com/geocoding/v5/mapbox.places/berlin.json?limit=11&access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "application/vnd.geo+json; charset=utf-8",
+        "url": "https://api.mapbox.com/geocoding/v5/mapbox.places/13.405,52.52.json?types=address&limit=10&access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "application/vnd.geo+json; charset=utf-8",
+        "url": "https://api.mapbox.com/geocoding/v5/mapbox.places/13.405,52.52.json?types=address&limit=11&access_token=<token>"
+      },
+      {
+        "status": 400,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/search/searchbox/v1/forward?q=unter+den+linden+berlin+germany+unter+den+linden+berlin+germany+unter+den+linden+berlin+germany+unter+den+linden+berlin+germany+unter+den+linden+be",
+        "message": "Query exceeded character limit of 200"
+      },
+      {
+        "status": 400,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/search/searchbox/v1/forward?q=unter+den+linden+berlin+germany+unter+den+linden+berlin+germany+unter+den+linden+berlin+germany+unter+den+linden+berlin+germany+unter+den+linden+be",
+        "message": "Query exceeded character limit of 200"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/search/searchbox/v1/forward?q=cafe&proximity=13.405%2C52.52&limit=10&access_token=<token>"
+      },
+      {
+        "status": 400,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/search/searchbox/v1/forward?q=cafe&proximity=13.405%2C52.52&limit=11&access_token=<token>",
+        "message": "[object Object]"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/search/searchbox/v1/forward?q=cafe&proximity=13.405%2C52.52&radius=10&limit=1&access_token=<token>"
+      },
+      {
+        "status": 400,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/search/searchbox/v1/forward?q=cafe&proximity=13.405%2C52.52&radius=10.1&limit=1&access_token=<token>",
+        "message": "[object Object]"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/search/searchbox/v1/forward?q=cafe&proximity=13.405%2C52.52&radius=0.00001&limit=1&access_token=<token>"
+      },
+      {
+        "status": 400,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/search/searchbox/v1/forward?q=cafe&proximity=13.405%2C52.52&radius=0.000009&limit=1&access_token=<token>",
+        "message": "[object Object]"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/search/searchbox/v1/forward?q=cafe&proximity=13.405%2C52.52&minimum_rating=5&limit=1&access_token=<token>"
+      },
+      {
+        "status": 400,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/search/searchbox/v1/forward?q=cafe&proximity=13.405%2C52.52&minimum_rating=5.1&limit=1&access_token=<token>",
+        "message": "[object Object]"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/search/searchbox/v1/forward?q=cafe&proximity=13.405%2C52.52&minimum_rating=0&limit=1&access_token=<token>"
+      },
+      {
+        "status": 400,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/search/searchbox/v1/forward?q=cafe&proximity=13.405%2C52.52&minimum_rating=-0.1&limit=1&access_token=<token>",
+        "message": "[object Object]"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/search/searchbox/v1/category/cafe?proximity=13.405%2C52.52&limit=25&access_token=<token>"
+      },
+      {
+        "status": 400,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/search/searchbox/v1/category/cafe?proximity=13.405%2C52.52&limit=26&access_token=<token>",
+        "message": "[object Object]"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/search/searchbox/v1/category/cafe?proximity=13.405%2C52.52&radius=10&limit=1&access_token=<token>"
+      },
+      {
+        "status": 400,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/search/searchbox/v1/category/cafe?proximity=13.405%2C52.52&radius=10.1&limit=1&access_token=<token>",
+        "message": "[object Object]"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/search/searchbox/v1/category/cafe?proximity=13.405%2C52.52&radius=0.00001&limit=1&access_token=<token>"
+      },
+      {
+        "status": 400,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/search/searchbox/v1/category/cafe?proximity=13.405%2C52.52&radius=0.000009&limit=1&access_token=<token>",
+        "message": "[object Object]"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/search/searchbox/v1/reverse?longitude=13.405&latitude=52.52&limit=10&access_token=<token>"
+      },
+      {
+        "status": 400,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/search/searchbox/v1/reverse?longitude=13.405&latitude=52.52&limit=11&access_token=<token>",
+        "message": "[object Object]"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu",
+        "message": "must be >= 0"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu",
+        "message": "must be >= 0"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu",
+        "message": "must be >= 0"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu",
+        "message": "must be <= 1"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu",
+        "message": "must be >= 0"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu",
+        "message": "must be <= 10000"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu",
+        "message": "must be >= 0"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu",
+        "message": "ev_pre_conditioning_time must be positive"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.9671,50.5000;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energ"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.9671,50.5000;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energ"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.9671,50.5000;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energ"
+      },
+      {
+        "status": 422,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.9671,50.5000;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energ",
+        "message": "waypoints.minimal_stop_time values must be numbers between 0 and 7200 seconds"
+      },
+      {
+        "status": 200,
+        "type": "application/x-protobuf",
+        "url": "https://api.mapbox.com/fonts/v1/mapbox/DIN%20Pro%20Regular%2CDIN%20Pro%20Regular%2CDIN%20Pro%20Regular%2CDIN%20Pro%20Regular%2CDIN%20Pro%20Regular%2CDIN%20Pro%20Regular%2CDIN%20Pro%20Regular%2CDIN%20P"
+      },
+      {
+        "status": 400,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/fonts/v1/mapbox/DIN%20Pro%20Regular%2CDIN%20Pro%20Regular%2CDIN%20Pro%20Regular%2CDIN%20Pro%20Regular%2CDIN%20Pro%20Regular%2CDIN%20Pro%20Regular%2CDIN%20Pro%20Regular%2CDIN%20P",
+        "message": "Maximum of 10 font faces permitted"
+      },
+      {
+        "status": 200,
+        "type": "application/x-protobuf",
+        "url": "https://api.mapbox.com/fonts/v1/mapbox/DIN%20Pro%20Regular/65280-65535.pbf?access_token=<token>"
+      },
+      {
+        "status": 404,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/fonts/v1/mapbox/DIN%20Pro%20Regular/65536-65791.pbf?access_token=<token>",
+        "message": "Font in font stack \"DIN Pro Regular\" not found"
+      },
+      {
+        "status": 200,
+        "type": "application/x-protobuf",
+        "url": "https://api.mapbox.com/fonts/v1/mapbox/DIN%20Pro%20Regular/0-255.pbf?access_token=<token>"
+      },
+      {
+        "status": 400,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/fonts/v1/mapbox/DIN%20Pro%20Regular/-256--1.pbf?access_token=<token>",
+        "message": "Invalid Range"
+      },
+      {
+        "status": 401,
+        "type": "application/json",
+        "url": "https://api.mapbox.com/ev/v1/locations?latitude=52.52&longitude=13.405&distance=100&access_token=<token>",
+        "message": "{\"status_message\": \"invalid access token\", \"timestamp\":\"2026-11-25T18:09:59Z\"}"
+      },
+      {
+        "status": 401,
+        "type": "application/json",
+        "url": "https://api.mapbox.com/ev/v1/locations?latitude=52.52&longitude=13.405&distance=101&access_token=<token>",
+        "message": "{\"status_message\": \"invalid access token\", \"timestamp\":\"2026-11-25T18:09:59Z\"}"
+      },
+      {
+        "status": 401,
+        "type": "application/json",
+        "url": "https://api.mapbox.com/ev/v1/locations?latitude=52.52&longitude=13.405&limit=100&access_token=<token>",
+        "message": "{\"status_message\": \"invalid access token\", \"timestamp\":\"2026-11-25T18:09:59Z\"}"
+      },
+      {
+        "status": 401,
+        "type": "application/json",
+        "url": "https://api.mapbox.com/ev/v1/locations?latitude=52.52&longitude=13.405&limit=101&access_token=<token>",
+        "message": "{\"status_message\": \"invalid access token\", \"timestamp\":\"2026-11-25T18:09:59Z\"}"
+      },
+      {
+        "status": 401,
+        "type": "application/json",
+        "url": "https://api.mapbox.com/ev/v1/locations?latitude=90&longitude=13.405&access_token=<token>",
+        "message": "{\"status_message\": \"invalid access token\", \"timestamp\":\"2026-11-25T18:10:00Z\"}"
+      },
+      {
+        "status": 401,
+        "type": "application/json",
+        "url": "https://api.mapbox.com/ev/v1/locations?latitude=90.1&longitude=13.405&access_token=<token>",
+        "message": "{\"status_message\": \"invalid access token\", \"timestamp\":\"2026-11-25T18:10:00Z\"}"
+      },
+      {
+        "status": 401,
+        "type": "application/json",
+        "url": "https://api.mapbox.com/ev/v1/locations?latitude=52.52&longitude=180&access_token=<token>",
+        "message": "{\"status_message\": \"invalid access token\", \"timestamp\":\"2026-11-25T18:10:00Z\"}"
+      },
+      {
+        "status": 401,
+        "type": "application/json",
+        "url": "https://api.mapbox.com/ev/v1/locations?latitude=52.52&longitude=180.1&access_token=<token>",
+        "message": "{\"status_message\": \"invalid access token\", \"timestamp\":\"2026-11-25T18:10:00Z\"}"
+      },
+      {
+        "status": 200,
+        "type": "application/json; charset=utf-8",
+        "url": "https://api.mapbox.com/directions/v5/mapbox/driving/13.3777,52.5163;11.5820,48.1351?engine=electric&ev_initial_charge=60000&ev_max_charge=80000&ev_connector_types=ccs_combo_type2&energy_consumption_cu"
+      }
+    ]
+  },
+  "seconds": 43.3
+}

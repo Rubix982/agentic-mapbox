@@ -59,7 +59,11 @@ dataset list and the token list answered 404 Not Found and named nothing. The To
   - At a 45° pitch the building turned blue, from (243, 233, 223) to (82, 148, 234).
   - At pitch 0 the same click set the state and nothing on screen changed (whole-frame difference 0), in each of the three
     runs that measured it.
-  - Standard's own layers do read `select`, so I don't know why. It might be specific to software WebGL (T-006).
+  - I first thought the pitch, or software WebGL, was the cause (T-006). It was neither (C-007, C-008). The GPU gave the
+    same result as SwiftShader. And the pitch-0 click had landed on a different building: the Empire State Building
+    (`height` 443.2), which Standard draws as a 3D landmark model. Selected directly, an ordinary building turned 2,430
+    pixels blue at pitch 0 and 5,485 at 45. The Empire State Building turned none at either pitch until `show3dLandmarks`
+    was off, and then 43,603 (`followups/results/select-same-building.json`).
 - **Imports.** A style of my own imported Standard with `lightPreset: 'dusk'` and POI labels off, and put a line
   layer in Standard's `middle` slot; all of it read back. With POI labels off the `poi` featureset still rendered 10
   features, every one a rail or metro stop: those follow `showTransitLabels`.
@@ -79,8 +83,38 @@ dataset list and the token list answered 404 Not Found and named nothing. The To
   - Mont Blanc read 4,792 m (4,806) and Fuji 3,766 m (3,776).
   - The Matterhorn read 3,575 m at its published summit coordinate. The highest point anywhere within 1 km is 4,226 m,
     252 m short of 4,478 m, and 324 m west-south-west of that coordinate.
-  - Since the other four came out close, the shortfall is specific to the Matterhorn in this DEM, not to the method.
-    Why it is low is not known (T-007).
+  - Since the other four came out close, I took the shortfall to be specific to the Matterhorn. It is not (C-009, below).
+
+**C-009: the same DEM on 24 summits.** 12 sharp and 12 broad, named before any was measured, half of each in the Alps.
+Coordinates and heights are from Wikidata (`followups/summits.json`). The zoom-14 tiles were read directly, with no
+GL JS, taking the highest pixel within 1 km of each coordinate (`followups/dem-summits-tiles.mjs`, 118 tiles).
+Pizzo Badile and Dôme du Goûter were left out by the rule set beforehand: their highest pixel lay at the 1 km edge.
+Metres below the published height:
+
+| Sharp | Low by | Broad | Low by |
+|---|---|---|---|
+| Matterhorn | 252 | Mont Blanc | 12 |
+| Weisshorn | 82 | Breithorn | 21 |
+| Dent Blanche | 104 | Alphubel | 21 |
+| Eiger | 9 | Allalinhorn | 29 |
+| Grossglockner | 120 | Titlis | 44 |
+| Grand Teton (US) | 2 | Mount Rainier (US) | −3 |
+| Mount Thielsen (US) | 11 | Mount Whitney (US) | 7 |
+| Mount Assiniboine (Canada) | 62 | Mount Elbert (US) | 5 |
+| Mount Fitz Roy | 549 | Mount Fuji | 23 |
+| Ama Dablam | 148 | Uhuru Peak | 12 |
+| Machhapuchhre | 131 | Mount Elbrus | 29 |
+| **more than 50 m low** | **8 of 11** (median 104) | **more than 50 m low** | **0 of 11** (median 21) |
+
+- Within the Alps, the same region, 4 of the 5 sharp summits read more than 50 m low and none of the 5 broad ones did.
+- The two sharp summits in the US read within 11 m. That fits Mapbox's statement that the DEM "uses multiple data
+  sources depending on the zoom level and location", if the US source is finer, but the page names no sources, so it
+  is a guess.
+- The tile's pixels are 6 to 9.5 m across, so pixel size alone does not explain a 100 m shortfall. The data under the
+  tiles is smoother than the pixels.
+- GL JS reads the same as the tiles (`followups/dem-summits-gl.mjs`, one map load). At 20 of the 24 summits its
+  highest reading within 1 km is within 4 m of the tile's. The other four differ by 6 to 18 m, two higher and two
+  lower. At the Matterhorn's coordinate the tile itself gives 3,587 m; GL JS gave 3,575.
 - **A glTF model.** A 30 × 30 × 90 m box written here as glTF (Y up), added with `addModel` and a `model` layer,
   stood upright and red in Praça do Comércio. The picture changed by 19.6 near it and by 0 elsewhere.
 - **Clip.** A `clip` layer over one Lower Manhattan block cut the rendered buildings in that block's screen box from
@@ -245,8 +279,19 @@ Two tools have inputs that do not do what their names suggest:
 **Two things read from the code that bear on other threads:**
 - The elevation tool does not use Tilequery. It decodes `mapbox.mapbox-terrain-dem-v1` tiles (`.pngraw`) at zoom 14,
   or lower when a path needs more than 48 tiles. So the 50-contour limit from C-002 cannot affect it (T-008 asked
-  whether it would). It reads the same DEM, at the same zoom, that `3d/terrain-heights` found low on the Matterhorn
-  (T-007).
+  whether it would). It reads the same DEM, at the same zoom, that `3d/terrain-heights` found low on the Matterhorn,
+  and C-009 found low on most sharp summits outside the US (T-007).
+- **C-010 called it.** I ran the server from source at that commit and called `elevation_tool` once with C-009's 24
+  summit coordinates (`followups/mcp-elevation.mjs`). npm's latest release, 0.18.1 (2026-11-17), has no elevation tool;
+  it arrived in the source afterwards.
+  - Every answer was within 0.5 m of C-009's own read of the tiles at the same coordinate, so the code reading was
+    right.
+  - For the Matterhorn it answered 3,587 m, 890 m below the published 4,477.5 m. Fitz Roy came back 914 m low and
+    Machhapuchhre 534 m low. 11 of the 24 came back more than 50 m low, two of them broad (Titlis, Elbrus).
+  - These are larger than C-009's shortfalls because the tool reads the one point it is given, not the highest point
+    nearby. A coordinate a little off a sharp summit lands on its slope.
+  - Its text calls the numbers "Ground elevation" and gives no warning. Its schema describes `points` as "places to get
+    the ground elevation of, e.g. a summit, a town or a campsite".
 - `list-public-tokens` calls `GET /tokens/v2/{username}`. In C-002 that answered 404 to this account's public token,
   so with a public token the tool probably cannot list anything. That is untested.
 
@@ -262,3 +307,47 @@ Two tools have inputs that do not do what their names suggest:
 
 **Use.** 14 docs pages, no account involved. 22 web-service requests (the settling run twice, once before the two
 deliberate 400s were marked as such), all read-only. No map loads.
+
+## C-011: the API reference's stated limits, sent at and past each (2026-11-25)
+
+`node tools/api-docs.mjs` reads the parameter tables of all 25 reference pages in docs.mapbox.com/api's sitemap: 103
+endpoints and 619 parameters. A scan of their descriptions found 86 sentences stating a numeric limit, most naming
+both ends of a range.
+
+`followups/docs-limits.mjs` sent 104 limits, one request at each and one just past it (209 requests). The rest of the 86
+sentences were left out by the card's rules: secret token, writes, session billing, or the paid batch endpoint
+(`followups/results/docs-limits.json`, `left_out`). The four EV Charge Finder limits answered 401 to this token, so 100
+were tested.
+
+| | Limits | |
+|---|---|---|
+| The API agrees with the docs | 77 | refuses just past the limit, accepts at it |
+| **The API is stricter than the docs** | **2** | refuses a value the docs allow |
+| The API is looser than the docs | 21 | accepts a value past the stated limit |
+
+**The two where the API is stricter.**
+- Search Box `/forward`'s `q`: the docs say 256 characters, the API says "Query exceeded character limit of 200". This
+  is C-003's finding again.
+- Map Matching's `radiuses`: the docs say "between 0.0 and 50.00", and the API refuses 0 ("must be … greater than 0").
+
+**The 21 where it is looser.** None of them would break code written to the docs.
+- 10 of the 21 are on Directions' EV routing. Its minimum charges and minimum energy increment accept more than
+  `ev_max_charge`. The pre-conditioning time accepts 241 minutes. The three ID lists accept one more ID than their
+  stated maximum, and a station's power accepts 999 W.
+- 6 of the 21 are geocoding (v5 and v6), which accepted 21 words and `limit` one past its maximum. Whether the extra
+  result came back was not checked.
+- The other 5:
+  - Static Images accepted a bearing of 361 and of −1.
+  - Directions and Map Matching accepted 501 characters of `waypoint_names`.
+  - Map Matching accepted a radius of 50.1.
+
+**The API's own messages are not always right either.**
+- Search Box's error says "Radius must be in range [0.0001,10]", but the API accepted 0.00001, the docs' minimum.
+- Directions refused a bearing of 361 with "Number of bearing elements must match number of coordinates provided".
+
+**What this does and does not show.**
+- When code respects a numeric limit the API reference states, the API refused it in 2 of 100 tested limits.
+- C-003's 2 in 8 came from a sample chosen because the docs and the tools disagreed, so it was not a fair rate.
+- This covers numeric limits only: not allowed values, required parameters or types. C-003's other docs error, a
+  Static Images overlay the docs call required, is of the kind not covered.
+- It covers only what a public token reaches with GET requests: none of the account APIs and nothing that writes.

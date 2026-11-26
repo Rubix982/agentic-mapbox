@@ -1,8 +1,13 @@
 // Run the held-out GL JS tasks (evals/tasks/tasks.md) with Mapbox's Agent Skills and without, and score each first page.
 //
-//   node evals/run_eval.mjs [--set tasks] [--tasks 1-10] [--arms with,without] [--runs 1] [--model claude-opus-5-5] [--max-turns 40]
+//   node evals/run_eval.mjs [--set tasks] [--tasks 1-10 | 2,3,5] [--arms with,without] [--runs 1] [--model claude-opus-5-5] [--max-turns 40]
 //                           [--concurrency 3] [--resume evals/runs/<dir>]
 //
+// --arms offline is the without arm with no network: Bash runs in Claude Code's sandbox with no allowed domains and no
+// way out of it, WebFetch and WebSearch are denied, and neither Bash nor the file tools can read the home folder or
+// /private/tmp, where this machine keeps copies of GL JS and the earlier runs' pages (offlineSettings; T-011). Its
+// session folders go under /private/var/tmp instead; run it with --concurrency 1. Claude Code itself still reaches its
+// API.
 // --arms reference (or wrong) runs the task writer's correct (or deliberately wrong) pages, evals/tasks/reference/
 // taskN.html or wrongN.html, in place of an agent: no Claude session; a test of the harness and the checks.
 //
@@ -62,6 +67,41 @@ export function tasks() {
 // The task as the agent sees it: everything before its "Check:" sentence.
 const taskText = (t) => t.split(/\s*Check:/)[0].replace(/\s+/g, ' ').trim();
 
+// T-011: the settings the offline arm adds for a session working in `work`. The sandbox covers Bash and what it starts;
+// the Read deny rules cover Read, Glob and Grep. Bash may still read the session's own folder and the folder node and
+// npm are installed in (under the home folder here, ~/.nvm; it holds no GL JS), so node runs as in the without arm.
+// In /private/tmp the sandbox and the Read rules close every entry there is when the session starts, but not the folder
+// itself or Claude Code's own claude-<uid> folder in it, only that folder's entries: after every command Claude Code's
+// Bash writes a new file there, and with /private/tmp closed whole each command ended in an error (C-013's probes; a
+// Read deny rule closes the path to the sandbox too, so Read(//private/tmp/**) did the same). The Read rules also close
+// every other entry of /private/var/tmp and of the run's own folder there, earlier sessions' folders included; run the
+// offline arm with --concurrency 1, so that no session's folder appears after another's settings were made.
+export const OFFLINE_ROOT = '/private/var/tmp';
+const NODE_DIR = path.resolve(path.dirname(process.execPath), '..');
+export function offlineSettings(work) {
+  const home = os.homedir();
+  const own = `claude-${process.getuid()}`;
+  const ls = (d) => { try { return fs.readdirSync(d).map((n) => path.join(d, n)); } catch { return []; } };
+  const tmp = [...ls('/private/tmp').filter((x) => path.basename(x) !== own), ...ls(path.join('/private/tmp', own))];
+  const root = path.dirname(work);
+  const varTmp = [...ls(OFFLINE_ROOT).filter((x) => x !== root && x !== work), ...ls(root).filter((x) => x !== work)];
+  const isDir = (x) => { try { return fs.statSync(x).isDirectory(); } catch { return false; } };
+  // the Read tool may be given either spelling (/private/tmp or /tmp, /private/var or /var); names a rule cannot hold
+  // are left to the sandbox alone
+  const tmpRules = [...new Set([...tmp, ...varTmp])].filter((x) => /^[\w.@+-]+$/.test(path.basename(x)))
+    .flatMap((x) => [x, x.replace(/^\/private/, '')].map((y) => `Read(/${y}${isDir(x) ? '/**' : ''})`));
+  return {
+    sandbox: {
+      enabled: true,
+      failIfUnavailable: true,
+      allowUnsandboxedCommands: false,
+      network: { allowedDomains: [] },
+      filesystem: { denyRead: [home, OFFLINE_ROOT, ...tmp], allowRead: [work, NODE_DIR] },
+    },
+    permissions: { defaultMode: 'dontAsk', deny: ['WebFetch', 'WebSearch', `Read(/${home}/**)`, ...tmpRules] },
+  };
+}
+
 function pluginCopy(dest) {
   fs.mkdirSync(dest, { recursive: true });
   execSync(`git -C '${SKILLS_REPO}' archive ${SKILLS_COMMIT} | tar -x -C '${dest}'`, { stdio: 'inherit' });
@@ -78,9 +118,12 @@ function copyData(n, work) {
   if (fs.existsSync(d)) fs.cpSync(d, work, { recursive: true });
 }
 
-function transcriptFacts(lines) {
+export function transcriptFacts(lines) {
   let skill_used = false, ran_browser = false, touched_repo = false, usage = {}, cost = null, turns = null;
-  const fetched = []; // shell commands that reached the network (C-005: three sessions downloaded GL JS's own code)
+  // shell commands that tried the network (C-005: three sessions downloaded GL JS's own code), and how many tool results
+  // were the sandbox refusing a connection (the offline arm, C-013: there every attempt was refused)
+  const fetched = [];
+  let network_denied = 0;
   let model = null, skill_listed = null, skills_listed = null, mcp_tools = null, error = null, plugins = null;
   const skillsUsed = new Set();
   for (const line of lines) {
@@ -95,6 +138,7 @@ function transcriptFacts(lines) {
     }
     const content = ev.message?.content;
     if (Array.isArray(content)) for (const part of content) {
+      if (part.type === 'tool_result' && /deny network-outbound/.test(JSON.stringify(part.content || ''))) network_denied++;
       if (part.type !== 'tool_use') continue;
       const inp = JSON.stringify(part.input || {});
       if (part.name === 'Skill') { skill_used = true; skillsUsed.add(part.input?.skill || part.input?.name || '?'); }
@@ -110,7 +154,7 @@ function transcriptFacts(lines) {
     }
   }
   if (!lines.some((l) => l.trim())) error = 'no output';
-  return { skill_used, skills_used: [...skillsUsed], agent_ran_browser: ran_browser, touched_repo, fetched_over_network: fetched.length > 0, network_commands: fetched, cost_usd: cost, turns,
+  return { skill_used, skills_used: [...skillsUsed], agent_ran_browser: ran_browser, touched_repo, fetched_over_network: fetched.length > 0, network_commands: fetched, network_denied, cost_usd: cost, turns,
     output_tokens: usage.output_tokens, model, skill_listed, skills_listed_count: skills_listed?.length, mcp_tools, plugins, session_error: error };
 }
 
@@ -137,8 +181,12 @@ function gradeOnce(work, n) {
 async function main() {
   const a = process.argv.slice(2);
   const opt = (k, d) => (a.includes(k) ? a[a.indexOf(k) + 1] : d);
-  const [lo, hi] = opt('--tasks', '1-10').split('-').map(Number);
-  const wanted = []; for (let n = lo; n <= (hi || lo); n++) wanted.push(n);
+  // --tasks takes a range (1-10) or a list (2,3,5)
+  const wanted = [];
+  for (const part of opt('--tasks', '1-10').split(',')) {
+    const [lo, hi] = part.split('-').map(Number);
+    for (let n = lo; n <= (hi || lo); n++) wanted.push(n);
+  }
   const arms = opt('--arms', 'with,without').split(',');
   const runs = Number(opt('--runs', '1'));
   const model = opt('--model', 'claude-opus-5-5');
@@ -154,8 +202,8 @@ async function main() {
   const resultsFile = path.join(base, 'results.jsonl');
   const done = fs.existsSync(resultsFile) ? fs.readFileSync(resultsFile, 'utf8').split('\n').filter(Boolean).map((l) => JSON.parse(l)) : [];
   const results = done.filter((x) => !x.session_error);
-  const workroot = fs.mkdtempSync('/private/tmp/mbx-eval-');
-  const agentArms = arms.filter((x) => x === 'with' || x === 'without');
+  const workroot = fs.mkdtempSync(path.join(arms.includes('offline') ? OFFLINE_ROOT : '/private/tmp', 'mbx-eval-'));
+  const agentArms = arms.filter((x) => x === 'with' || x === 'without' || x === 'offline');
   const plugin = arms.includes('with') ? pluginCopy(path.join(workroot, 'plugin')) : null;
   const T = tasks();
   for (const n of wanted) if (!T[n]) throw new Error(`task ${n} not found in ${TASKS_MD}`);
@@ -182,6 +230,7 @@ async function main() {
       const args = ['-p', PROMPT.replace('{task}', taskText(T[n])), '--output-format', 'stream-json', '--verbose',
         '--allowedTools', 'Read,Write,Edit,Glob,Grep,Bash,Skill', '--max-turns', maxTurns, '--strict-mcp-config', '--model', model];
       if (arm === 'with') args.push('--plugin-dir', plugin);
+      if (arm === 'offline') args.push('--settings', JSON.stringify(offlineSettings(work)));
       const p = await runSession('claude', args, work, 30 * 60 * 1000);
       fs.writeFileSync(path.join(work, 'transcript.jsonl'), p.out);
       if (p.err.trim()) fs.writeFileSync(path.join(work, 'stderr.txt'), p.err);

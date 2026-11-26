@@ -3,6 +3,8 @@
 //   node evals/config/run.mjs --validate                 grade a right and a wrong answer per setting; no sessions
 //   node evals/config/run.mjs [--runs 1] [--only a,b]    one fresh session per request (and run), then grade
 //   node evals/config/run.mjs --regrade evals/runs/config-<stamp>
+//   node evals/config/run.mjs --hint --only a,b --runs 3 --max-total-cost 15
+//                                                         C-012: the same prompt with HINT added before its last line
 //
 // Each session: `claude -p` in an empty folder under /private/tmp, on --model (default claude-opus-5-5), with no tools
 // (--tools ""), no CLAUDE.md, skills, plugins or MCP servers (--safe-mode --strict-mcp-config), no Mapbox token in its
@@ -26,6 +28,9 @@ The style has finished loading. Write the JavaScript that does the following to 
 {request}
 
 Reply with only the JavaScript: no explanation and no code fences.`;
+
+// C-012 (T-010): one general sentence, naming no setting, for the three settings C-004's sessions named wrong
+export const HINT = `If you are unsure of a setting's name, search map.getSchema('basemap') at run time by each entry's metadata['mapbox:title'] and metadata['mapbox:description'] as well as by its name, and read the value back with map.getConfigProperty, because GL JS ignores a setting name it does not know without any warning.`;
 
 const a = process.argv.slice(2);
 const opt = (k, d) => (a.includes(k) ? a[a.indexOf(k) + 1] : d);
@@ -101,17 +106,24 @@ if (a.includes('--regrade')) {
   answers = fs.readFileSync(path.join(base, 'answers.jsonl'), 'utf8').trim().split('\n').map((l) => JSON.parse(l));
 } else {
   const model = opt('--model', 'claude-opus-5-5');
+  const hint = a.includes('--hint');
+  const prompt = hint ? PROMPT.replace('\nReply with only the JavaScript', `\n${HINT}\n\nReply with only the JavaScript`) : PROMPT;
+  // stop starting sessions once those finished have cost this much (default: no cap)
+  const cap = Number(opt('--max-total-cost', 'Infinity'));
+  let spent = 0;
   const runs = Number(opt('--runs', '1'));
   const only = opt('--only') ? opt('--only').split(',') : null;
   const todo = [];
   for (let run = 0; run < runs; run++) for (const r of requests) if (!only || only.includes(r.setting)) todo.push({ setting: r.setting, run, request: r.request });
-  base = path.join(ROOT, 'evals/runs', `config-${stamp}`);
+  base = path.join(ROOT, 'evals/runs', `config-${stamp}${hint ? '-hint' : ''}`);
   fs.mkdirSync(base, { recursive: true });
   const limit = Number(opt('--max-avg-cost', '0.10'));
   console.log(`${todo.length} sessions on ${model}; the first 5 alone, the rest 4 at a time if those average under $${limit}`);
   const one = async (t, k) => {
-    const s = await session(PROMPT.replace('{request}', t.request), model);
-    const rec = { ...t, model, ...s };
+    if (spent >= cap) { process.stdout.write(`${k + 1}/${todo.length} ${t.setting} not started: $${spent.toFixed(2)} spent, cap $${cap}\n`); return { ...t, model, hint, skipped: 'cost cap', answer: '' }; }
+    const s = await session(prompt.replace('{request}', t.request), model);
+    spent += s.cost_usd || 0;
+    const rec = { ...t, model, hint, ...s };
     fs.appendFileSync(path.join(base, 'answers.jsonl'), JSON.stringify(rec) + '\n');
     process.stdout.write(`${k + 1}/${todo.length} ${t.setting} $${s.cost_usd ?? '?'}${s.error ? ' ERROR ' + String(s.error).slice(0, 80) : ''}\n`);
     return rec;

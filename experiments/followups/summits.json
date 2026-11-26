@@ -1,0 +1,269 @@
+{
+ "about": "C-009's 24 summits, named before any was measured (CARD.md). Heights and coordinates from Wikidata (CC0) on 2026-11-25: the preferred-rank height where there is one, else the only non-deprecated one; all in metres.",
+ "summits": [
+  {
+   "name": "Matterhorn",
+   "wikidata": "Q1374",
+   "shape": "sharp",
+   "region": "Alps",
+   "published_m": 4477.54,
+   "lnglat": [
+    7.658611111,
+    45.976388888
+   ]
+  },
+  {
+   "name": "Weisshorn",
+   "wikidata": "Q15122",
+   "shape": "sharp",
+   "region": "Alps",
+   "published_m": 4505.0,
+   "lnglat": [
+    7.716111111,
+    46.101666666
+   ]
+  },
+  {
+   "name": "Dent Blanche",
+   "wikidata": "Q15125",
+   "shape": "sharp",
+   "region": "Alps",
+   "published_m": 4357.0,
+   "lnglat": [
+    7.611944444,
+    46.034166666
+   ]
+  },
+  {
+   "name": "Eiger",
+   "wikidata": "Q4425",
+   "shape": "sharp",
+   "region": "Alps",
+   "published_m": 3967.0,
+   "lnglat": [
+    8.005286822,
+    46.577607529
+   ]
+  },
+  {
+   "name": "Pizzo Badile",
+   "wikidata": "Q668321",
+   "shape": "sharp",
+   "region": "Alps",
+   "published_m": 3308.0,
+   "lnglat": [
+    9.58767,
+    46.29478
+   ]
+  },
+  {
+   "name": "Grossglockner",
+   "wikidata": "Q3388",
+   "shape": "sharp",
+   "region": "Alps",
+   "published_m": 3798.0,
+   "lnglat": [
+    12.69385,
+    47.074528
+   ]
+  },
+  {
+   "name": "Grand Teton",
+   "wikidata": "Q2078034",
+   "shape": "sharp",
+   "region": "North America",
+   "published_m": 4199.0,
+   "lnglat": [
+    -110.802416666,
+    43.741194444
+   ]
+  },
+  {
+   "name": "Mount Thielsen",
+   "wikidata": "Q1481220",
+   "shape": "sharp",
+   "region": "North America",
+   "published_m": 2799.0,
+   "lnglat": [
+    -122.066514283,
+    43.152837292
+   ]
+  },
+  {
+   "name": "Mount Assiniboine",
+   "wikidata": "Q1818436",
+   "shape": "sharp",
+   "region": "North America",
+   "published_m": 3618.0,
+   "lnglat": [
+    -115.651111111,
+    50.869722222
+   ]
+  },
+  {
+   "name": "Mount Fitz Roy",
+   "wikidata": "Q215138",
+   "shape": "sharp",
+   "region": "elsewhere",
+   "published_m": 3406.0,
+   "lnglat": [
+    -73.043333333,
+    -49.271388888
+   ]
+  },
+  {
+   "name": "Ama Dablam",
+   "wikidata": "Q451697",
+   "shape": "sharp",
+   "region": "elsewhere",
+   "published_m": 6814.0,
+   "lnglat": [
+    86.861388888,
+    27.861111111
+   ]
+  },
+  {
+   "name": "Machhapuchhre",
+   "wikidata": "Q1051394",
+   "shape": "sharp",
+   "region": "elsewhere",
+   "published_m": 6993.0,
+   "lnglat": [
+    83.949166666,
+    28.495
+   ]
+  },
+  {
+   "name": "Mont Blanc",
+   "wikidata": "Q583",
+   "shape": "broad",
+   "region": "Alps",
+   "published_m": 4805.59,
+   "lnglat": [
+    6.865,
+    45.832777777
+   ]
+  },
+  {
+   "name": "Dôme du Goûter",
+   "wikidata": "Q30434",
+   "shape": "broad",
+   "region": "Alps",
+   "published_m": 4304.0,
+   "lnglat": [
+    6.843333333,
+    45.841666666
+   ]
+  },
+  {
+   "name": "Breithorn",
+   "wikidata": "Q16540",
+   "shape": "broad",
+   "region": "Alps",
+   "published_m": 4160.0,
+   "lnglat": [
+    7.747222222,
+    45.941111111
+   ]
+  },
+  {
+   "name": "Alphubel",
+   "wikidata": "Q15130",
+   "shape": "broad",
+   "region": "Alps",
+   "published_m": 4206.0,
+   "lnglat": [
+    7.863911111,
+    46.062938888
+   ]
+  },
+  {
+   "name": "Allalinhorn",
+   "wikidata": "Q30525",
+   "shape": "broad",
+   "region": "Alps",
+   "published_m": 4027.0,
+   "lnglat": [
+    7.894805555,
+    46.046138888
+   ]
+  },
+  {
+   "name": "Titlis",
+   "wikidata": "Q15138",
+   "shape": "broad",
+   "region": "Alps",
+   "published_m": 3238.0,
+   "lnglat": [
+    8.437777777,
+    46.771944444
+   ]
+  },
+  {
+   "name": "Mount Rainier",
+   "wikidata": "Q194057",
+   "shape": "broad",
+   "region": "North America",
+   "published_m": 4389.0,
+   "lnglat": [
+    -121.760277777,
+    46.851666666
+   ]
+  },
+  {
+   "name": "Mount Whitney",
+   "wikidata": "Q235539",
+   "shape": "broad",
+   "region": "North America",
+   "published_m": 4421.0,
+   "lnglat": [
+    -118.291944444,
+    36.578611111
+   ]
+  },
+  {
+   "name": "Mount Elbert",
+   "wikidata": "Q657225",
+   "shape": "broad",
+   "region": "North America",
+   "published_m": 4401.0,
+   "lnglat": [
+    -106.445277777,
+    39.117777777
+   ]
+  },
+  {
+   "name": "Mount Fuji",
+   "wikidata": "Q39231",
+   "shape": "broad",
+   "region": "elsewhere",
+   "published_m": 3777.24,
+   "lnglat": [
+    138.7275,
+    35.360555555
+   ]
+  },
+  {
+   "name": "Uhuru Peak",
+   "wikidata": "Q20727403",
+   "shape": "broad",
+   "region": "elsewhere",
+   "published_m": 5895.0,
+   "lnglat": [
+    37.3535,
+    -3.07613
+   ]
+  },
+  {
+   "name": "Mount Elbrus",
+   "wikidata": "Q43105",
+   "shape": "broad",
+   "region": "elsewhere",
+   "published_m": 5642.0,
+   "lnglat": [
+    42.437875,
+    43.35254
+   ]
+  }
+ ]
+}

@@ -1,0 +1,290 @@
+{
+  "experiment": "followups/mcp-elevation",
+  "question": "What does Mapbox's MCP elevation_tool answer for 24 summits' coordinates, and does it match the DEM tiles read directly?",
+  "ran_at": "2026-11-25T18:01:46.979Z",
+  "mcp_server": {
+    "source": "github.com/mapbox/mcp-server",
+    "commit": "ea129dc7e3e98b0818ccb19b682c1b357cc6c398",
+    "server_info": {
+      "name": "Mapbox MCP server",
+      "version": "0.0.0"
+    },
+    "tools_listed": 33,
+    "elevation_tool_listed": true
+  },
+  "facts": [
+    {
+      "fact": "The server lists elevation_tool",
+      "holds": true,
+      "numbers": {
+        "tools_listed": 33
+      }
+    },
+    {
+      "fact": "The call succeeded and returned one height per point",
+      "holds": true,
+      "numbers": {
+        "is_error": false,
+        "heights": 24
+      }
+    },
+    {
+      "fact": "Every answer is within 1 m of C-009's direct bilinear read at the same coordinate",
+      "holds": true,
+      "numbers": {
+        "largest_gap_m": 0.5
+      }
+    },
+    {
+      "fact": "For the Matterhorn the tool answers more than 800 m below the published 4,477.5 m",
+      "holds": true,
+      "numbers": {
+        "name": "Matterhorn",
+        "shape": "sharp",
+        "published_m": 4477.54,
+        "tool_m": 3587.3,
+        "direct_bilinear_m": 3587,
+        "tool_minus_direct_m": 0.3,
+        "tool_low_by_m": 890
+      }
+    }
+  ],
+  "numbers": {
+    "summits": [
+      {
+        "name": "Matterhorn",
+        "shape": "sharp",
+        "published_m": 4477.54,
+        "tool_m": 3587.3,
+        "direct_bilinear_m": 3587,
+        "tool_minus_direct_m": 0.3,
+        "tool_low_by_m": 890
+      },
+      {
+        "name": "Weisshorn",
+        "shape": "sharp",
+        "published_m": 4505,
+        "tool_m": 4414.9,
+        "direct_bilinear_m": 4415,
+        "tool_minus_direct_m": -0.1,
+        "tool_low_by_m": 90
+      },
+      {
+        "name": "Dent Blanche",
+        "shape": "sharp",
+        "published_m": 4357,
+        "tool_m": 4243.6,
+        "direct_bilinear_m": 4244,
+        "tool_minus_direct_m": -0.4,
+        "tool_low_by_m": 113
+      },
+      {
+        "name": "Eiger",
+        "shape": "sharp",
+        "published_m": 3967,
+        "tool_m": 3936.9,
+        "direct_bilinear_m": 3937,
+        "tool_minus_direct_m": -0.1,
+        "tool_low_by_m": 30
+      },
+      {
+        "name": "Pizzo Badile",
+        "shape": "sharp",
+        "published_m": 3308,
+        "tool_m": 3135.6,
+        "direct_bilinear_m": 3136,
+        "tool_minus_direct_m": -0.4,
+        "tool_low_by_m": 172
+      },
+      {
+        "name": "Grossglockner",
+        "shape": "sharp",
+        "published_m": 3798,
+        "tool_m": 3608.4,
+        "direct_bilinear_m": 3608,
+        "tool_minus_direct_m": 0.4,
+        "tool_low_by_m": 190
+      },
+      {
+        "name": "Grand Teton",
+        "shape": "sharp",
+        "published_m": 4199,
+        "tool_m": 4197.1,
+        "direct_bilinear_m": 4197,
+        "tool_minus_direct_m": 0.1,
+        "tool_low_by_m": 2
+      },
+      {
+        "name": "Mount Thielsen",
+        "shape": "sharp",
+        "published_m": 2799,
+        "tool_m": 2786.3,
+        "direct_bilinear_m": 2786,
+        "tool_minus_direct_m": 0.3,
+        "tool_low_by_m": 13
+      },
+      {
+        "name": "Mount Assiniboine",
+        "shape": "sharp",
+        "published_m": 3618,
+        "tool_m": 3550.1,
+        "direct_bilinear_m": 3550,
+        "tool_minus_direct_m": 0.1,
+        "tool_low_by_m": 68
+      },
+      {
+        "name": "Mount Fitz Roy",
+        "shape": "sharp",
+        "published_m": 3406,
+        "tool_m": 2492,
+        "direct_bilinear_m": 2492,
+        "tool_minus_direct_m": 0,
+        "tool_low_by_m": 914
+      },
+      {
+        "name": "Ama Dablam",
+        "shape": "sharp",
+        "published_m": 6814,
+        "tool_m": 6586.2,
+        "direct_bilinear_m": 6586,
+        "tool_minus_direct_m": 0.2,
+        "tool_low_by_m": 228
+      },
+      {
+        "name": "Machhapuchhre",
+        "shape": "sharp",
+        "published_m": 6993,
+        "tool_m": 6458.6,
+        "direct_bilinear_m": 6459,
+        "tool_minus_direct_m": -0.4,
+        "tool_low_by_m": 534
+      },
+      {
+        "name": "Mont Blanc",
+        "shape": "broad",
+        "published_m": 4805.59,
+        "tool_m": 4792.9,
+        "direct_bilinear_m": 4793,
+        "tool_minus_direct_m": -0.1,
+        "tool_low_by_m": 13
+      },
+      {
+        "name": "Dôme du Goûter",
+        "shape": "broad",
+        "published_m": 4304,
+        "tool_m": 4279.7,
+        "direct_bilinear_m": 4280,
+        "tool_minus_direct_m": -0.3,
+        "tool_low_by_m": 24
+      },
+      {
+        "name": "Breithorn",
+        "shape": "broad",
+        "published_m": 4160,
+        "tool_m": 4129.8,
+        "direct_bilinear_m": 4130,
+        "tool_minus_direct_m": -0.2,
+        "tool_low_by_m": 30
+      },
+      {
+        "name": "Alphubel",
+        "shape": "broad",
+        "published_m": 4206,
+        "tool_m": 4177.2,
+        "direct_bilinear_m": 4177,
+        "tool_minus_direct_m": 0.2,
+        "tool_low_by_m": 29
+      },
+      {
+        "name": "Allalinhorn",
+        "shape": "broad",
+        "published_m": 4027,
+        "tool_m": 3995.5,
+        "direct_bilinear_m": 3995,
+        "tool_minus_direct_m": 0.5,
+        "tool_low_by_m": 32
+      },
+      {
+        "name": "Titlis",
+        "shape": "broad",
+        "published_m": 3238,
+        "tool_m": 3026.8,
+        "direct_bilinear_m": 3027,
+        "tool_minus_direct_m": -0.2,
+        "tool_low_by_m": 211
+      },
+      {
+        "name": "Mount Rainier",
+        "shape": "broad",
+        "published_m": 4389,
+        "tool_m": 4385.9,
+        "direct_bilinear_m": 4386,
+        "tool_minus_direct_m": -0.1,
+        "tool_low_by_m": 3
+      },
+      {
+        "name": "Mount Whitney",
+        "shape": "broad",
+        "published_m": 4421,
+        "tool_m": 4410.2,
+        "direct_bilinear_m": 4410,
+        "tool_minus_direct_m": 0.2,
+        "tool_low_by_m": 11
+      },
+      {
+        "name": "Mount Elbert",
+        "shape": "broad",
+        "published_m": 4401,
+        "tool_m": 4396.3,
+        "direct_bilinear_m": 4396,
+        "tool_minus_direct_m": 0.3,
+        "tool_low_by_m": 5
+      },
+      {
+        "name": "Mount Fuji",
+        "shape": "broad",
+        "published_m": 3777.24,
+        "tool_m": 3750,
+        "direct_bilinear_m": 3750,
+        "tool_minus_direct_m": 0,
+        "tool_low_by_m": 27
+      },
+      {
+        "name": "Uhuru Peak",
+        "shape": "broad",
+        "published_m": 5895,
+        "tool_m": 5878.6,
+        "direct_bilinear_m": 5879,
+        "tool_minus_direct_m": -0.4,
+        "tool_low_by_m": 16
+      },
+      {
+        "name": "Mount Elbrus",
+        "shape": "broad",
+        "published_m": 5642,
+        "tool_m": 5585.7,
+        "direct_bilinear_m": 5586,
+        "tool_minus_direct_m": -0.3,
+        "tool_low_by_m": 56
+      }
+    ],
+    "structured_keys": [
+      "source",
+      "zoom",
+      "resolution_m",
+      "points",
+      "mapboxRender"
+    ],
+    "text": "Ground elevation (mapbox.mapbox-terrain-dem-v1, about 6.6 m resolution):\n1. 3,587 m at 45.97639, 7.65861\n2. 4,415 m at 46.10167, 7.71611\n3. 4,244 m at 46.03417, 7.61194\n4. 3,937 m at 46.57761, 8.00529\n5. 3,136 m at 46.29478, 9.58767\n6. 3,608 m at 47.07453, 12.69385\n7. 4,197 m at 43.74119, -110.80242\n8. 2,786 m at 43.15284, -122.06651\n9. 3,550 m at 50.86972, -115.65111\n10. 2,492 m at -49.27139, -73.04333\n11. 6,586 m at 27.86111, 86.86139\n12. 6,459 m at 28.49500, 83.94917\n13. 4,793 m at 45.83278, 6.86500\n14. 4,280 m at 45.84167, 6.84333\n15. 4,130 m at 45.94111, 7.74722\n16. 4,177 m at 46.06294, 7.86391\n17. 3,995 m at 46.04614, 7.89481\n18. 3,027 m at 46.77194, 8.43778\n19. 4,386 m at 46.85167, -121.76028\n20. 4,410 m at 36.57861, -118.29194\n21. 4,396 m at 39.11778, -106.44528\n22. 3,750 m at 35.36056, 138.72750\n23. 5,879 m at -3.07613, 37.35350\n24. 5,586 m at 43.35254, 42.43787\n\nIf the user wants to see this on a map, pass this ref unchanged to render_map_tool (not static_map_image_tool):\n   render_map_tool({ \"payload_refs\": [\"mapbox://inline/payload?data=eyJzdW1tYXJ5IjoiRWxldmF0aW9ucyIsImxheWVycyI6W10sIm1hcmtlcnMiOlt7ImNvb3JkaW5hdGVzIjpbNy42NTg2MTExMTEsNDUuOTc2Mzg4ODg4XSwic3R5bGUiOiJwaW4iLCJwb3B1cCI6IjMsNTg3IG0ifSx7ImNvb3JkaW5hdGVzIjpbNy43MTYxMTExMTEsNDYuMTAxNjY2NjY2XSwic3R5bGUiOiJwaW4iLCJwb3B1cCI6IjQsNDE1IG0ifSx7ImNvb3JkaW5hdGVzIjpbNy42MTE5NDQ0NDQsNDYuMDM0MTY2NjY2XSwic3R5bGUiOiJwaW4iLCJwb3B1cCI6IjQsMjQ0IG0ifSx7ImNvb3JkaW5hdGVzIjpbOC4wMDUyODY4MjIsNDYuNTc3NjA3NTI5XSwic3R5bGUiOiJwaW4iLCJwb3B1cCI6IjMsOTM3IG0ifSx7ImNvb3JkaW5hdGVzIjpbOS41ODc2Nyw0Ni4yOTQ3OF0sInN0eWxlIjoicGluIiwicG9wdXAiOiIzLDEzNiBtIn0seyJjb29yZGluYXRlcyI6WzEyLjY5Mzg1LDQ3LjA3NDUyOF0sInN0eWxlIjoicGluIiwicG9wdXAiOiIzLDYwOCBtIn0seyJjb29yZGluYXRlcyI6Wy0xMTAuODAyNDE2NjY2LDQzLjc0MTE5NDQ0NF0sInN0eWxlIjoicGluIiwicG9wdXAiOiI0LDE5NyBtIn0seyJjb29yZGluYXRlcyI6Wy0xMjIuMDY2NTE0MjgzLDQzLjE1MjgzNzI5Ml0sInN0eWxlIjoicGluIiwicG9wdXAiOiIyLDc4NiBtIn0seyJjb29yZGluYXRlcyI6Wy0xMTUuNjUxMTExMTExLDUwLjg2OTcyMjIyMl0sInN0eWxlIjoicGluIiwicG9wdXAiOiIzLDU1MCBtIn0seyJjb29yZGluYXRlcyI6Wy03My4wNDMzMzMzMzMsLTQ5LjI3MTM4ODg4OF0sInN0eWxlIjoicGluIiwicG9wdXAiOiIyLDQ5MiBtIn0seyJjb29yZGluYXRlcyI6Wzg2Ljg2MTM4ODg4OCwyNy44NjExMTExMTFdLCJzdHlsZSI6InBpbiIsInBvcHVwIjoiNiw1ODYgbSJ9LHsiY29vcmRpbmF0ZXMiOls4My45NDkxNjY2NjYsMjguNDk1XSwic3R5bGUiOiJwaW4iLCJwb3B1cCI6IjYsNDU5IG0ifSx7ImNvb3JkaW5hdGVzIjpbNi44NjUsNDUuODMyNzc3Nzc3XSwic3R5bGUiOiJwaW4iLCJwb3B1cCI6IjQsNzkzIG0ifSx7ImNvb3JkaW5hdGVzIjpbNi44NDMzMzMzMzMsNDUuODQxNjY2NjY2XSwic3R5bGUiOiJwaW4iLCJwb3B1cCI6IjQsMjgwIG0ifSx7ImNvb3JkaW5hdGVzIjpbNy43NDcyMjIyMjIsNDUuOTQxMTExMTExXSwic3R5bGUiOiJwaW4iLCJwb3B1cCI6IjQsMTMwIG0ifSx7ImNvb3JkaW5hdGVzIjpbNy44NjM5MTExMTEsNDYuMDYyOTM4ODg4XSwic3R5bGUiOiJwaW4iLCJwb3B1cCI6IjQsMTc3IG0ifSx7ImNvb3JkaW5hdGVzIjpbNy44OTQ4MDU1NTUsNDYuMDQ2MTM4ODg4XSwic3R5bGUiOiJwaW4iLCJwb3B1cCI6IjMsOTk1IG0ifSx7ImNvb3JkaW5hdGVzIjpbOC40Mzc3Nzc3NzcsNDYuNzcxOTQ0NDQ0XSwic3R5bGUiOiJwaW4iLCJwb3B1cCI6IjMsMDI3IG0ifSx7ImNvb3JkaW5hdGVzIjpbLTEyMS43NjAyNzc3NzcsNDYuODUxNjY2NjY2XSwic3R5bGUiOiJwaW4iLCJwb3B1cCI6IjQsMzg2IG0ifSx7ImNvb3JkaW5hdGVzIjpbLTExOC4yOTE5NDQ0NDQsMzYuNTc4NjExMTExXSwic3R5bGUiOiJwaW4iLCJwb3B1cCI6IjQsNDEwIG0ifSx7ImNvb3JkaW5hdGVzIjpbLTEwNi40NDUyNzc3NzcsMzkuMTE3Nzc3Nzc3XSwic3R5bGUiOiJwaW4iLCJwb3B1cCI6IjQsMzk2IG0ifSx7ImNvb3JkaW5hdGVzIjpbMTM4LjcyNzUsMzUuMzYwNTU1NTU1XSwic3R5bGUiOiJwaW4iLCJwb3B1cCI6IjMsNzUwIG0ifSx7ImNvb3JkaW5hdGVzIjpbMzcuMzUzNSwtMy4wNzYxM10sInN0eWxlIjoicGluIiwicG9wdXAiOiI1LDg3OSBtIn0seyJjb29yZGluYXRlcyI6WzQyLjQzNzg3NSw0My4zNTI1NF0sInN0eWxlIjoicGluIiwicG9wdXAiOiI1LDU4NiBtIn1dfQ\"] })\nIn ChatGPT Desktop, if a Mapbox map is already open next to the chat, call its redraw_map tool with the same arguments instead, so that map is updated.",
+    "result_fields": [
+      "longitude",
+      "latitude",
+      "elevation_m"
+    ]
+  },
+  "use": {
+    "tool_calls": 1,
+    "seconds": 0.9
+  },
+  "stderr_excerpt": "Failed to read version info: Error: ENOENT: no such file or directory, open '~/code/agentic-mapbox/.cache/package.json'\nFailed to read version info: Error: ENOENT: no such file or directory, open '~/code/agentic-mapbox/.cache/package.json'\n"
+}

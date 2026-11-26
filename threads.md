@@ -4,7 +4,12 @@ Open questions. C-001 closed on 2026-11-24 (10 of 10 with Mapbox's skills, 10 of
 capabilities served in full to a public token, the 21st in part). C-003 closed on 2026-11-25 (the MCP tools expose 101 of
 240 documented parameters). C-004 closed on 2026-11-25 (44 of the
 Standard style's 48 settings named right with no help). C-005 closed on 2026-11-25 (10 of 10
-newer-GL-JS tasks right without help; 3 by reading GL JS's own code). One card at a time.
+newer-GL-JS tasks right without help; 3 by reading GL JS's own code). On 2026-11-25 C-006 to C-011 closed too:
+skills opened in 0 of 3 tasks the model did not know; the pitch-0 building was a 3D landmark; sharp summits read a
+median 104 m low; the MCP elevation tool gives the Matterhorn 3,587 m; the API was stricter than its docs on 2 of 100
+limits. C-013 closed on 2026-11-26 (with no network, 2 of the 3 looked-up tasks right; for the third the model drew the
+roofs itself rather than trust GL JS's building layer). C-012 (T-010) is parked until the user says yes to its
+sessions. One card at a time.
 
 ### T-001 · What does each Mapbox capability look like when it is actually run?
 
@@ -58,19 +63,20 @@ it. Opened T-011.
 
 ### T-005 · When does an agent open a skill it has been given?
 
-**Status:** open
+**Status:** answered (C-006)
 **Parent:** C-001
 **Opened:** 2026-11-24
 **Question:** In C-001 all 10 with sessions listed 27 Mapbox skills whose descriptions match the tasks (web
 integration, data visualisation, search), and none opened one. In the Blender guide's eval the skill was used in
 every session. The difference may be that the model knew the answer here and did not there. If so, skills are opened
 only when the model senses a gap, and a skill can never correct a confident mistake.
-**Answer:** — (C-005 adds a case: given no skills, three of ten sessions sensed a gap and fetched GL JS's own code; they
-were the three tasks the set's writer had also found hardest.)
+**Answer:** not when it does not know either (C-006). The three C-005 tasks the model had to look up ran again with
+Mapbox's skills installed; 0 of 3 opened a skill, and all three downloaded GL JS's code instead (`evals/results.md`).
+With C-001 that is 0 of 13, so knowing the answer is not what kept the skills shut. Opened T-012.
 
 ### T-006 · Why does a selected building change colour at pitch 45 but not at pitch 0?
 
-**Status:** open
+**Status:** answered (C-007, C-008)
 **Parent:** T-001
 **Opened:** 2026-11-25
 **Question:** In `experiments/standard/interactions.mjs` a click on Standard's `buildings` featureset sets
@@ -78,22 +84,27 @@ were the three tasks the set's writer had also found hardest.)
 0, three runs). Standard's `3d-building`, `2d-building` and `procedural-buildings` layers all read `select`. Either
 GL JS draws a different layer at pitch 0, or software WebGL (SwiftShader) is the cause; one run on a GPU would separate
 the two.
-**Answer:** —
+**Answer:** neither. On the Mac's GPU the result was the same as in SwiftShader (C-007). The two pitches had clicked
+different buildings, and the pitch-0 one was the Empire State Building, which Standard draws as a 3D landmark model that
+never takes the select colour, at any pitch. An ordinary building turns blue at both (C-008,
+`experiments/followups/results/select-same-building.json`).
 
 ### T-007 · Is Mapbox's DEM low on the Matterhorn, and on sharp peaks in general?
 
-**Status:** open
+**Status:** answered (C-009)
 **Parent:** T-001
 **Opened:** 2026-11-25
 **Question:** Read through GL JS at zoom 14, `mapbox-terrain-dem-v1` reaches at most 4,226 m within 1 km of the
 Matterhorn (published 4,478 m), while Mont Blanc, Fuji and two lakes read within 14 m (`experiments/3d/terrain-heights`).
 One spire is one case. A dozen sharp summits against a national survey's heights would say whether it is the
 Matterhorn or the shape, and reading the DEM tile's pixels directly would say whether GL JS's sampling is part of it.
-**Answer:** —
+**Answer:** the shape, mostly (C-009). Of 11 sharp summits, 8 read more than 50 m low (median 104 m); of 11 broad ones,
+none (median 21 m low). The two sharp US summits read within 11 m. GL JS reads what the tiles hold, within 4 m at 20 of
+24 summits (`experiments/results.md`).
 
 ### T-008 · Does the elevation tool in Mapbox's MCP server give a summit's height?
 
-**Status:** open
+**Status:** answered (C-003, C-010)
 **Parent:** T-001
 **Opened:** 2026-11-25
 **Question:** Tilequery returns at most 50 contours, 10 m apart, and at Mont Blanc the 50 returned stop at 3,270 m
@@ -103,11 +114,13 @@ how it works; one call to it says what it answers.
 **Answer:** half, from the code (C-003). The premise was wrong. The tool decodes `mapbox.mapbox-terrain-dem-v1` tiles
 at zoom 14 (lower on long paths) and never calls Tilequery, so the contour limit cannot reach it. What is left is one
 call: it reads the same DEM that `3d/terrain-heights` found 252 m low on the Matterhorn, so it probably answers about
-3,575 m there (T-007).
+3,575 m there (T-007). Then the call (C-010): with the server run from source at that commit, one call with 24 summits gave
+what the tiles hold within 0.5 m. That is 3,587 m for the Matterhorn, 890 m low, and 11 of 24 came back more than 50 m
+low (`experiments/results.md`).
 
 ### T-009 · Can the API reference's own parameter tables serve as `kb.mjs`'s inventory of the web services?
 
-**Status:** open
+**Status:** answered (C-011)
 **Parent:** T-003
 **Opened:** 2026-11-25
 **Question:** `experiments/mcp/docs_params.py` already reads every endpoint's parameter tables from docs.mapbox.com/api
@@ -115,11 +128,13 @@ call: it reads the same DEM that `3d/terrain-heights` found 252 m low on the Mat
 are not, but in C-003 they were wrong twice in eight checks (the Search Box query limit, Static Images' "required"
 overlay). Reading all of them, and checking a sample of their stated limits against the API's own error messages, would
 say how often they are wrong. That decides whether `kb.mjs` can repeat them as they stand.
-**Answer:** —
+**Answer:** yes, for numeric limits (C-011). Of 100 stated limits tested at and past the limit, the API was stricter
+than the docs on 2 (the Search Box query length, a Map Matching radius of 0) and looser on 21. `kb.mjs api` now
+repeats the tables, with those results beside the limits tested (`experiments/results.md`).
 
 ### T-010 · Would one sentence of help fix the three Standard settings the model named wrong?
 
-**Status:** open
+**Status:** parked (C-012 has not run; it resumes with the commands in `CARD.md` once the user says yes to 18 sessions)
 **Parent:** T-002
 **Opened:** 2026-11-25
 **Question:** In C-004 the model, unsure, searched `map.getSchema('basemap')`'s setting names for "lane" and found
@@ -131,11 +146,44 @@ would say whether a general rule is enough, or whether the names themselves have
 
 ### T-011 · With no network, does the model still get the three tasks it looked up?
 
-**Status:** open
+**Status:** answered (C-013)
 **Parent:** T-004
 **Opened:** 2026-11-25
 **Question:** In C-005, tasks 2, 3 and 5 (model colour mix, clip, procedural building colours) came out right only after
 the sessions downloaded GL JS's own code. The same three sessions run with the network blocked would say whether the
 model knows them or only found them. If they fail, those three are the guide's first entries, and an agent working
 offline or without a shell needs them told. If they pass, the lookups were caution, not need.
+**Answer:** 2 of 3 (`evals/results.md`, C-013). Tasks 2 and 3 came out right from what the model knew, so their lookups
+were caution. On task 5 the model would not trust that GL JS 3.35.2 has a procedural building layer, and drew the roofs
+in its own WebGL layer, which the check fails. Opened T-013, T-014.
+
+
+### T-012 · Is a skill opened when its description names the feature the task needs?
+
+**Status:** open
+**Parent:** T-005
+**Opened:** 2026-11-25
+**Question:** In C-006 the model skipped 27 Mapbox skills with general descriptions even on tasks it did not know. A
+skill whose description names `clip`, `model-color-mix-intensity` and `building-part`, run on the same three tasks,
+would say whether the description's wording is what decides, or whether skills are skipped whatever they say.
+**Answer:** —
+
+### T-013 · Does task 5 fail the same way every time with no network?
+
+**Status:** open
+**Parent:** T-011
+**Opened:** 2026-11-26
+**Question:** In C-013 the one offline session on task 5 avoided GL JS's building layer and drew the roofs in WebGL.
+C-013's pre-stated next step is three more offline runs of task 5 (`run_eval.mjs --set tasks-3x --tasks 5 --arms
+offline --runs 3 --concurrency 1`, about $3 a session) before any guide entry is written.
+**Answer:** —
+
+### T-014 · Told to use GL JS's building layer, does the model get task 5 right offline?
+
+**Status:** open
+**Parent:** T-011
+**Opened:** 2026-11-26
+**Question:** Task 5's wording asks for the picture, and only its check names the procedural `building` layer. A version
+of the task that says to use that layer, run offline, would say whether the model knows how to use it (`building-part`
+for roof and wall colours) or only doubted that it exists.
 **Answer:** —

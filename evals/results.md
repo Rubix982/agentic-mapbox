@@ -183,3 +183,92 @@ so it counted as right.
 - **Sessions:** $4.84 for the 10.
 - **Map loads:** 110 by the set's writer while it built and validated the set, 20 for my validation, and 10 to grade
   the sessions.
+
+## C-006: the three looked-up tasks again, with Mapbox's skills installed (2026-11-25)
+
+`node evals/run_eval.mjs --set tasks-3x --tasks 2,3,5 --arms with`. C-005's tasks 2, 3 and 5 are the three where the
+model did not know the answer and downloaded GL JS's code to find it. Here each ran once more, set up exactly as C-001's
+with arm: Mapbox's Agent Skills at commit `84d991e` loaded as a plugin, its MCP servers removed. Records:
+`results/c006-20261125-174022.jsonl`.
+
+**None of the three sessions opened a skill.** Each listed the 27 Mapbox skills at start-up (67 skills in all, with
+the user's own plugins), and none called the Skill tool or read a skill's files. No visible text in any of the three
+mentions a skill.
+
+**All three downloaded GL JS's code again, and all three were right first time.**
+
+| Task | Turns | Cost, USD | First download, in tool steps | What it fetched |
+|---|---|---|---|---|
+| 2. Delivery vans (model colour mix) | 17 | 0.88 | 8th | the style spec and 3D-style sources from GitHub, then `npm init` to validate |
+| 3. Clearing the site (clip) | 15 | 0.59 | 5th | `mapbox-gl-dev.js` from unpkg |
+| 5. Planned buildings (roof and wall colours) | 39 | 1.47 | 5th | `mapbox-gl-dev.js` from Mapbox's CDN, then read it 11 times |
+| **All** | | **2.94** | | |
+
+**What this does and does not show.**
+- Not knowing did not send the model to a skill. It went straight to the library's code, past 27 skills whose
+  descriptions cover GL JS web work. With C-001's 0 of 10 on tasks it knew, that is 0 of 13.
+- So "the model knew the answer" does not explain C-001's 0 of 10 on its own: here it did not know, and still opened
+  none.
+- None of Mapbox's skills covers what these three tasks need (no `clip`, no model colour mix, no procedural building).
+  The model could not have known that without opening one, so it did not skip them because it had read them. It may
+  have judged from their general descriptions ("web integration patterns") that they would not hold anything this
+  specific. A skill whose description named the feature was not tested (T-012).
+- One session per task, on one model, with the user's own plugins loaded as in C-001.
+
+## C-013: the three looked-up tasks again, with no network (2026-11-26)
+
+`node evals/offline_probe.mjs`, then `node evals/run_eval.mjs --set tasks-3x --tasks 2,3,5 --arms offline --concurrency
+1`. The offline arm is C-005's without arm (same prompt, tools, model and empty folder, no token, no MCP servers) with
+three changes. Bash runs in Claude Code's sandbox with no allowed domains and no way to run outside it. WebFetch and
+WebSearch are denied. And neither Bash nor the file tools can read the home folder, `/private/tmp` or the folders beside
+the session's own. Those hold this machine's copies of GL JS and the earlier runs' pages and transcripts. A search
+outside the home folder found GL JS only under `/private/tmp`. Bash can still read the folder node is installed in
+(`~/.nvm`, which holds no GL JS), so node runs. Records: `results/c013-20261126-044700.jsonl`.
+
+**The block was checked before any task ran.** One Haiku session made 16 tool calls (`results/offline-probe.json`).
+- **Refused (13):** curl, node's `fetch` and `npm view` to the network; Read, Glob and Bash on the home folder, on a
+  copy of GL JS in `/private/tmp` and on a folder beside the session's own.
+- **Worked (3):** writing, reading and running node in the session's own folder.
+- The sandbox refused the network calls itself. Claude Code's permission rules stopped most of the reads first, by
+  reading the path in the command, even when it was spelled with a variable. One read hid its path inside node's
+  arguments, and the sandbox refused it (`EPERM`).
+- It took five probe sessions to get there. In the first versions every Bash command ended in an error, because Claude
+  Code writes a file under `/tmp/claude-501` after each command and closing `/private/tmp` whole blocked it. A Read deny
+  rule on `/private/tmp` closes it to the sandbox too. The arm now closes each entry of `/private/tmp` instead.
+
+**2 of the 3 were right first time.** Every session first tried to download GL JS, and every attempt was refused
+(`network_denied` in the records counts the sandbox's refusals; task 5's other attempt was stopped by the permission
+rules).
+
+| Task | Turns (C-005) | Cost, USD | Right? | What the page used |
+|---|---|---|---|---|
+| 2. Delivery vans (model colour mix) | 7 (18) | 0.89 | yes | `model-color-mix-intensity: 1` |
+| 3. Clearing the site (clip) | 4 (26) | 0.43 | yes | `clip-layer-types: ['model']` |
+| 5. Planned buildings (roof and wall colours) | 10 (23) | 3.20 | no: no GL JS building layer | its own WebGL `custom` layer, 580 lines |
+| **All** | | **4.52** | **2 of 3** | |
+
+**Task 5 drew the roofs itself.** After the refused downloads, the session said it could not confirm offline that GL
+JS 3.35.2 has a procedural building layer, and that a wrong guess would show no buildings at all. It wrote a custom
+WebGL layer that builds each footprint's walls and roof, with shading and shadows. Then it checked the geometry with
+its own node script against stubbed GL JS. The page took 16 minutes, against C-005's 81-line page using GL JS's
+`building` layer. The screenshot (`results/c013-task5-offline.png`) shows the five buildings in terracotta and cream
+with five different roof shapes. I have not checked each shape against its building.
+
+**What this does and does not show.**
+- For tasks 2 and 3, C-005's downloads were caution. With no way to look, the model wrote both from what it knew, in
+  fewer turns.
+- For task 5, the model did not trust offline that this version of GL JS has the building layer. Whether it knows how
+  to colour the layer's roofs and walls (`building-part`) was never reached (T-014).
+- The task as the agent saw it asks for buildings with those roofs and colours, not for GL JS's layer; only the check
+  names the layer. By what it shows, the page could be counted right. It is counted wrong here because the check
+  decides, as in C-005.
+- The candidate guide entry is that GL JS 3.35.2 has a procedural `building` layer. One run cannot say whether
+  the model avoids it every time (T-013).
+- One session per task, on one model. Each session knew it was offline from the refused download, which is the
+  condition being tested. The permission rules also stopped two sessions from looking in node's folder by name.
+
+**Use.**
+- **Sessions:** $4.52 for the 3 task sessions; about $0.10 for five probe sessions and six one-command test sessions on
+  Haiku.
+- **Map loads:** 3, to grade the pages.
+

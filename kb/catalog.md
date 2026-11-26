@@ -87,13 +87,20 @@ shows up only as nothing changing; `getConfigProperty` afterwards catches it.
 Run here `[exp: experiments/standard, 3d, data]`: light presets, themes, 3D buildings, the Interactions API, style
 imports, globe, terrain, a glTF `model` layer, `clip`, snow and rain, and `raster-particle`. Three things in them
 an agent could trip on:
+- `mapbox-terrain-dem-v1` reads sharp summits low: 8 of 11 by more than 50 m (median 104 m; the Matterhorn 252, Fitz
+  Roy 549), but the two sharp US summits within 11 m. Broad summits read a median 21 m low (C-009). GL JS reads the
+  same as the tiles. Do not quote a summit's height from it.
 - Standard Satellite's terrain fades to nothing between zoom 12 and 13.7, and above that `queryTerrainElevation`
   returns null.
 - Snow and rain keep the map from ever firing `idle`; wind particles do not.
-- At pitch 0 a building's `select` state reads back but draws nothing in software WebGL.
+- A landmark Standard draws as a 3D model (the Empire State Building) is in the `buildings` featureset, and its `select`
+  state reads back, but nothing on screen changes until `show3dLandmarks` is off. Ordinary buildings turn the select
+  colour at pitch 0 and at 45 (C-008).
 
 With no help, the model got ten blind tasks on these areas right (C-005, `evals/results.md`). It knew seven; for the
-model colour mix, `clip` and the procedural building's colours it downloaded GL JS's own code and read it.
+model colour mix, `clip` and the procedural building's colours it downloaded GL JS's own code and read it. With no
+network (C-013) it wrote the colour mix and `clip` from memory. For the building it doubted that GL JS 3.35.2 has a
+building layer, and drew the roofs in its own WebGL layer instead.
 
 ## Agent tooling Mapbox publishes
 
@@ -109,7 +116,13 @@ model colour mix, `clip` and the procedural building's colours it downloaded GL 
       are complete; Directions exposes 11 of 36, Static Images 9 of 21, Search Box text search 11 of 25.
     - Their value lists are short in places: 4 of 9 worldviews, no `street` type, no `polyline6`.
     - They know things the docs get wrong: the Search Box query limit is 200 characters, not 256.
-    - The elevation tool reads `mapbox-terrain-dem-v1` tiles; it does not use Tilequery.
+- **The API reference itself** `[exp: experiments/followups/docs-limits.mjs]`: 25 pages, 103 endpoints, 619
+  parameters (`kb.mjs api`). Of 100 numeric limits it states that a public token can test, the API was stricter on 2
+  (Search Box `q` is 200 characters, not 256; Map Matching refuses a radius of 0) and looser on 21 (C-011).
+    - The elevation tool reads `mapbox-terrain-dem-v1` tiles; it does not use Tilequery. Called once with 24 summits'
+      coordinates (C-010), it answered what the tiles hold within 0.5 m. Its schema offers "a summit" as an example,
+      and for the Matterhorn it answered 3,587 m, 890 m below the published height; 11 of the 24 came back more than
+      50 m low. It is in the source at `ea129dc` but not in npm's latest release, 0.18.1.
 - **DevKit MCP server** (styles, tokens, validation) and **Docs MCP server**: github.com/mapbox/mcp-devkit-server,
   github.com/mapbox/mcp-docs-server.
 - **Mapbox CLI**, github.com/mapbox/mapbox-cli (MIT): geocoding, search, static images and tokens from a terminal, JSON
@@ -143,3 +156,6 @@ Coverage of GL JS 3.x in the skills, by a text search of their files (a mention,
 `addInteraction` appears in 20 files and featuresets in 11; `lightPreset` in 2, `setConfigProperty` in 1; the
 `clip`, `model` and `raster-particle` layer types in none. Pinned CDN versions in their examples: `v3.0.0` 8 times,
 `v3.18.1` twice. Style URLs: `streets-v12` 40 times, `streets-v11` 7.
+
+Whether they get opened: in C-001, sessions given all 27 opened none on ten everyday tasks. In C-006 they opened none on
+the three tasks the model did not know either, and downloaded GL JS's code instead (0 of 13 in all, `evals/results.md`).

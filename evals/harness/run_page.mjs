@@ -48,7 +48,11 @@ export async function runPage(folder, { checks, task, check, shot } = {}) {
   const tok = token();
   const server = await serve(folder);
   const port = server.address().port;
-  const browser = await chromium.launch({ headless: true, args: ['--ignore-gpu-blocklist', '--enable-webgl', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'] });
+  // software WebGL (SwiftShader) by default, the same on every machine; MBX_GPU=metal draws with this Mac's GPU (T-006)
+  const args = process.env.MBX_GPU === 'metal'
+    ? ['--ignore-gpu-blocklist', '--enable-webgl', '--use-angle=metal', '--enable-gpu']
+    : ['--ignore-gpu-blocklist', '--enable-webgl', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'];
+  const browser = await chromium.launch({ headless: true, args });
   const errors = { console: [], page: [], requests: [] };
   const hosts = {};
   const rec = { folder, task, port, viewport: VIEWPORT };
@@ -64,6 +68,11 @@ export async function runPage(folder, { checks, task, check, shot } = {}) {
     page.on('requestfailed', (r) => { if (!/events\.mapbox\.com/.test(r.url())) errors.requests.push(`failed ${redact(r.url(), tok).slice(0, 200)} ${r.failure()?.errorText}`); });
 
     await page.goto(`http://127.0.0.1:${port}/index.html`, { waitUntil: 'load', timeout: 30000 }).catch((e) => errors.page.push('goto: ' + e.message));
+    rec.webgl_renderer = await page.evaluate(() => {
+      const gl = document.createElement('canvas').getContext('webgl2');
+      const e = gl && gl.getExtension('WEBGL_debug_renderer_info');
+      return gl ? String(gl.getParameter(e ? e.UNMASKED_RENDERER_WEBGL : gl.RENDERER)).slice(0, 120) : null;
+    }).catch(() => null);
     rec.has_map = await page.waitForFunction(() => window.map && typeof window.map.getStyle === 'function', null, { timeout: 30000 }).then(() => true, () => false);
     const idle = async (ms = 60000) => page.evaluate((ms) => new Promise((res) => {
       const m = window.map; let done = false;

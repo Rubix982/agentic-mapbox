@@ -1,0 +1,956 @@
+{
+  "experiment": "followups/dem-summits-tiles",
+  "question": "Read directly from its zoom-14 tiles, is Mapbox's DEM low on sharp summits in general, or only on the Matterhorn?",
+  "ran_at": "2026-11-25T17:56:05.288Z",
+  "served_by_mapbox": true,
+  "refusals": [],
+  "refusals_are_the_finding": false,
+  "all_facts_hold": false,
+  "facts": [
+    {
+      "fact": "Every tile came back as a square PNG",
+      "holds": true,
+      "numbers": {
+        "tiles": 118,
+        "pixel_m": [
+          6.6,
+          6.5,
+          6.9,
+          7,
+          6,
+          6.2,
+          8.4,
+          7.7,
+          7.4,
+          7.8,
+          9.5
+        ]
+      }
+    },
+    {
+      "fact": "At least 9 of the 12 sharp summits read more than 50 m low by their highest pixel within 1 km",
+      "holds": false,
+      "numbers": {
+        "sharp_more_than_50m_low": 8,
+        "of": 11,
+        "median_low_by_m": 104
+      }
+    },
+    {
+      "fact": "At least 10 of the 12 broad summits read within 25 m",
+      "holds": false,
+      "numbers": {
+        "broad_within_25m": 8,
+        "of": 11,
+        "median_low_by_m": 21
+      }
+    },
+    {
+      "fact": "The Matterhorn is the only sharp summit more than 50 m low",
+      "holds": false,
+      "numbers": {
+        "sharp_more_than_50m_low": [
+          "Matterhorn",
+          "Weisshorn",
+          "Dent Blanche",
+          "Grossglockner",
+          "Mount Assiniboine",
+          "Mount Fitz Roy",
+          "Ama Dablam",
+          "Machhapuchhre"
+        ]
+      }
+    }
+  ],
+  "numbers": {
+    "summits": [
+      {
+        "name": "Matterhorn",
+        "shape": "sharp",
+        "region": "Alps",
+        "published_m": 4477.54,
+        "at_point_m": 3587,
+        "highest_within_1km_m": 4225,
+        "highest_is_m_away": 300,
+        "low_by_m": 252,
+        "pixel_m": 6.6,
+        "left_out": false
+      },
+      {
+        "name": "Weisshorn",
+        "shape": "sharp",
+        "region": "Alps",
+        "published_m": 4505,
+        "at_point_m": 4415,
+        "highest_within_1km_m": 4423,
+        "highest_is_m_away": 33,
+        "low_by_m": 82,
+        "pixel_m": 6.6,
+        "left_out": false
+      },
+      {
+        "name": "Dent Blanche",
+        "shape": "sharp",
+        "region": "Alps",
+        "published_m": 4357,
+        "at_point_m": 4244,
+        "highest_within_1km_m": 4253,
+        "highest_is_m_away": 37,
+        "low_by_m": 104,
+        "pixel_m": 6.6,
+        "left_out": false
+      },
+      {
+        "name": "Eiger",
+        "shape": "sharp",
+        "region": "Alps",
+        "published_m": 3967,
+        "at_point_m": 3937,
+        "highest_within_1km_m": 3959,
+        "highest_is_m_away": 88,
+        "low_by_m": 9,
+        "pixel_m": 6.6,
+        "left_out": false
+      },
+      {
+        "name": "Pizzo Badile",
+        "shape": "sharp",
+        "region": "Alps",
+        "published_m": 3308,
+        "at_point_m": 3136,
+        "highest_within_1km_m": 3201,
+        "highest_is_m_away": 999,
+        "low_by_m": 108,
+        "pixel_m": 6.6,
+        "left_out": true
+      },
+      {
+        "name": "Grossglockner",
+        "shape": "sharp",
+        "region": "Alps",
+        "published_m": 3798,
+        "at_point_m": 3608,
+        "highest_within_1km_m": 3678,
+        "highest_is_m_away": 798,
+        "low_by_m": 120,
+        "pixel_m": 6.5,
+        "left_out": false
+      },
+      {
+        "name": "Grand Teton",
+        "shape": "sharp",
+        "region": "North America",
+        "published_m": 4199,
+        "at_point_m": 4197,
+        "highest_within_1km_m": 4197,
+        "highest_is_m_away": 2,
+        "low_by_m": 2,
+        "pixel_m": 6.9,
+        "left_out": false
+      },
+      {
+        "name": "Mount Thielsen",
+        "shape": "sharp",
+        "region": "North America",
+        "published_m": 2799,
+        "at_point_m": 2786,
+        "highest_within_1km_m": 2788,
+        "highest_is_m_away": 4,
+        "low_by_m": 11,
+        "pixel_m": 7,
+        "left_out": false
+      },
+      {
+        "name": "Mount Assiniboine",
+        "shape": "sharp",
+        "region": "North America",
+        "published_m": 3618,
+        "at_point_m": 3550,
+        "highest_within_1km_m": 3556,
+        "highest_is_m_away": 29,
+        "low_by_m": 62,
+        "pixel_m": 6,
+        "left_out": false
+      },
+      {
+        "name": "Mount Fitz Roy",
+        "shape": "sharp",
+        "region": "elsewhere",
+        "published_m": 3406,
+        "at_point_m": 2492,
+        "highest_within_1km_m": 2857,
+        "highest_is_m_away": 277,
+        "low_by_m": 549,
+        "pixel_m": 6.2,
+        "left_out": false
+      },
+      {
+        "name": "Ama Dablam",
+        "shape": "sharp",
+        "region": "elsewhere",
+        "published_m": 6814,
+        "at_point_m": 6586,
+        "highest_within_1km_m": 6666,
+        "highest_is_m_away": 99,
+        "low_by_m": 148,
+        "pixel_m": 8.4,
+        "left_out": false
+      },
+      {
+        "name": "Machhapuchhre",
+        "shape": "sharp",
+        "region": "elsewhere",
+        "published_m": 6993,
+        "at_point_m": 6459,
+        "highest_within_1km_m": 6862,
+        "highest_is_m_away": 469,
+        "low_by_m": 131,
+        "pixel_m": 8.4,
+        "left_out": false
+      },
+      {
+        "name": "Mont Blanc",
+        "shape": "broad",
+        "region": "Alps",
+        "published_m": 4805.59,
+        "at_point_m": 4793,
+        "highest_within_1km_m": 4794,
+        "highest_is_m_away": 12,
+        "low_by_m": 12,
+        "pixel_m": 6.6,
+        "left_out": false
+      },
+      {
+        "name": "Dôme du Goûter",
+        "shape": "broad",
+        "region": "Alps",
+        "published_m": 4304,
+        "at_point_m": 4280,
+        "highest_within_1km_m": 4452,
+        "highest_is_m_away": 1000,
+        "low_by_m": -147,
+        "pixel_m": 6.6,
+        "left_out": true
+      },
+      {
+        "name": "Breithorn",
+        "shape": "broad",
+        "region": "Alps",
+        "published_m": 4160,
+        "at_point_m": 4130,
+        "highest_within_1km_m": 4139,
+        "highest_is_m_away": 88,
+        "low_by_m": 21,
+        "pixel_m": 6.6,
+        "left_out": false
+      },
+      {
+        "name": "Alphubel",
+        "shape": "broad",
+        "region": "Alps",
+        "published_m": 4206,
+        "at_point_m": 4177,
+        "highest_within_1km_m": 4185,
+        "highest_is_m_away": 22,
+        "low_by_m": 21,
+        "pixel_m": 6.6,
+        "left_out": false
+      },
+      {
+        "name": "Allalinhorn",
+        "shape": "broad",
+        "region": "Alps",
+        "published_m": 4027,
+        "at_point_m": 3995,
+        "highest_within_1km_m": 3998,
+        "highest_is_m_away": 22,
+        "low_by_m": 29,
+        "pixel_m": 6.6,
+        "left_out": false
+      },
+      {
+        "name": "Titlis",
+        "shape": "broad",
+        "region": "Alps",
+        "published_m": 3238,
+        "at_point_m": 3027,
+        "highest_within_1km_m": 3194,
+        "highest_is_m_away": 162,
+        "low_by_m": 44,
+        "pixel_m": 6.5,
+        "left_out": false
+      },
+      {
+        "name": "Mount Rainier",
+        "shape": "broad",
+        "region": "North America",
+        "published_m": 4389,
+        "at_point_m": 4386,
+        "highest_within_1km_m": 4392,
+        "highest_is_m_away": 137,
+        "low_by_m": -3,
+        "pixel_m": 6.5,
+        "left_out": false
+      },
+      {
+        "name": "Mount Whitney",
+        "shape": "broad",
+        "region": "North America",
+        "published_m": 4421,
+        "at_point_m": 4410,
+        "highest_within_1km_m": 4414,
+        "highest_is_m_away": 21,
+        "low_by_m": 7,
+        "pixel_m": 7.7,
+        "left_out": false
+      },
+      {
+        "name": "Mount Elbert",
+        "shape": "broad",
+        "region": "North America",
+        "published_m": 4401,
+        "at_point_m": 4396,
+        "highest_within_1km_m": 4397,
+        "highest_is_m_away": 7,
+        "low_by_m": 5,
+        "pixel_m": 7.4,
+        "left_out": false
+      },
+      {
+        "name": "Mount Fuji",
+        "shape": "broad",
+        "region": "elsewhere",
+        "published_m": 3777.24,
+        "at_point_m": 3750,
+        "highest_within_1km_m": 3754,
+        "highest_is_m_away": 26,
+        "low_by_m": 23,
+        "pixel_m": 7.8,
+        "left_out": false
+      },
+      {
+        "name": "Uhuru Peak",
+        "shape": "broad",
+        "region": "elsewhere",
+        "published_m": 5895,
+        "at_point_m": 5879,
+        "highest_within_1km_m": 5884,
+        "highest_is_m_away": 133,
+        "low_by_m": 12,
+        "pixel_m": 9.5,
+        "left_out": false
+      },
+      {
+        "name": "Mount Elbrus",
+        "shape": "broad",
+        "region": "elsewhere",
+        "published_m": 5642,
+        "at_point_m": 5586,
+        "highest_within_1km_m": 5613,
+        "highest_is_m_away": 73,
+        "low_by_m": 29,
+        "pixel_m": 6.9,
+        "left_out": false
+      }
+    ],
+    "tiles_read": 118
+  },
+  "screenshots": [],
+  "use": {
+    "map_loads": 0,
+    "web_service_requests": 118,
+    "calls": [
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8539/5829.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8540/5829.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8541/5829.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8539/5830.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8540/5830.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8541/5830.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8542/5821.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8543/5821.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8542/5822.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8543/5822.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8537/5825.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8538/5825.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8539/5825.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8537/5826.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8538/5826.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8539/5826.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8537/5827.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8538/5827.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8539/5827.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8555/5790.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8556/5790.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8555/5791.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8556/5791.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8627/5808.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8628/5808.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8627/5809.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8628/5809.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8627/5810.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8628/5810.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8769/5757.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8770/5757.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8769/5758.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8770/5758.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/3148/5973.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/3149/5973.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/3148/5974.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/3149/5974.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/2636/6010.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/2637/6010.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/2636/6011.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/2637/6011.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/2927/5493.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/2928/5493.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/2929/5493.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/2927/5494.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/2928/5494.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/2929/5494.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/2927/5495.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/2928/5495.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/2929/5495.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/4867/10775.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/4868/10775.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/4867/10776.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/4868/10776.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/12144/6870.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/12145/6870.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/12144/6871.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/12145/6871.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/12012/6837.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/12013/6837.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/12012/6838.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/12013/6838.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8503/5839.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8504/5839.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8505/5839.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8503/5840.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8504/5840.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8505/5840.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8502/5838.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8503/5838.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8504/5838.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8502/5839.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8543/5832.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8544/5832.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8545/5832.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8543/5833.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8544/5833.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8545/5833.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8549/5824.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8550/5824.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8549/5825.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8550/5825.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8551/5825.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8550/5826.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8551/5826.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8575/5777.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8576/5777.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8575/5778.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/8576/5778.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/2649/5771.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/2650/5771.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/2651/5771.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/2649/5772.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/2650/5772.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/2651/5772.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/2649/5773.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/2650/5773.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/2651/5773.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/2807/6400.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/2808/6400.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/2807/6401.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/2808/6401.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/3347/6254.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/3348/6254.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/3347/6255.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/3348/6255.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/14505/6469.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/14506/6469.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/14505/6470.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/14506/6470.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/9891/8331.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/9892/8331.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/9891/8332.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/9892/8332.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/10122/5997.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/10123/5997.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/10122/5998.pngraw?access_token=<token>"
+      },
+      {
+        "status": 200,
+        "type": "image/png",
+        "url": "https://api.mapbox.com/v4/mapbox.mapbox-terrain-dem-v1/14/10123/5998.pngraw?access_token=<token>"
+      }
+    ]
+  },
+  "seconds": 84
+}

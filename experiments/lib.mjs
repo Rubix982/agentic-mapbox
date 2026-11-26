@@ -44,7 +44,9 @@ ${script}
 function where(file) {
   const p = fileURLToPath(file);
   const dir = path.dirname(p);
-  return { dir, area: path.basename(dir), name: path.basename(p, '.mjs'), results: path.join(dir, 'results') };
+  // MBX_TAG=gpu writes results/<name>-gpu.json and its screenshots beside the default run's instead of over them (T-006)
+  const tag = process.env.MBX_TAG ? `-${process.env.MBX_TAG}` : '';
+  return { dir, area: path.basename(dir), name: path.basename(p, '.mjs') + tag, results: path.join(dir, 'results') };
 }
 
 function shrink(src, out) {
@@ -181,6 +183,7 @@ export async function mapExperiment({ file, question, html, assets = {}, check }
     use: { map_loads: 1, web_service_requests: rec.web_service_requests || 0, requests_by_host: rec.requests_by_host },
     errors: rec.errors,
     seconds: rec.seconds,
+    webgl_renderer: rec.webgl_renderer,
   };
   write(w, out);
   fs.rmSync(tmp, { recursive: true, force: true });

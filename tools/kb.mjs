@@ -12,6 +12,10 @@
 //   node tools/kb.mjs section <name>      root-level style sections: light, light-3d, fog, terrain, projection, camera, import, config, snow, rain, colorTheme
 //   node tools/kb.mjs config [name]       the Standard style's settings, for setConfigProperty('basemap', name, value);
 //                                         no name lists all 48. Marks the ones a model named wrong without help (C-004).
+//   node tools/kb.mjs api <words...>      web-service parameters from the API reference (inventory/api-params.json, made
+//                                         by tools/api-docs.mjs) whose endpoint, name or description contains every
+//                                         word. Its stated limits are the docs' word; where C-011 sent a request at and
+//                                         past one, the result is shown beside it.
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -137,6 +141,32 @@ switch (cmd) {
     }
     const all = [...std, ...(cfg.styles['standard-satellite'] || []).filter((x) => !std.some((y) => y.name === x.name))];
     print(exact(all, q).map(show));
+    break;
+  }
+  case 'api': {
+    const file = path.join(inv, 'api-params.json');
+    if (!fs.existsSync(file)) { console.log('No API reference yet: run `node tools/api-docs.mjs` first.'); break; }
+    const pages = JSON.parse(fs.readFileSync(file, 'utf8'));
+    // what the API did at and past each stated limit C-011 tested (experiments/followups/results/docs-limits.json)
+    const limFile = path.join(root, 'experiments/followups/results/docs-limits.json');
+    const tested = fs.existsSync(limFile) ? JSON.parse(fs.readFileSync(limFile, 'utf8')).numbers.rows : [];
+    const pageKey = (p) => p.replace(/^(maps|navigation|search|accounts)_/, '').replace(/^geocoding$/, 'geocoding (v6)');
+    const words = args.map(lc);
+    const out = [];
+    for (const [page, secs] of Object.entries(pages)) for (const sec of secs) {
+      const url = (sec.endpoints[0]?.url || '').split('?')[0].replace('https://api.mapbox.com', '');
+      for (const p of sec.params) {
+        if (!words.every((w) => [page, url, p.name, p.description].some((f) => lc(f).includes(w)))) continue;
+        const base = p.name.split(' ')[0];
+        // a tested row names its endpoint when the page has several: "limit (reverse)"
+        const sameEndpoint = (r) => { const e = (r.param.match(/\((\w+)\)/) || [])[1]; return !e || (e === 'reverse' ? /reverse|longitude/.test(url) : e === 'forward' ? !/reverse|longitude|suggest|category/.test(url) : url.includes(e)); };
+        const checks = tested.filter((r) => r.page.replace(' (EV)', '') === pageKey(page) && r.param.split(' ')[0] === base && sameEndpoint(r))
+          .map((r) => `  C-011, ${r.end} ${r.at}: ${r.verdict === 'agrees' ? 'the API agrees' : r.verdict === 'api stricter' ? `the API is STRICTER than this: ${r.at_message}` : r.verdict === 'api looser' ? `the API also accepted ${r.past}` : r.verdict}`);
+        out.push([`${page} · ${sec.endpoints[0]?.method || ''} ${url} · ${p.name}${p.flags.length ? ' ' + p.flags.join(' ') : ''}`,
+          `  ${p.table}${p.type ? ', ' + p.type : ''}`, `  ${short(p.description, 400)}`, ...[...new Set(checks)]].join('\n'));
+      }
+    }
+    console.log(out.length ? out.slice(0, 25).join('\n') + (out.length > 25 ? `\n… ${out.length - 25} more` : '') : `nothing found for "${q}"`);
     break;
   }
   case 'find': {
