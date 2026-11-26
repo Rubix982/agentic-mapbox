@@ -319,3 +319,44 @@ was the `building-part` colouring.
 
 **Use.** $10.26 for the 3 sessions; 3 map loads to grade them.
 
+## C-015: task 5 offline with GL JS's building layer named (2026-11-26)
+
+```
+node evals/run_eval.mjs --set tasks-3x --tasks 5 --arms offline --runs 3 --concurrency 1 \
+  --note "Draw them with GL JS's procedural building layer (\`type: 'building'\`), which v3.35.2 has and which can draw a GeoJSON source."
+```
+
+The offline arm is as in C-013 and C-014, and the note is added to the end of the task's text. It settles two of the three
+doubts C-014's sessions gave (does the layer exist, does it take GeoJSON) and leaves the property names and the
+colouring to memory. Records: `results/c015-20261126-065716.jsonl`. Screenshots: `results/c015-task5-named-run0.png` to
+`-run2.png`.
+
+**2 of the 3 were right first time, against 1 of 4 without the sentence.** Each session tried once to download GL JS,
+and the sandbox refused it.
+
+| Run | Right? | Turns | Minutes | Cost, USD | Page |
+|---|---|---|---|---|---|
+| 0 | no: every roof cream | 6 | 3 | 0.79 | `building` layer, colour by `building_part`, 124 lines |
+| 1 | yes | 10 | 7 | 1.31 | `building` layer, colour by `building-part`, 266 lines |
+| 2 | yes | 6 | 4 | 0.78 | `building` layer, colour by `building-part`, 138 lines |
+| **All** | **2 of 3** | | | **2.88** | |
+| C-014, for comparison | 1 of 3 | 7 to 33 | 16 to 18 | 3.22 to 3.72 | two hand-drawn in WebGL, 588 and 766 lines |
+
+**The miss was one character.** Run 0 wrote `['downcase', ['to-string', ['get', 'building_part']]]` and tested it for
+"roof". GL JS's property is `building-part`, so the expression found nothing and every surface took the wall colour.
+The roof shapes and heights were right. The session had flagged this in its last message: "If v3.35.2 doesn't provide
+that value, every surface comes out cream."
+
+**What this does and does not show.**
+- Naming the layer changed what the sessions did. All three used it, against one session in four without the sentence,
+  and none drew anything by hand.
+- From memory, the model got the layer's heights and roof shapes right 3 times in 3, and the part property's spelling 2
+  times in 3.
+- So the first guide entry is the sentence, with `building-part` as its known gap (T-015).
+- The task here says to use the layer. Whether the entry helps an agent whose task does not say so, if it reads the
+  entry somewhere else, is not tested.
+- Three sessions on one task, on one model. 2 of 3 against 1 of 4 is a difference in what the sessions chose, which was
+  total (3 of 3 used the layer, against 1 of 4); the difference in right answers is too small to call at these counts.
+
+**Use.** $2.88 for the 3 sessions; 3 map loads to grade them.
+

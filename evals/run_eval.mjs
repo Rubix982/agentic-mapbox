@@ -1,7 +1,10 @@
 // Run the held-out GL JS tasks (evals/tasks/tasks.md) with Mapbox's Agent Skills and without, and score each first page.
 //
 //   node evals/run_eval.mjs [--set tasks] [--tasks 1-10 | 2,3,5] [--arms with,without] [--runs 1] [--model claude-opus-5-5] [--max-turns 40]
-//                           [--concurrency 3] [--resume evals/runs/<dir>]
+//                           [--concurrency 3] [--resume evals/runs/<dir>] [--note "<sentence>"]
+//
+// --note adds one sentence to the end of every task's text, as the agent sees it, and is kept in each record (C-015:
+// task 5 with GL JS's building layer named). The run folder's name ends in -note.
 //
 // --arms offline is the without arm with no network: Bash runs in Claude Code's sandbox with no allowed domains and no
 // way out of it, WebFetch and WebSearch are denied, and neither Bash nor the file tools can read the home folder or
@@ -192,11 +195,12 @@ async function main() {
   const model = opt('--model', 'claude-opus-5-5');
   const maxTurns = opt('--max-turns', '40');
   const conc = Number(opt('--concurrency', '3'));
+  const note = opt('--note', '');
   let base;
   if (a.includes('--resume')) base = path.resolve(opt('--resume'));
   else {
     const stamp = new Date().toISOString().replace(/[-:]/g, '').replace('T', '-').slice(0, 15);
-    base = path.join(HERE, 'runs', `${stamp}-${SET === 'tasks' ? '' : SET + '-'}${arms.join('+')}`);
+    base = path.join(HERE, 'runs', `${stamp}-${SET === 'tasks' ? '' : SET + '-'}${arms.join('+')}${note ? '-note' : ''}`);
     fs.mkdirSync(base, { recursive: true });
   }
   const resultsFile = path.join(base, 'results.jsonl');
@@ -227,7 +231,7 @@ async function main() {
       fs.copyFileSync(path.join(TASKS_DIR, 'reference', `${arm === 'reference' ? 'task' : 'wrong'}${n}.html`), path.join(work, 'index.html'));
       info = { skill_used: false, agent_ran_browser: false, cost_usd: 0, turns: 0 };
     } else {
-      const args = ['-p', PROMPT.replace('{task}', taskText(T[n])), '--output-format', 'stream-json', '--verbose',
+      const args = ['-p', PROMPT.replace('{task}', taskText(T[n]) + (note ? ' ' + note : '')), '--output-format', 'stream-json', '--verbose',
         '--allowedTools', 'Read,Write,Edit,Glob,Grep,Bash,Skill', '--max-turns', maxTurns, '--strict-mcp-config', '--model', model];
       if (arm === 'with') args.push('--plugin-dir', plugin);
       if (arm === 'offline') args.push('--settings', JSON.stringify(offlineSettings(work)));
@@ -236,7 +240,7 @@ async function main() {
       if (p.err.trim()) fs.writeFileSync(path.join(work, 'stderr.txt'), p.err);
       info = transcriptFacts(p.out.split('\n'));
     }
-    const rec = { task: n, arm, run: r, agent_seconds: Math.round((Date.now() - t0) / 100) / 10, ...info };
+    const rec = { task: n, arm, run: r, ...(note ? { note } : {}), agent_seconds: Math.round((Date.now() - t0) / 100) / 10, ...info };
     const page = path.join(work, 'index.html');
     if (rec.session_error && !fs.existsSync(page)) {
       Object.assign(rec, { page_written: false, right_first_time: null });

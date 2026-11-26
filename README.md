@@ -12,7 +12,9 @@ three of those sessions got there by downloading and reading GL JS's own code. R
 installed, those three still downloaded the code and opened no skill (C-006). With the network off (C-013, C-014),
 two of them came out right from what the model knew. The third, the procedural building's roofs, came out right 1 time
 in 4. Three times the model would not trust that GL JS has a layer for them and drew the roofs itself in WebGL, which
-the check fails. The one time it used the layer, from memory, it was right.
+the check fails. The one time it used the layer, from memory, it was right. Told in one sentence that the
+layer exists (C-015), the model used it all three times and was right twice; the miss spelt `building-part` with an
+underscore.
 
 Then a tour (C-002): 22 small experiments over 21 of Mapbox's capabilities, each run once with a free account's public
 token, each recording facts that could have come out false and a screenshot (`experiments/results.md`,

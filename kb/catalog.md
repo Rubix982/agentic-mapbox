@@ -101,7 +101,8 @@ With no help, the model got ten blind tasks on these areas right (C-005, `evals/
 model colour mix, `clip` and the procedural building's colours it downloaded GL JS's own code and read it. With no
 network (C-013, C-014) it wrote the colour mix and `clip` from memory. The building came out right 1 time in 4. Three
 times it doubted that GL JS 3.35.2 has a building layer and drew the roofs in its own WebGL layer. The one time it used
-the layer, from memory, it was right.
+the layer, from memory, it was right. Told that the layer exists (C-015), it used it 3 times in 3 and was right twice; the miss
+coloured by `building_part`, which GL JS does not set, instead of `building-part`.
 
 ## Agent tooling Mapbox publishes
 

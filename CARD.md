@@ -766,3 +766,67 @@ What stays unknown: whether a sentence naming the layer is enough to make the mo
 **Use:** $10.26 for the 3 sessions. Every offline session on task 5 cost $3.20 to $3.72 and took 16 to 18 minutes, right
 or wrong, against $1.06 and $1.47 with a network.
 
+---
+
+### C-015 · Does naming GL JS's building layer make the model use it, and get task 5 right, offline?
+
+**Opened:** 2026-11-26 · **Closed:** 2026-11-26
+
+1. **WHERE WE ARE.** With no network, task 5 came out right 1 time in 4 (C-013, C-014). The three failing sessions
+   avoided GL JS's procedural building layer, saying they could not confirm it exists in v3.35.2, takes GeoJSON, or
+   colours roofs and walls separately. The passing session wrote the layer right from memory, `building-part` included.
+2. **WHAT WE ARE DOING.** Run task 5 three times in the offline arm, as in C-014, with one sentence added to the end of
+   the task: "Draw them with GL JS's procedural building layer (`type: 'building'`), which v3.35.2 has and which can draw
+   a GeoJSON source." (`run_eval.mjs --set tasks-3x --tasks 5 --arms offline --runs 3 --concurrency 1 --note "..."`).
+   Grade each page once with the same check, and for each failing page record whether it used the layer and what it got
+   wrong. The sentence settles two of the three doubts and leaves the property names and the colouring to memory.
+3. **WHY.** Unknown now: whether naming the layer is enough for the model to use it and get it right offline, or whether
+   it also needs the property names or the colouring told. After: a count out of 3, against 1 of 4 without the sentence.
+4. **WHAT IS AFFECTED.** T-014 is answered. This repository's first guide entry is either this sentence or the sentence
+   plus what the pages got wrong. C-014's reading, that offline failures come from the model not trusting what it
+   remembers rather than not knowing it, is tested: it survives only if the pages that use the layer get it right.
+5. **CONCLUSION.**
+   - **3 of 3 right:** naming the layer is enough. The first guide entry is that sentence, and C-014's reading holds.
+   - **2 of 3 right:** naming the layer mostly works, against 1 of 4 without. The entry is the sentence, with the
+     failure's cause recorded beside it; three runs cannot say more.
+   - **0 or 1 right, the pages using the layer but getting the colours or roofs wrong:** naming is not enough, and the
+     entry must also give what they got wrong (`building-part`, most likely). C-014's run 1 was the model's best draw,
+     not its usual one.
+   - **0 or 1 right, the pages still avoiding the layer:** even when told, the model does not trust the layer offline.
+     The entry needs more than a sentence, a working example perhaps, and the next card tests that.
+6. **CONSEQUENCE OF NOT DOING IT.** The first guide entry would be written untested: no one would know whether naming the
+   layer is enough or the colouring has to be spelled out.
+
+**Needs before it can run:** 3 Claude sessions on claude-opus-5-5. C-014's sessions cost $3.22 to $3.72; with the layer
+named they may be shorter, so $3 to $11. The user said to go ahead on 2026-11-26 ("start 014"). The offline arm's
+settings have not changed since its last probe passed.
+
+**Result:** 2 of the 3 right first time with the layer named, against 1 of 4 without it (`evals/results.md`, C-015).
+That is field 5's 2-of-3 branch: naming the layer mostly works.
+
+All three sessions used GL JS's `building` layer, and none drew anything by hand; without the sentence, one session in
+four had used the layer. All three took the heights and roof shapes right. The failure was one character. Run 0
+coloured each surface by a feature property `building_part`, with an underscore, where GL JS's is `building-part`. The
+expression found no value, so every roof came out in the wall colour (`evals/results/c015-task5-named-run0.png`). The
+session had said so in its last message: if v3.35.2 doesn't provide that value, every surface comes out cream.
+
+The sessions were also shorter: 3 to 7 minutes and $0.78 to $1.31, against 16 to 18 minutes and $3.20 to $3.72 without
+the sentence.
+
+So C-014's reading holds, narrowed. Told that the layer exists, the model used it every time, and wrote it right from
+memory 2 times in 3. What it does not reliably remember is the part property's spelling.
+
+**The first guide entry**, as this card leaves it: "GL JS v3.35.2 has a procedural building layer (`type: 'building'`),
+which can draw a GeoJSON source." Beside it goes its known failure: 1 of 3 sessions read the part name from
+`building_part`, and GL JS's property is `building-part`. Whether adding that to the entry makes task 5 right every time
+is T-015.
+
+In plain words: told in one sentence that GL JS has a building layer, the model with no network used it all three
+times, in a fifth of the time. Twice it got everything right; once it misspelt one property name and every roof came
+out cream.
+
+What stays unknown: whether `building-part` in the entry closes the last failure, whether the entry helps where the
+task does not say to use the layer, and other models.
+
+**Use:** $2.88 for the 3 sessions.
+

@@ -10,7 +10,8 @@ median 104 m low; the MCP elevation tool gives the Matterhorn 3,587 m; the API w
 limits. C-013 closed on 2026-11-26 (with no network, 2 of the 3 looked-up tasks right; for the third the model drew the
 roofs itself rather than trust GL JS's building layer). C-012 (T-010) is parked until the user says yes to its
 sessions. C-014 closed on 2026-11-26 (task 5 offline: 1 of 4 right; the failing sessions doubted GL JS's building
-layer and drew the roofs by hand). One card at a time.
+layer and drew the roofs by hand). C-015 closed on 2026-11-26 (with GL JS's building layer named, 2 of 3 right; the miss
+was `building_part` for `building-part`). One card at a time.
 
 ### T-001 · What does each Mapbox capability look like when it is actually run?
 
@@ -183,11 +184,23 @@ kept a hand-drawn fallback.
 
 ### T-014 · Told to use GL JS's building layer, does the model get task 5 right offline?
 
-**Status:** open
+**Status:** answered (C-015)
 **Parent:** T-011
 **Opened:** 2026-11-26
 **Question:** Task 5's wording asks for the picture, and only its check names the procedural `building` layer. A version
 of the task that says to use that layer, run offline, would say whether the model knows how to use it (`building-part`
 for roof and wall colours) or only doubted that it exists. C-014's passing session wrote the layer right from memory,
 so the question is now whether naming the layer is enough to make the model trust it.
+**Answer:** mostly (`evals/results.md`, C-015): 2 of 3 right, against 1 of 4 without the sentence. All three used the
+layer; the miss spelt the part property `building_part`. Opened T-015.
+
+### T-015 · With `building-part` added to the entry, is task 5 right every time offline?
+
+**Status:** open
+**Parent:** T-014
+**Opened:** 2026-11-26
+**Question:** In C-015 the one sentence naming GL JS's building layer gave 2 of 3, and the miss spelt the part property
+`building_part`. The same three offline runs with the entry extended ("each part's colour is evaluated with the part's
+name, roof or wall, in the feature property `building-part`") would say whether the entry then needs nothing more.
 **Answer:** —
+
