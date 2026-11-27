@@ -84,7 +84,9 @@ A model with no help named 44 of the 48 right (`evals/results.md`, C-004). It in
 `colorHdRoads` and `colorMix3dLandmarks`. **GL JS ignores an unknown setting name without a warning**, so a wrong name
 shows up only as nothing changing; `getConfigProperty` afterwards catches it. Asked three more times each (C-012),
 the model got those three right 3 times in 9 without help, and 8 times in 9 when told in one sentence to search
-`map.getSchema('basemap')` by each entry's `metadata['mapbox:title']` and read the value back.
+`map.getSchema('basemap')` by each entry's `metadata['mapbox:title']` and read the value back. On the other 45 (C-021)
+that sentence made every answer a search; none picked a wrong setting. C-004's check reads one value per setting, and
+it missed two right answers in C-021 and none in C-004 or C-012 (C-023).
 
 Run here `[exp: experiments/standard, 3d, data]`: light presets, themes, 3D buildings, the Interactions API, style
 imports, globe, terrain, a glTF `model` layer, `clip`, snow and rain, and `raster-particle`. Three things in them
@@ -172,7 +174,10 @@ Coverage of GL JS 3.x in the skills, by a text search of their files (a mention,
 
 Whether they get opened: in C-001, sessions given all 27 opened none on ten everyday tasks. In C-006 they opened none on
 the three tasks the model did not know either, and downloaded GL JS's code instead (0 of 13 in all, `evals/results.md`).
-A skill added beside them whose description names those three tasks' features was opened first in all three sessions
-(C-017, 3 of 3). The description was written knowing the tasks. Cut to the API's names alone, or to the tasks' words
-alone, it was still opened 3 of 3 times either way (C-019). All three descriptions open with "Mapbox GL JS v3.35" and
-belong to a skill named `gl-js-3d-layers`, and either may be what gets it opened (T-018).
+A skill added beside them whose description names the features the tasks need was opened first on every task, in the
+morning and the afternoon of 27 November, 6 of 6 (C-017, C-029). Other added skills depended on the hour. In the
+morning every one was opened on every task, 15 of 15: with only the API's names or only the tasks' words (C-019), and
+with a general description under a plain name (C-020). In the afternoon a general description was opened only on task
+5, the procedural buildings, 3 of 9, under a plain name or a `mapbox-` one (C-026, C-027). Nothing the transcripts
+record changed between the two (C-028). So the afternoon's tests of the name and the description (C-024, C-026) say
+nothing about either, and what changed is not known (T-026, parked).

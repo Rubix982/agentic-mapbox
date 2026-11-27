@@ -405,7 +405,6 @@ Standard's, was removed all the same. That is one page; whether it holds in gene
 
 **Use.** $2.48 for the 3 sessions; 3 map loads to grade them and 5 for the clip test.
 
-
 ## C-017: the three tasks again, with one skill that names their features (2026-11-27)
 
 ```
@@ -457,6 +456,9 @@ buildings; the skill says a clip removes content from the layers drawn before it
 its building layer. That points at render order rather than scope deciding what a clip removes, on one page each way.
 
 **Use.** $0.87 for the 3 sessions and $0.60 for the 3 check sessions; 3 map loads to grade them.
+
+**Later (C-029).** Repeated at 14:31 UTC, after added skills with a general description had stopped being opened on
+tasks 2 and 3: opened first on all three again, nothing downloaded, $0.80.
 
 ## C-018: which clip layers remove a page's own buildings (2026-11-27)
 
@@ -597,3 +599,379 @@ session stopped at 20 minutes reported no cost. Of the five dear ones, four were
 
 **Use.** $15.36 for the 18 sessions that reported a cost, plus the one stopped at 20 minutes, which reported none; at
 the dear sessions' rate that one was probably about $3 to $4, so about $19 in all. One map load per arm to grade.
+
+## C-020: a general description, with and without the version and the name (2026-11-27)
+
+```
+node evals/skill_description_check.mjs evals/skills/<arm>/<name> --out <arm>-description-check.json   # for each arm
+node evals/run_eval.mjs --set tasks-3x --tasks 2,3,5 --arms with --extra-skill evals/skills/c020-version/gl-js-3d-layers
+node evals/run_eval.mjs --set tasks-3x --tasks 2,3,5 --arms with --extra-skill evals/skills/c020-name/gl-js-3d-layers
+node evals/run_eval.mjs --set tasks-3x --tasks 2,3,5 --arms with --extra-skill evals/skills/c020-neither/web-map-patterns
+```
+
+C-017's setup and skill body, with a general description that names no feature and uses none of the tasks' words:
+"Mapbox GL JS v3.35 patterns and snippets for web maps: setting up a map, adding sources and layers, and styling them."
+
+| Arm | Skill name | Version in the description | Opened | Downloaded GL JS | Cost |
+|---|---|---|---|---|---|
+| A | `gl-js-3d-layers` | yes | 3 of 3, each as the first tool call | 0 of 3 | $0.91 |
+| B | `gl-js-3d-layers` | no | 3 of 3, each after one look at the data | 0 of 3 | $0.88 |
+| C | `web-map-patterns` | no | 3 of 3 | 2 of 3 | $1.24 |
+
+All nine were right first time. In arm C, task 2 downloaded GL JS's code before opening the skill, and task 5 opened it
+first and then downloaded the code to check the building layer. All three checks copied their description out exactly.
+Records: `results/c020-version-20261127-041213.jsonl`, `results/c020-name-20261127-041317.jsonl`,
+`results/c020-neither-20261127-041420.jsonl` and the three `results/c020-*-description-check.json`.
+
+**The setups match C-006's.** Claude Code 2.1.332, claude-opus-5-5, the same 27 tools and the same plugins in all of
+them. The one difference is the added skill, listed 30th of 68, after Mapbox's 27.
+
+**What this does and does not show.**
+- An added skill was opened on these tasks whatever its description said, and whatever its name. None of the name,
+  the version or the feature names was needed.
+- So C-017 and C-019 do not show that a description naming the feature gets a skill read. Every description tried was
+  read, the general one included.
+- Mapbox's `data-visualization-patterns` description mentions "3D visualizations, data-driven styling … layer types",
+  close to arm C's in kind, and in C-006 it was not opened. Why Mapbox's 27 went unopened there and every added skill
+  here was opened is not known. It could be that C-006's 0 of 3 was chance, that something unseen changed between 25
+  and 27 November, or something about the added skill other than its words, such as its place at the end of the list.
+  Running C-006's setup again today separates the first two from the third (T-020). C-022 did: 0 of 3 again. And the
+  place was already ruled out here: arms A and B listed the skill 3rd of 68, first of the `mapbox:` skills, and arm C
+  30th, last of them. So what this shows is that none of the feature names, the version or the name `gl-js-3d-layers`
+  was needed, not that the description plays no part (C-022).
+- One session per task and arm, on one model.
+
+**Use.** $3.03 for the 9 sessions and $0.53 for the 3 check sessions.
+
+**Later (C-027, C-029).** All three of this section's counts were taken in the morning. In the afternoon the general
+description was opened only on task 5 (C-027), and C-017's description on all three tasks (C-029), so in the afternoon
+the wording did matter.
+
+## C-021: C-012's sentence on the other 45 settings (2026-11-27)
+
+```
+node evals/config/run.mjs --hint --only <the 45 settings other than showHdRoads, colorHdRoads, colorMix3dLandmarks> --runs 1 --max-avg-cost 1 --max-total-cost 15
+node evals/config/check_misses.mjs evals/runs/config-20261127-042216-hint
+```
+
+C-004's requests for the other 45 of the Standard style's 48 settings, once each, with C-012's sentence, set up and
+graded as in C-004. Records: `results/c004-20261127-042216-hint.jsonl` and `results/c021-misses.json`.
+
+C-004 had got 44 of these 45 right. The 45th, `showIndoorLabels`, had no answer: its session ended in an API
+safeguard error.
+
+**By C-004's check, 43 of the 45 were right. By what the two misses do, all 45 were.** All 45 sessions ran, for $6.52.
+
+Both misses found the right setting:
+- **`theme`** ("Make the whole basemap greyscale, with no colour at all"; the check wants `theme: 'monochrome'`). The
+  answer set `theme: 'custom'` with a greyscale colour table it built itself in `theme-data`, falling back to
+  `'monochrome'` only if that was refused. Loaded, it left no pixel with colour (largest channel minus smallest above
+  12, every seventh pixel sampled). So did `'monochrome'`. Standard untouched had 73.9% of them coloured.
+- **`roadsBrightness`** ("When the map is dark, make the roads stand out brighter than they do by default"; the check
+  wants it at 0.41 or more). The answer raises the setting only while the light preset is dusk or night. The check reads
+  it at the default `day`, where it stays 0.4. Switched to `night`, it went to 0.88.
+
+**How the sentence changed the answers.** All 45 searched `map.getSchema('basemap')` by `metadata['mapbox:title']`,
+though the sentence says to do so "if you are unsure", and C-004 had named all but one of these without help.
+
+| | C-004, no sentence | C-021, with the sentence |
+|---|---|---|
+| Median answer | 63 characters, one call | 2,428 characters |
+| Longest answer | 594 characters | 5,367 characters |
+| Cost of the 45 | $4.83 (median $0.017) | $6.52 (median $0.066) |
+
+**What this does and does not show.**
+- On these 45 the sentence broke nothing that was checked by what it does: no search picked a wrong setting or came back
+  empty.
+- It does change every answer, from one known call to a search, and two of those searches did something other than the
+  one call C-004's check accepts. A check that wants a given value marked them wrong, though both did what was asked.
+- "If you are unsure" did not hold the model back: it searched every time.
+- One session per setting, on one model.
+
+**Use.** $6.52 for the 45 sessions; one map load to grade them and four to load the two misses.
+
+## C-022: C-006's setup again, Mapbox's 27 skills alone (2026-11-27)
+
+`node evals/run_eval.mjs --set tasks-3x --tasks 2,3,5 --arms with`, C-006's command unchanged: Mapbox's Agent Skills at
+commit `84d991e` as a plugin, its MCP servers removed, no skill added. Records: `results/c022-20261127-091829.jsonl`.
+
+**None of the three sessions opened a skill, as in C-006.** Each listed the same 67 skills at start-up, in the same
+order, the 27 Mapbox skills among them. None called the Skill tool or read a skill's files, and no visible text
+mentions a skill.
+
+**All three downloaded GL JS's code again, and all three were right first time.**
+
+| Task | Turns | Cost, USD | First download, in tool calls | What it fetched |
+|---|---|---|---|---|
+| 2. Delivery vans (model colour mix) | 18 | 0.86 | 3rd | `mapbox-gl-dev.js` from unpkg |
+| 3. Clearing the site (clip) | 9 | 0.39 | 2nd | `mapbox-gl.js` from Mapbox's CDN |
+| 5. Planned buildings (roof and wall colours) | 19 | 1.00 | 2nd | `mapbox-gl-dev.js` from Mapbox's CDN |
+| **All** | | **2.25** | | |
+
+C-006's first downloads came at the 8th, 5th and 5th tool step.
+
+**What this does and does not show.**
+- Mapbox's 27 skills alone were opened 0 of 6 times on these tasks, on 25 and 27 November. A skill added beside them was
+  opened 21 of 21 times (C-017 to C-020). C-006's result was not chance on three sessions, and C-017 to C-020's
+  comparisons with it stand.
+- It is not the added skill's place in the list: it was opened 3 of 3 times listed first of the `mapbox:` skills
+  (C-017, C-020 arms A and B) and 3 of 3 listed last (C-020 arm C).
+- A session sees each skill only as its name and description, in its place. All 27 of Mapbox's skills, like the added
+  one, carry nothing else in their front matter. So what gets the added skill opened is in its name or description,
+  read next to Mapbox's. C-020 showed that none of the feature names, the version or the name `gl-js-3d-layers` was
+  needed. Its general description still differs from all 27 of Mapbox's: theirs name a framework, a platform, a use
+  case or a migration, and it names the kind of work the tasks are, a GL JS web map with sources and layers. Whether
+  that is the cause is untested (T-022). C-024 tested it: given to Mapbox's own `mapbox-web-integration-patterns`, the
+  description was opened 0 of 3 times, so it is not the cause on its own. (C-027: that does not hold. C-024 ran in the
+  afternoon, when added skills were opened only on task 5, and was set against a morning run.)
+- The setup was not exactly C-006's. Claude Code 2.1.332, the model and the 67 skills were the same. But a 12th plugin
+  was loaded (`cc-plugin-easel`, which adds no skill), and the tool list had changed: WebFetch was gone, and
+  `McpTaskCheck`, `PublishPlugin` and `ShareOnboardingGuide` were new. C-020, five hours earlier, still had C-006's 27
+  tools. No C-006 session used WebFetch; all fetched with curl, as these did.
+- One session per task, on one model.
+
+**Use.** $2.25 for the 3 sessions.
+
+## C-023: the earlier counts judged by what the answers do to the map (2026-11-27)
+
+No new sessions and no map load. Every answer counted in C-004, C-012 and C-021 was read again where its grading record
+shows anything other than the one setting changed to the value asked: the 11 marked wrong (C-021's two aside, already
+loaded in C-021) and the 13 marked right that changed a second setting or name another `set…` or `addLayer` call. Each
+was judged from its code and what the grading page recorded: the settings changed, anything thrown, and what GL JS and
+the code printed with `console.warn` or `console.error`. Records: `results/c004-20261125-combined.jsonl`,
+`results/c004-20261127-032110.jsonl`, `results/c004-20261127-035137.jsonl`, `results/c004-20261127-032110-hint.jsonl`
+and `results/c004-20261127-042216-hint.jsonl`.
+
+**No verdict flips, 0 of 24.** C-004's 44 of 48 and C-012's 3 of 9 and 8 of 9 stand. Across the three cards' 111
+answers, C-021's two are the only ones the check got wrong.
+
+| Marked | Answers | What they do | Flips |
+|---|---|---|---|
+| wrong | 5 | set setting names that do not exist (`showLanes`, `showLaneMarkings`, `colorModeLandmarks`, `colorLanes`, …), which GL JS ignores | 0 |
+| wrong | 3 | search the schema by name, find nothing, and print a warning | 0 |
+| wrong | 2 | not code: an API safeguard error (C-004, `showIndoorLabels`), and prose saying the session could not finish (C-012 with the sentence, `colorMix3dLandmarks`) | 0 |
+| wrong | 1 | 139,534 characters of tool calls written out as text (C-012 without the sentence, `showHdRoads`) | 0 |
+| right | 5 | change a second setting the request needs: `theme: 'custom'` with `theme-data` (2), `showLandmarkIcons: true` with "keep the landmark icons" (2), the three 3D settings with `show3dObjects` (1) | 0 |
+| right | 3 | carry a fallback fill layer of their own that never ran: each starts with a `console.warn`, none was caught, and each setting read back the colour asked | 0 |
+| right | 5 | name a helper of their own (`setAndVerify`, `setSinglePoiLabelColor`, `setIndoorLabelSelectColor`) that the record's scan for `set…` calls picked up; on the map they call only `getSchema`, the two config methods and, in one, a wait for the style to load | 0 |
+
+None of the eleven wrong answers calls anything on the map other than reads of its style and config and
+`setConfigProperty`, and the grading page found no setting changed after any of them.
+
+**What this does and does not show.**
+- The one-value check did not miscount any answer in C-004 or C-012. Its two misses came in C-021, where the sentence
+  made every answer a longer search.
+- Answers marked right that changed only the one setting were not reread. A wrong one among them would have to have
+  done its harm some way other than through a setting, with no other map method named.
+- Which of the 48 checks would mark a second right answer wrong, if the check is run again, is T-023.
+
+## C-024: C-020's general description on one of Mapbox's own skills (2026-11-27)
+
+```
+node evals/skill_description_check.mjs --description "mapbox-web-integration-patterns=<the description>" --out c024-description-check.json
+node evals/run_eval.mjs --set tasks-3x --tasks 2,3,5 --arms with --description "mapbox-web-integration-patterns=<the description>"
+```
+
+C-006's setup with one change: Mapbox's own `mapbox-web-integration-patterns` kept its name and body, and its description
+was replaced, in the plugin copy, by the one C-020's arm C was opened with: "Mapbox GL JS patterns and snippets for web
+maps: setting up a map, adding sources and layers, and styling them." No skill was added. The check copied that
+description out of the session's list exactly. Records: `results/c024-20261127-130633.jsonl` and
+`results/c024-description-check.json`.
+
+**None of the three sessions opened a skill.** None called the Skill tool or read a skill's files, and no visible text
+mentions a skill.
+
+| Task | Turns | Cost, USD | First download, in tool calls | What it fetched |
+|---|---|---|---|---|
+| 2. Delivery vans (model colour mix) | 20 | 0.86 | 3rd | `mapbox-gl-dev.js` from Mapbox's CDN |
+| 3. Clearing the site (clip) | 15 | 0.76 | 2nd | `mapbox-gl.js` from Mapbox's CDN |
+| 5. Planned buildings (roof and wall colours) | 24 | 1.04 | 2nd | `mapbox-gl.js` and `mapbox-gl-dev.js` from Mapbox's CDN |
+| **All** | | **2.66** | | |
+
+All three were right first time.
+
+| Setup | Skill with the general description | Listed | Opened |
+|---|---|---|---|
+| C-020, arm C | `web-map-patterns`, added beside Mapbox's 27 | 30th of 68 | 3 of 3 |
+| C-024 | `mapbox-web-integration-patterns`, Mapbox's own | 29th of 67 | 0 of 3 |
+
+**What this does and does not show.**
+- The description alone does not get a skill opened on these tasks. The same words were opened 3 of 3 times on an
+  added skill and 0 of 3 on Mapbox's, listed in nearly the same place.
+- Two differences are left. One is the name: all 27 of Mapbox's skills start with `mapbox-`, and neither added skill
+  tried so far did. The other is the list around it: in arm C, Mapbox's framework description for
+  `mapbox-web-integration-patterns` was listed beside the general one, and here it was not. Adding the skill as
+  `mapbox-web-map-patterns` would separate them (T-024).
+- The setup matched C-006's exactly this time: the same 11 plugins and 27 tools, WebFetch among them. The 12th plugin and
+  changed tools C-022 saw were gone.
+- Three sessions against three, on one model.
+
+**Use.** $2.66 for the 3 sessions and $0.21 for the check session.
+
+**Later (C-027).** This section's first two bullets do not hold. Its 0 of 3 at 13:06 UTC was set against arm C's 3 of 3
+at 04:14, and arm C run again at 13:46 was opened 1 of 3 times. Added skills were opened on every task in the morning
+and only on task 5 in the afternoon (C-027).
+
+## C-026: C-020's arm C again, with the skill named `mapbox-web-map-patterns` (2026-11-27)
+
+```
+node evals/skill_description_check.mjs evals/skills/c026-prefixed/mapbox-web-map-patterns --out c026-description-check.json
+node evals/run_eval.mjs --set tasks-3x --tasks 2,3,5 --arms with --extra-skill evals/skills/c026-prefixed/mapbox-web-map-patterns
+```
+
+C-020's arm C with one change: the added skill's folder and name are `mapbox-web-map-patterns` in place of
+`web-map-patterns`. Its description ("Mapbox GL JS patterns and snippets for web maps: setting up a map, adding sources
+and layers, and styling them.") and body are the same, and it was listed 30th of 68, as in arm C. Tools and plugins
+matched C-006's. The check copied the description out of the session's list exactly. Records:
+`results/c026-20261127-132807.jsonl` and `results/c026-description-check.json`.
+
+**One of the three sessions opened the skill.**
+
+| Task | Opened the skill | First download, in tool calls | Turns | Cost, USD |
+|---|---|---|---|---|
+| 2. Delivery vans (model colour mix) | no | 2nd, `mapbox-gl-unminified.js` from Mapbox's CDN | 14 | 0.82 |
+| 3. Clearing the site (clip) | no | 2nd, `npm pack mapbox-gl@3.35.2` | 19 | 0.70 |
+| 5. Planned buildings (roof and wall colours) | 2nd tool call | 3rd, `mapbox-gl.js` from Mapbox's CDN | 14 | 0.57 |
+| **All** | **1 of 3** | | | **2.09** |
+
+All three were right first time.
+
+| Setup | Skill with the general description | Listed | Opened |
+|---|---|---|---|
+| C-020, arm C | `web-map-patterns`, added | 30th of 68 | 3 of 3 |
+| C-026 | `mapbox-web-map-patterns`, added | 30th of 68 | 1 of 3 |
+| C-024 | `mapbox-web-integration-patterns`, Mapbox's own | 29th of 67 | 0 of 3 |
+
+**What this does and does not show.**
+- Against arm C only the name changed, and the skill was opened 1 of 3 times instead of 3 of 3. That fits the name
+  setting the added skill apart from Mapbox's 27, all of which start with `mapbox-`.
+- It does not establish it. If the name made no difference, a split of 3 against 1 on three sessions each would come up
+  about one time in five (Fisher's exact test, one-sided, p = 0.2). With C-024, a `mapbox-` name with this description
+  was opened 1 of 6 times against the plain name's 3 of 3 (p = 0.048). C-024 also lacks Mapbox's framework description
+  beside it, though, so it is not a clean repeat.
+- The prefix made the skill less often opened, not never: task 5 opened it first, as in arm C.
+- Three sessions against three, on one model. More sessions of both arms is T-025.
+
+**Use.** $2.09 for the 3 sessions and $0.21 for the check session.
+
+**Later (C-027).** This section's first three bullets do not hold. Run at the same time, at 13:46 UTC, the plain and
+`mapbox-` names were each opened 1 of 3 times. The 3 of 3 it was set against came from 04:14.
+
+## C-027: both names again, side by side (2026-11-27)
+
+```
+node evals/run_eval.mjs --set tasks-3x --tasks 2,3,5 --arms with --extra-skill evals/skills/c020-neither/web-map-patterns
+node evals/run_eval.mjs --set tasks-3x --tasks 2,3,5 --arms with --extra-skill evals/skills/c026-prefixed/mapbox-web-map-patterns
+```
+
+C-020's arm C and C-026's arm, unchanged, started together at 13:46 UTC. The start-up record had C-006's tools and
+plugins and one skill more than C-026's, installed on this machine in between (`system-design-brain`). No check
+sessions: both descriptions had been copied out exactly before (C-020, C-026). Records:
+`results/c027-plain-20261127-134613.jsonl` and `results/c027-prefixed-20261127-134615.jsonl`.
+
+**Each name was opened 1 of 3 times, both on task 5.**
+
+| Task | `web-map-patterns` | `mapbox-web-map-patterns` |
+|---|---|---|
+| 2. Delivery vans | not opened; downloaded GL JS at the 3rd tool call | not opened; downloaded at the 3rd |
+| 3. Clearing the site | not opened; downloaded at the 2nd | not opened; downloaded at the 2nd |
+| 5. Planned buildings | opened at the 2nd tool call, then downloaded at the 3rd | opened at the 2nd, then downloaded at the 3rd |
+| Cost, USD | 2.17 | 1.73 |
+
+All six were right first time. With C-020 and C-026, the plain name was opened 4 of 6 times and the `mapbox-` name 2 of
+6 (Fisher's exact test, one-sided, p = 0.28).
+
+**Every run with an added skill splits by time of day.**
+
+| 27 November, UTC | Runs | Task 2 | Task 3 | Task 5 |
+|---|---|---|---|---|
+| 03:00 to 04:14, added skill, six versions | C-017, C-019 (2), C-020 (3) | 6 of 6 | 6 of 6 | 6 of 6 |
+| 13:28 to 13:46, added skill, two names | C-026, C-027 (2) | 0 of 3 | 0 of 3 | 3 of 3 |
+| any time, Mapbox's skills only | C-006 (25 Nov), C-022, C-024 | 0 of 3 | 0 of 3 | 0 of 3 |
+
+**What this does and does not show.**
+- Run at the same time, the two names came out the same. The gap C-026 reported came from setting an afternoon run
+  against a morning one.
+- On tasks 2 and 3, 12 of 12 in the morning against 0 of 6 in the afternoon would come up about once in 18,000 by
+  chance if nothing had changed. The start-up record shows the same Claude Code 2.1.332, model, tools, plugins and
+  skills, apart from the names tried and the one skill installed in between, which C-026 did not have and still got 1
+  of 3. So what changed is not in that record. The Skill tool's own text is not in it, and nor is anything on the
+  server's side.
+- C-024 set its 0 of 3 (13:06) against arm C's 3 of 3 (04:14) too, so it says nothing about the description.
+- What holds at every time tried: Mapbox's skills alone were opened 0 of 9 times, and on task 5 an added skill was
+  opened 9 of 9 times against Mapbox's 0 of 3 (about one time in 220 by chance).
+- The morning runs' comparisons with each other stand as counts: every description and name tried then was opened 3 of
+  3, listed first or last of the `mapbox:` skills.
+- What changed between 04:14 and 13:28 is T-026.
+
+**Use.** $3.89 for the 6 sessions.
+
+## C-028: what the transcripts record, morning against afternoon (2026-11-27)
+
+No new sessions. The 27 transcripts of sessions with an added skill, 18 from 03:00 to 04:14 UTC (C-017, C-019, C-020)
+and 9 from 13:28 to 13:46 (C-026, C-027), compared on every field they record beyond the start-up list. The transcripts
+are git-ignored; the figures below were read from them.
+
+**No recorded field splits the morning from the afternoon.**
+
+| Field | Morning (18) | Afternoon (9) |
+|---|---|---|
+| Model on every assistant turn, and in the result's model usage | `claude-opus-5-5` | `claude-opus-5-5` |
+| Service tier, speed, inference region | standard, standard, global | standard, standard, global |
+| Fast mode | off | off |
+| Cached first part of the prompt, tokens | 13,524 | 13,524 |
+| Whole first prompt, task 2, tokens | 46,153 to 46,313 | 46,158 (C-026); 46,419 and 46,422 (C-027) |
+
+The first prompt's size moves only with what was changed on purpose. C-020's arm C at 04:14 began task 2 with 46,153
+tokens. C-026 at 13:28, the same skill with `mapbox-` added to its name, began with 46,158. C-027's two runs began about
+266 higher, matching the one skill installed on the machine in between. So the system prompt, the tools' text and the
+list of skills did not change in length. The only change to the Skill tool's text this leaves open is one that kept its
+length exactly.
+
+**What differs is what the sessions did, after they chose.** In the afternoon they took more tool calls, had 7 to 13
+thinking blocks against 2 to 4 in the morning (one morning session had 9), and 7 of the 9 started background downloads
+of GL JS. That follows from not opening the skill. The thinking text is not recorded, only its signature, so the
+transcripts cannot say why a session chose as it did.
+
+**What this does and does not show.**
+- By everything recorded, the model, its settings and the prompt were the same in both halves of the day.
+- It cannot rule out a change on the server's side that the transcript does not report, or a change to the Skill
+  tool's text of exactly the same length.
+- Having a session copy out the Skill tool's text as a baseline (T-026) is not needed: every transcript already records
+  the prompt's size, and a change to the text would show there unless it kept exactly the same length.
+
+**Use.** None.
+
+## C-029: C-017's skill again, in the afternoon (2026-11-27)
+
+`node evals/run_eval.mjs --set tasks-3x --tasks 2,3,5 --arms with --extra-skill evals/skills/gl-js-3d-layers`, C-017's
+command unchanged, at 14:31 UTC. The skill's description names the features the three tasks need. It was listed 5th of
+69, and the tools and plugins matched C-006's. Records: `results/c029-20261127-143115.jsonl`.
+
+**All three sessions opened the skill as their first tool call, downloaded nothing, and were right first time.**
+
+| Task | Turns | Cost, USD | C-017's cost, USD |
+|---|---|---|---|
+| 2. Delivery vans | 6 | 0.28 | 0.34 |
+| 3. Clearing the site | 5 | 0.25 | 0.25 |
+| 5. Planned buildings | 5 | 0.27 | 0.29 |
+| **All** | | **0.80** | **0.87** |
+
+Beside the afternoon's other runs:
+
+| 27 November, afternoon, UTC | Description | Task 2 | Task 3 | Task 5 |
+|---|---|---|---|---|
+| 13:28 to 13:46 (C-026, C-027) | general, two names | 0 of 3 | 0 of 3 | 3 of 3 |
+| 14:31 (C-029) | names the features | 1 of 1 | 1 of 1 | 1 of 1 |
+
+**What this does and does not show.**
+- A description naming the features was opened on all three tasks in the afternoon as in the morning, so C-017's
+  result holds at both times seen.
+- In the afternoon the description mattered. On tasks 2 and 3 the feature-naming one was opened 2 of 2 times and the
+  general one 0 of 6, a split that would come up about one time in 28 by chance. In the morning both were opened every
+  time (C-017, C-020), so C-020's "the wording is not what got it read" held only then.
+- What changed between 04:14 and 13:28 is not known (C-028). It changed how often a general description was opened,
+  and not the one naming the features.
+- Three sessions, on one model.
+
+**Use.** $0.80 for the 3 sessions.

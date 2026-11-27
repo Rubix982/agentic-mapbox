@@ -1,0 +1,15 @@
+{
+  "ran_at": "2026-11-27T04:12:04.910Z",
+  "model": "claude-opus-5-5",
+  "skill": "mapbox:web-map-patterns",
+  "skill_folder": "evals/skills/c020-neither/web-map-patterns",
+  "listed_at_start": true,
+  "tool_calls": 0,
+  "description_chars": 111,
+  "copied_chars": 111,
+  "exact": true,
+  "copied_is_start_of_description": true,
+  "copied": "Mapbox GL JS patterns and snippets for web maps: setting up a map, adding sources and layers, and styling them.",
+  "reply": "BEGIN\nMapbox GL JS patterns and snippets for web maps: setting up a map, adding sources and layers, and styling them.\nEND",
+  "cost_usd": 0.1617532
+}

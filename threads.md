@@ -17,7 +17,18 @@ description names the three tasks' features was opened 3 of 3 times, first, with
 2026-11-27 (a clip removes a page's own buildings when drawn after them, whatever its scope; 8 of 8 as the code predicts). C-019
 closed on 2026-11-27 (the description cut to names only, or to task words only, was opened 3 of 3 times either way). C-012
 closed on 2026-11-27 (the three settings right 3 of 9 times without help, 8 of 9 with one sentence telling the model to
-search the schema by title). One card at a
+search the schema by title). C-020 closed on 2026-11-27 (a skill added beside Mapbox's 27 was opened 3 of 3 times even with a plain name and
+a general description, so C-017 and C-019's descriptions are not what got it read). C-021 closed on 2026-11-27 (C-012's sentence on
+the other 45 settings: 43 right by C-004's check, all 45 by what they do). C-022 closed on 2026-11-27 (C-006's setup
+run again: Mapbox's 27 skills opened 0 of 3 times, as on 25 November). C-023 closed on 2026-11-27 (judged by what
+they do to the map, 0 of 24 earlier verdicts flip; every earlier count stands). C-024 closed on 2026-11-27 (C-020's
+general description given to Mapbox's own web-integration skill: opened 0 of 3). C-025 closed unstarted on 2026-11-27
+(no run of C-004's check is planned, so T-023 is parked). C-026 closed on 2026-11-27 (the added skill renamed
+`mapbox-web-map-patterns`: opened 1 of 3, against 3 of 3 under its plain name). C-027 closed on 2026-11-27 (side by
+side, both names 1 of 3; added skills were opened on every task in the morning and only on task 5 in the afternoon, so
+C-024 and C-026's readings do not hold). C-028 closed on 2026-11-27 (nothing the transcripts record splits the morning
+from the afternoon). C-029 closed on 2026-11-27 (in the afternoon C-017's skill, naming the features, was still opened
+on all three tasks). One card at a
 time.
 
 ### T-001 · What does each Mapbox capability look like when it is actually run?
@@ -242,21 +253,129 @@ the descriptions share "Mapbox GL JS v3.35" and the skill's name, which may be w
 
 ### T-018 · Is it the skill's name, or "Mapbox GL JS v3.35" in its description, that gets it opened?
 
-**Status:** open
+**Status:** answered (C-020)
 **Parent:** T-017
 **Opened:** 2026-11-27
 **Question:** In C-017 and C-019 three descriptions were each opened 3 of 3 times. All three open with "Mapbox GL JS
 v3.35", matching the prompt's version, and belong to a skill named `gl-js-3d-layers`; none of Mapbox's 27 skills has
 either. The same skill with a general description in Mapbox's style ("patterns for Mapbox GL JS web maps"), once with
 the version and once without, on the same three tasks, would say whether either alone gets it opened.
-**Answer:** —
+**Answer:** neither is needed. With a general description it was opened 3 of 3 times with the name and version, 3 of 3
+with the name alone, and 3 of 3 with a plain name (`web-map-patterns`) and no version (C-020). So no description tried
+explains why it was opened. Opened T-020.
 
 ### T-019 · Does C-012's sentence cost anything on the 45 settings the model already names right?
 
-**Status:** open
+**Status:** answered (C-021)
 **Parent:** T-010
 **Opened:** 2026-11-27
 **Question:** In C-012 one sentence telling the model to search `map.getSchema('basemap')` by title took the three
 settings it named wrong from 3 of 9 right to 8 of 9. The sentence was written for those three. Running all 48 of C-004's
 requests once with it would say whether it breaks any of the 45 the model got right without help.
-**Answer:** —
+**Answer:** nothing seen in what the answers do: 43 of 45 by C-004's check, and the two misses did what was asked when
+loaded (C-021). Every answer searched the schema, though, and the median answer grew from 63 characters to 2,428.
+Opened T-021.
+
+### T-020 · Run again today, does C-006's setup still open none of Mapbox's 27 skills?
+
+**Status:** answered (C-022)
+**Parent:** T-018
+**Opened:** 2026-11-27
+**Question:** In C-017 to C-020 every skill added beside Mapbox's 27 was opened on tasks 2, 3 and 5, 21 sessions of 21,
+however its description read. In C-006, two days earlier, with the same Claude Code version, model and plugins, Mapbox's
+27 alone were opened 0 of 3. C-006's run once more (three sessions) would say whether that 0 of 3 holds today. If it
+does, something about the added skill beyond its words gets it opened; if not, C-006's 0 of 3 was chance or something
+has changed, and C-017 to C-020's comparisons with it fall.
+**Answer:** yes, 0 of 3 again (C-022), so 0 of 6 on two days against 21 of 21 for an added skill. The added skill's
+place in the list was already ruled out (3rd of 68 in C-017, 30th in C-020, opened either way), which leaves its name
+or description. Opened T-022.
+
+### T-021 · Should C-004's check judge a setting by what the map shows rather than by one value?
+
+**Status:** answered (C-023)
+**Parent:** T-019
+**Opened:** 2026-11-27
+**Question:** In C-021 two answers did what was asked (a greyscale map; brighter roads at night) and C-004's check marked
+both wrong, because it wants one value read at the default light preset. Which of C-004's 48 checks would mark a
+different right answer wrong, and does any earlier count change if they judged by what the map shows?
+**Answer:** no earlier count changes (C-023). Of the 24 answers in C-004, C-012 and C-021 whose records show anything
+beyond the one setting, none flips: the 11 marked wrong change nothing on the map, and the 13 marked right that did
+more did what was asked. C-021's two remain the only miscounts, of 111. The first half, which checks would mark a second
+right answer wrong, matters only if the check is run again, and is T-023.
+
+### T-022 · What in an added skill's name or description gets it opened where Mapbox's 27 are not?
+
+**Status:** answered (C-024)
+**Parent:** T-020
+**Opened:** 2026-11-27
+**Question:** On tasks 2, 3 and 5 a skill added beside Mapbox's 27 was opened 21 of 21 times and Mapbox's 27 alone 0 of
+6 (C-006, C-022). A session sees each skill only as its name, description and place, and the place is ruled out. C-020's
+general description ("Mapbox GL JS patterns and snippets for web maps: setting up a map, adding sources and layers, and
+styling them") names the kind of work the tasks are, where Mapbox's name a framework, platform, use case or migration.
+Swapping descriptions would say which: give one of Mapbox's own skills that description with no skill added, or give
+the added skill the description of Mapbox's `mapbox-web-integration-patterns`, three sessions each.
+**Answer:** not the description alone (C-024). Given to Mapbox's `mapbox-web-integration-patterns`, C-020's general
+description was opened 0 of 3 times, where on the added `web-map-patterns` it was opened 3 of 3, listed in nearly the
+same place. Left: the name, or the skills listed around it. Opened T-024. Later (C-027): does not hold. C-024 ran in
+the afternoon and was set against a morning run; in the afternoon the added skill itself was opened 1 of 3 times.
+
+### T-023 · Before C-004's check is run again, which of its 48 checks would mark a second right answer wrong?
+
+**Status:** parked (C-025, closed unstarted)
+**Parent:** T-021
+**Opened:** 2026-11-27
+**Question:** In C-021, with C-012's sentence, answers grew longer and found second routes: a custom greyscale colour
+table for `theme`, a night-only `roadsBrightness`. The check credited neither. If the check is used again, for example
+on the sentence's next version, which of its 48 requests can be met some way other than the one value it reads, and
+should those be judged by what the map shows? Nothing earlier changes either way (C-023), so this matters only before
+another run.
+**Answer:** — Parked on 2026-11-27: no new run of the check is planned, and C-023 showed no count already made depends on
+it (C-025, field 6). Resume before the check is next run. Untested candidates from reading the 48: `show3dObjects`
+met by turning off its three parts one by one, and `showAdminBoundaries` met by a transparent `colorAdminBoundaries`.
+The two known are `theme` and `roadsBrightness` (C-021).
+
+### T-024 · Is it the added skill's name that gets it opened, or the skills listed around it?
+
+**Status:** answered (C-026)
+**Parent:** T-022
+**Opened:** 2026-11-27
+**Question:** C-020's general description was opened 3 of 3 times on an added skill named `web-map-patterns`, beside
+Mapbox's own `mapbox-web-integration-patterns` and its framework description, and 0 of 3 times when it replaced that
+description (C-024). All 27 of Mapbox's skills start with `mapbox-`; no added skill tried did. Adding the same skill
+as `mapbox-web-map-patterns` changes only the name against C-020's arm C. If it is opened 0 or 1 times, the name gets
+it opened; if 2 or 3, the name is not it, and what is left is Mapbox's own framework description listed beside it.
+Three sessions.
+**Answer:** the name, weakly (C-026). Renamed `mapbox-web-map-patterns`, in the same place in the list, the skill was
+opened 1 of 3 times against 3 of 3 as `web-map-patterns`. On three sessions each that split comes up about one time in
+five by chance. Opened T-025. Later (C-027): does not hold; at the same time the two names were opened 1 of 3 each.
+
+### T-025 · Over more sessions, is the added skill still opened less often under a `mapbox-` name?
+
+**Status:** answered (C-027)
+**Parent:** T-024
+**Opened:** 2026-11-27
+**Question:** C-020's arm C (`web-map-patterns`) opened the skill 3 of 3 times on tasks 2, 3 and 5; C-026, the same
+skill renamed `mapbox-web-map-patterns` in the same place, 1 of 3. That split comes up about one time in five by chance.
+Running each arm once more on the three tasks, six sessions for about $3.5, would give six sessions an arm and show
+whether the gap holds.
+**Answer:** no gap at the same time: each name was opened 1 of 3 times (C-027), 4 of 6 against 2 of 6 in all. Arm C
+itself fell from 3 of 3 at 04:14 UTC to 1 of 3 at 13:46, and every added skill run in the afternoon was opened only on
+task 5. Opened T-026.
+
+### T-026 · What changed between 04:14 and 13:28 UTC on 27 November, so that added skills stopped being opened on tasks 2 and 3?
+
+**Status:** parked (C-028, C-029)
+**Parent:** T-025
+**Opened:** 2026-11-27
+**Question:** Added skills were opened on tasks 2 and 3 in all 12 morning sessions (C-017 to C-020) and none of 6
+afternoon ones (C-026, C-027), with the same Claude Code, model, tools, plugins and skills in the start-up record. On
+task 5 they were opened every time, 9 of 9. Mapbox's skills alone were opened 0 of 9 throughout. Three cheap steps
+would narrow it: run C-017's skill, whose description names the tasks' features, again now (3 sessions, about $1 to
+$2.5), to see whether such a description is still opened on tasks 2 and 3; have one session copy out the Skill tool's
+own text now (about $0.2), so a later change to it can be seen; and run arm C again on another day.
+**Answer:** — Not known what changed: nothing the transcripts record splits the two halves of the day, and the first
+prompt was the same size to within the name tried (C-028). Its effect was on the general description only: C-017's
+skill, naming the features, was opened on all three tasks at 14:31 (C-029). Copying out the Skill tool's text is not
+needed, since the prompt's size is recorded in every transcript. Parked on 2026-11-27; resume by running arm C
+(`evals/skills/c020-neither/web-map-patterns`) on another day, three sessions, to see whether the morning's behaviour
+comes back.

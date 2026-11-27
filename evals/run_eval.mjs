@@ -2,6 +2,7 @@
 //
 //   node evals/run_eval.mjs [--set tasks] [--tasks 1-10 | 2,3,5] [--arms with,without] [--runs 1] [--model claude-opus-5-5] [--max-turns 40]
 //                           [--concurrency 3] [--resume evals/runs/<dir>] [--note "<sentence>"] [--extra-skill evals/skills/<name>]
+//                           [--description "<skill-name>=<description>"]
 //
 // --note adds one sentence to the end of every task's text, as the agent sees it, and is kept in each record (C-015:
 // task 5 with GL JS's building layer named). The run folder's name ends in -note.
@@ -9,6 +10,10 @@
 // --extra-skill copies one more skill folder into the with arm's copy of Mapbox's plugin, beside its 27 skills, and is
 // kept in each record by its folder (C-017: a skill whose description names the features tasks 2, 3 and 5 need). The run
 // folder's name ends in -extraskill.
+//
+// --description replaces the description in the front matter of one of the with arm's skills, by its folder name, with
+// the text after the first "=", and is kept in each record (C-024: one of Mapbox's own skills given the general
+// description C-020's added skill was opened with). The run folder's name ends in -description.
 //
 // --arms offline is the without arm with no network: Bash runs in Claude Code's sandbox with no allowed domains and no
 // way out of it, WebFetch and WebSearch are denied, and neither Bash nor the file tools can read the home folder or
@@ -109,7 +114,7 @@ export function offlineSettings(work) {
   };
 }
 
-export function pluginCopy(dest, extraSkill = null) {
+export function pluginCopy(dest, extraSkill = null, description = null) {
   fs.mkdirSync(dest, { recursive: true });
   execSync(`git -C '${SKILLS_REPO}' archive ${SKILLS_COMMIT} | tar -x -C '${dest}'`, { stdio: 'inherit' });
   for (const p of ['.mcp.json', '.agents', '.plugin']) fs.rmSync(path.join(dest, p), { recursive: true, force: true });
@@ -118,7 +123,22 @@ export function pluginCopy(dest, extraSkill = null) {
   delete j.mcpServers;
   fs.writeFileSync(pj, JSON.stringify(j, null, 2));
   if (extraSkill) fs.cpSync(extraSkill, path.join(dest, 'skills', path.basename(extraSkill)), { recursive: true });
+  if (description) {
+    const md = path.join(dest, 'skills', description.skill, 'SKILL.md');
+    if (!fs.existsSync(md)) throw new Error(`no skill ${description.skill} in the plugin`);
+    const [front, ...rest] = fs.readFileSync(md, 'utf8').split(/^---$/m).slice(1);
+    if (!/^description:.*$/m.test(front)) throw new Error(`no description line in ${md}`);
+    fs.writeFileSync(md, '---' + front.replace(/^description:.*$/m, 'description: ' + JSON.stringify(description.text)) + '---' + rest.join('---'));
+  }
   return dest;
+}
+
+// "<skill-name>=<description>" for --description; null when it is not given
+export function parseDescription(v) {
+  if (!v) return null;
+  const i = v.indexOf('=');
+  if (i < 1 || !v.slice(i + 1).trim()) throw new Error('--description wants "<skill-name>=<description>"');
+  return { skill: v.slice(0, i), text: v.slice(i + 1).trim() };
 }
 
 function copyData(n, work) {
@@ -204,11 +224,12 @@ async function main() {
   const note = opt('--note', '');
   const extraSkill = a.includes('--extra-skill') ? path.resolve(opt('--extra-skill')) : null;
   if (extraSkill && !fs.existsSync(path.join(extraSkill, 'SKILL.md'))) throw new Error(`no SKILL.md in ${extraSkill}`);
+  const description = parseDescription(opt('--description', ''));
   let base;
   if (a.includes('--resume')) base = path.resolve(opt('--resume'));
   else {
     const stamp = new Date().toISOString().replace(/[-:]/g, '').replace('T', '-').slice(0, 15);
-    base = path.join(HERE, 'runs', `${stamp}-${SET === 'tasks' ? '' : SET + '-'}${arms.join('+')}${note ? '-note' : ''}${extraSkill ? '-extraskill' : ''}`);
+    base = path.join(HERE, 'runs', `${stamp}-${SET === 'tasks' ? '' : SET + '-'}${arms.join('+')}${note ? '-note' : ''}${extraSkill ? '-extraskill' : ''}${description ? '-description' : ''}`);
     fs.mkdirSync(base, { recursive: true });
   }
   const resultsFile = path.join(base, 'results.jsonl');
@@ -216,7 +237,7 @@ async function main() {
   const results = done.filter((x) => !x.session_error);
   const workroot = fs.mkdtempSync(path.join(arms.includes('offline') ? OFFLINE_ROOT : '/private/tmp', 'mbx-eval-'));
   const agentArms = arms.filter((x) => x === 'with' || x === 'without' || x === 'offline');
-  const plugin = arms.includes('with') ? pluginCopy(path.join(workroot, 'plugin'), extraSkill) : null;
+  const plugin = arms.includes('with') ? pluginCopy(path.join(workroot, 'plugin'), extraSkill, description) : null;
   const T = tasks();
   for (const n of wanted) if (!T[n]) throw new Error(`task ${n} not found in ${TASKS_MD}`);
 
@@ -248,7 +269,7 @@ async function main() {
       if (p.err.trim()) fs.writeFileSync(path.join(work, 'stderr.txt'), p.err);
       info = transcriptFacts(p.out.split('\n'));
     }
-    const rec = { task: n, arm, run: r, ...(note ? { note } : {}), ...(extraSkill && arm === 'with' ? { extra_skill: path.relative(ROOT, extraSkill) } : {}), agent_seconds: Math.round((Date.now() - t0) / 100) / 10, ...info };
+    const rec = { task: n, arm, run: r, ...(note ? { note } : {}), ...(extraSkill && arm === 'with' ? { extra_skill: path.relative(ROOT, extraSkill) } : {}), ...(description && arm === 'with' ? { description_override: description } : {}), agent_seconds: Math.round((Date.now() - t0) / 100) / 10, ...info };
     const page = path.join(work, 'index.html');
     if (rec.session_error && !fs.existsSync(page)) {
       Object.assign(rec, { page_written: false, right_first_time: null });

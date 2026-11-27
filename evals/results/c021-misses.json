@@ -1,0 +1,32 @@
+{
+  "ran_at": "2026-11-27T08:01:01.352Z",
+  "runs": "evals/runs/config-20261127-042216-hint",
+  "theme": {
+    "answer": {
+      "theme": "custom",
+      "coloured_share": 0,
+      "errors": []
+    },
+    "untouched": {
+      "theme": "default",
+      "coloured_share": 0.739,
+      "errors": []
+    },
+    "monochrome": {
+      "theme": "monochrome",
+      "coloured_share": 0,
+      "errors": []
+    }
+  },
+  "roadsBrightness": {
+    "at_start": [
+      "day",
+      0.4
+    ],
+    "after_night": [
+      "night",
+      0.88
+    ],
+    "errors": []
+  }
+}
