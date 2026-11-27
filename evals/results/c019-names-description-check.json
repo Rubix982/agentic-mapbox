@@ -1,0 +1,15 @@
+{
+  "ran_at": "2026-11-27T03:14:56.490Z",
+  "model": "claude-opus-5-5",
+  "skill": "mapbox:gl-js-3d-layers",
+  "skill_folder": "evals/skills/c019-names/gl-js-3d-layers",
+  "listed_at_start": true,
+  "tool_calls": 0,
+  "description_chars": 271,
+  "copied_chars": 271,
+  "exact": true,
+  "copied_is_start_of_description": true,
+  "copied": "Mapbox GL JS v3.35 reference for `addModel`, the `model` layer, `model-rotation`, `model-color` and `model-color-mix-intensity`; the `clip` layer and `clip-layer-types`; and the procedural `building` layer with `building-roof-shape`, `building-color` and `building-part`.",
+  "reply": "BEGIN\nMapbox GL JS v3.35 reference for `addModel`, the `model` layer, `model-rotation`, `model-color` and `model-color-mix-intensity`; the `clip` layer and `clip-layer-types`; and the procedural `building` layer with `building-roof-shape`, `building-color` and `building-part`.\nEND",
+  "cost_usd": 0.20799800000000002
+}

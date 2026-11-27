@@ -1,0 +1,14 @@
+{
+  "ran_at": "2026-11-27T03:00:45.349Z",
+  "model": "claude-opus-5-5",
+  "skill": "mapbox:gl-js-3d-layers",
+  "listed_at_start": true,
+  "tool_calls": 0,
+  "description_chars": 536,
+  "copied_chars": 536,
+  "exact": true,
+  "copied_is_start_of_description": true,
+  "copied": "Mapbox GL JS v3.35 property names and snippets for three 3D features. glTF models placed on GeoJSON points, each rotated and coloured from its feature's properties (model layer, `model-rotation`, `model-color`, `model-color-mix-intensity`). Removing Mapbox Standard's own 3D buildings and trees inside an area (`clip` layer, `clip-layer-types`). 3D buildings from your own GeoJSON footprints with roof shapes and separate roof and wall colours (procedural `building` layer, `building-roof-shape`, `building-color` with `building-part`).",
+  "reply": "BEGIN\nMapbox GL JS v3.35 property names and snippets for three 3D features. glTF models placed on GeoJSON points, each rotated and coloured from its feature's properties (model layer, `model-rotation`, `model-color`, `model-color-mix-intensity`). Removing Mapbox Standard's own 3D buildings and trees inside an area (`clip` layer, `clip-layer-types`). 3D buildings from your own GeoJSON footprints with roof shapes and separate roof and wall colours (procedural `building` layer, `building-roof-shape`, `building-color` with `building-part`).\nEND",
+  "cost_usd": 0.210273
+}

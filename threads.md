@@ -11,7 +11,14 @@ limits. C-013 closed on 2026-11-26 (with no network, 2 of the 3 looked-up tasks 
 roofs itself rather than trust GL JS's building layer). C-012 (T-010) is parked until the user says yes to its
 sessions. C-014 closed on 2026-11-26 (task 5 offline: 1 of 4 right; the failing sessions doubted GL JS's building
 layer and drew the roofs by hand). C-015 closed on 2026-11-26 (with GL JS's building layer named, 2 of 3 right; the miss
-was `building_part` for `building-part`). One card at a time.
+was `building_part` for `building-part`). C-016 closed on 2026-11-26 (with `building-part` told, every page coloured
+right; the miss was a clip layer that removed the page's own buildings). C-017 closed on 2026-11-27 (a skill whose
+description names the three tasks' features was opened 3 of 3 times, first, with nothing downloaded). C-018 closed on
+2026-11-27 (a clip removes a page's own buildings when drawn after them, whatever its scope; 8 of 8 as the code predicts). C-019
+closed on 2026-11-27 (the description cut to names only, or to task words only, was opened 3 of 3 times either way). C-012
+closed on 2026-11-27 (the three settings right 3 of 9 times without help, 8 of 9 with one sentence telling the model to
+search the schema by title). One card at a
+time.
 
 ### T-001 · What does each Mapbox capability look like when it is actually run?
 
@@ -136,7 +143,7 @@ repeats the tables, with those results beside the limits tested (`experiments/re
 
 ### T-010 · Would one sentence of help fix the three Standard settings the model named wrong?
 
-**Status:** parked (C-012 has not run; it resumes with the commands in `CARD.md` once the user says yes to 18 sessions)
+**Status:** answered (C-012)
 **Parent:** T-002
 **Opened:** 2026-11-25
 **Question:** In C-004 the model, unsure, searched `map.getSchema('basemap')`'s setting names for "lane" and found
@@ -144,7 +151,8 @@ nothing. "Lane" is in the settings' titles ("Lane details"), not their names (`s
 the schema's titles as well as its names, and check `getConfigProperty` afterwards, because GL JS ignores unknown names
 silently" might fix all three misses without listing any name. Rerunning the three missed requests with that sentence
 would say whether a general rule is enough, or whether the names themselves have to be given.
-**Answer:** —
+**Answer:** a general rule is enough: 3 of 9 right without the sentence, 8 of 9 with it, and no session with it missed
+on the name (C-012). Opened T-019.
 
 ### T-011 · With no network, does the model still get the three tasks it looked up?
 
@@ -162,13 +170,15 @@ in its own WebGL layer, which the check fails. Opened T-013, T-014.
 
 ### T-012 · Is a skill opened when its description names the feature the task needs?
 
-**Status:** open
+**Status:** answered (C-017)
 **Parent:** T-005
 **Opened:** 2026-11-25
 **Question:** In C-006 the model skipped 27 Mapbox skills with general descriptions even on tasks it did not know. A
 skill whose description names `clip`, `model-color-mix-intensity` and `building-part`, run on the same three tasks,
 would say whether the description's wording is what decides, or whether skills are skipped whatever they say.
-**Answer:** —
+**Answer:** yes, it was opened, in 3 of 3 sessions, each as the first tool call, with nothing downloaded (C-017). The
+description also used the tasks' own words, so naming the feature and describing the task are not separated. Opened
+T-017.
 
 ### T-013 · Does task 5 fail the same way every time with no network?
 
@@ -196,11 +206,57 @@ layer; the miss spelt the part property `building_part`. Opened T-015.
 
 ### T-015 · With `building-part` added to the entry, is task 5 right every time offline?
 
-**Status:** open
+**Status:** answered (C-016)
 **Parent:** T-014
 **Opened:** 2026-11-26
 **Question:** In C-015 the one sentence naming GL JS's building layer gave 2 of 3, and the miss spelt the part property
 `building_part`. The same three offline runs with the entry extended ("each part's colour is evaluated with the part's
 name, roof or wall, in the feature property `building-part`") would say whether the entry then needs nothing more.
+**Answer:** 2 of 3 (`evals/results.md`, C-016), and all 3 coloured right. The miss added a `clip` layer that removed
+its own buildings, even when limited to the basemap. Opened T-016.
+
+### T-016 · Does a clip layer limited to the basemap remove a page's own procedural buildings?
+
+**Status:** answered (C-018)
+**Parent:** T-015
+**Opened:** 2026-11-26
+**Question:** In C-016 a `clip` layer with `clip-layer-scope: ['basemap']` still removed the page's own `building`
+layer, though the style spec says that scope "will only remove content from the Mapbox Standard style layers". One
+minimal page with a clip layer, a fill-extrusion and a building layer, with and without the scope, would say whether
+this is GL JS's behaviour in general, and for which layer types. C-017's task 5 page added its clip before its own
+building layer and passed, where C-016's run 0 added it after, so render order may be what decides.
+**Answer:** yes, for any clip drawn after the building layer, whatever its scope or types; a clip drawn before it
+removes nothing of it (C-018, 8 of 8 map loads as GL JS's code predicts). The building bucket checks only the drawing
+order. A fill-extrusion over the page's own GeoJSON was not removed.
+
+### T-017 · Is a skill opened when its description names the feature but not the task's words?
+
+**Status:** answered (C-019)
+**Parent:** T-012
+**Opened:** 2026-11-27
+**Question:** C-017's skill was opened 3 of 3, but its description both named the properties and described the tasks in
+words close to their own, written knowing the tasks. A description of property names alone, or one written before the
+tasks, on the same three tasks would say which part gets a skill opened.
+**Answer:** either half was enough: names only and task words only were each opened 3 of 3 times, first (C-019). All
+the descriptions share "Mapbox GL JS v3.35" and the skill's name, which may be what does it. Opened T-018.
+
+### T-018 · Is it the skill's name, or "Mapbox GL JS v3.35" in its description, that gets it opened?
+
+**Status:** open
+**Parent:** T-017
+**Opened:** 2026-11-27
+**Question:** In C-017 and C-019 three descriptions were each opened 3 of 3 times. All three open with "Mapbox GL JS
+v3.35", matching the prompt's version, and belong to a skill named `gl-js-3d-layers`; none of Mapbox's 27 skills has
+either. The same skill with a general description in Mapbox's style ("patterns for Mapbox GL JS web maps"), once with
+the version and once without, on the same three tasks, would say whether either alone gets it opened.
 **Answer:** —
 
+### T-019 · Does C-012's sentence cost anything on the 45 settings the model already names right?
+
+**Status:** open
+**Parent:** T-010
+**Opened:** 2026-11-27
+**Question:** In C-012 one sentence telling the model to search `map.getSchema('basemap')` by title took the three
+settings it named wrong from 3 of 9 right to 8 of 9. The sentence was written for those three. Running all 48 of C-004's
+requests once with it would say whether it breaks any of the 45 the model got right without help.
+**Answer:** —

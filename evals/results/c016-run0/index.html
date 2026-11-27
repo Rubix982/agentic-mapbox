@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Victoria Park — planned buildings</title>
+  <link rel="stylesheet" href="https://api.mapbox.com/mapbox-gl-js/v3.35.2/mapbox-gl.css">
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.35.2/mapbox-gl.js"></script>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+    #map {
+      position: absolute;
+      inset: 0;
+    }
+    .legend {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 1;
+      padding: 8px 10px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 4px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+      font: 11px/1.4 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      color: #2b2b2b;
+      pointer-events: none;
+    }
+    .legend h1 {
+      margin: 0 0 4px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .legend table {
+      border-collapse: collapse;
+    }
+    .legend td {
+      padding: 0 8px 0 0;
+      white-space: nowrap;
+    }
+    .legend td.num {
+      text-align: right;
+      padding-right: 0;
+    }
+    .legend .key {
+      margin-top: 5px;
+      display: flex;
+      gap: 10px;
+    }
+    .legend .swatch {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      margin-right: 4px;
+      vertical-align: -1px;
+      border: 1px solid rgba(0, 0, 0, 0.25);
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <div class="legend" id="legend" hidden></div>
+
+  <script>
+    (() => {
+      const ROOF_COLOR = '#b5523b';   // terracotta
+      const WALL_COLOR = '#efe6d2';   // cream
+      const WINDOW_COLOR = '#7d8f99'; // only drawn if facades are on
+      const DOOR_COLOR = '#7a4b35';
+
+      const SOURCE_ID = 'planned-buildings';
+      const LAYER_ID = 'planned-buildings-3d';
+      const CLIP_LAYER_ID = 'planned-buildings-clip';
+      const DATA_URL = new URL('footprints.geojson', window.location.href).href;
+
+      mapboxgl.accessToken = window.MAPBOX_ACCESS_TOKEN;
+
+      const map = new mapboxgl.Map({
+        container: 'map',
+        style: 'mapbox://styles/mapbox/standard',
+        center: [-0.04, 51.5365],
+        zoom: 17,
+        pitch: 60,
+        bearing: 0,
+        antialias: true
+      });
+      window.map = map;
+
+      // Start loading the footprints while the style loads.
+      const footprints = fetch(DATA_URL)
+        .then((r) => {
+          if (!r.ok) throw new Error('HTTP ' + r.status + ' for ' + DATA_URL);
+          return r.json();
+        })
+        .catch((err) => {
+          console.warn('Could not prefetch footprints, letting the source load the URL itself:', err);
+          return null;
+        });
+
+      // The roof property names the shape directly; map it onto the
+      // layer's enum with literal outputs, and fall back to flat.
+      const roofShape = [
+        'match', ['downcase', ['to-string', ['get', 'roof']]],
+        'gabled', 'gabled',
+        'hipped', 'hipped',
+        'flat', 'flat',
+        'pyramidal', 'pyramidal',
+        'mansard', 'mansard',
+        'flat'
+      ];
+      const height = ['to-number', ['get', 'height_m'], 0];
+
+      // building-color is evaluated once per building part.
+      const buildingColor = [
+        'match', ['get', 'building-part'],
+        'roof', ROOF_COLOR,
+        'wall', WALL_COLOR,
+        'window', WINDOW_COLOR,
+        'door', DOOR_COLOR,
+        WALL_COLOR
+      ];
+
+      // Add a layer while capturing validation errors, so that a property
+      // this build does not recognise can be retried without it.
+      function tryAddLayer(spec) {
+        const errors = [];
+        const onError = (e) => {
+          const err = e && e.error;
+          errors.push(err ? (err.message || String(err)) : String(e));
+        };
+        map.on('error', onError);
+        try {
+          map.addLayer(spec);
+        } catch (err) {
+          errors.push(err && err.message ? err.message : String(err));
+        } finally {
+          map.off('error', onError);
+        }
+        return { ok: !!map.getLayer(spec.id), errors };
+      }
+
+      function buildingLayer(layout, paint) {
+        return {
+          id: LAYER_ID,
+          type: 'building',
+          source: SOURCE_ID,
+          layout: Object.assign({ visibility: 'visible' }, layout),
+          paint: Object.assign({ 'building-color': buildingColor }, paint)
+        };
+      }
+
+      // Most specific first. Facades are switched off so the walls stay plain cream.
+      const variants = [
+        ['layout height, facades off', buildingLayer(
+          { 'building-roof-shape': roofShape, 'building-height': height, 'building-base': 0, 'building-facade': false }, {})],
+        ['layout height', buildingLayer(
+          { 'building-roof-shape': roofShape, 'building-height': height, 'building-base': 0 }, {})],
+        ['layout height, no base', buildingLayer(
+          { 'building-roof-shape': roofShape, 'building-height': height }, {})],
+        ['paint height', buildingLayer(
+          { 'building-roof-shape': roofShape }, { 'building-height': height, 'building-base': 0 })],
+        ['paint height, no base', buildingLayer(
+          { 'building-roof-shape': roofShape }, { 'building-height': height })]
+      ];
+
+      function addBuildings() {
+        const failures = [];
+        for (const [name, spec] of variants) {
+          const result = tryAddLayer(spec);
+          if (result.ok) {
+            if (failures.length) {
+              console.info('Building layer added as "' + name + '" after rejected variants:', failures);
+            }
+            window.plannedBuildingsLayerVariant = name;
+            return true;
+          }
+          failures.push({ variant: name, errors: result.errors });
+        }
+        console.error('The procedural building layer was rejected in every form:', failures);
+        return false;
+      }
+
+      function addFallbackExtrusion() {
+        // Flat-roofed stand-in, used only if the building layer cannot be added.
+        map.addLayer({
+          id: LAYER_ID,
+          type: 'fill-extrusion',
+          source: SOURCE_ID,
+          paint: {
+            'fill-extrusion-color': WALL_COLOR,
+            'fill-extrusion-height': height,
+            'fill-extrusion-base': 0,
+            'fill-extrusion-opacity': 1
+          }
+        });
+        window.plannedBuildingsLayerVariant = 'fill-extrusion fallback';
+      }
+
+      function renderLegend(data) {
+        const el = document.getElementById('legend');
+        if (!data || !Array.isArray(data.features)) return;
+        const esc = (s) => String(s == null ? '' : s)
+          .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        const rows = data.features.map((f) => {
+          const p = f.properties || {};
+          return '<tr><td>' + esc(p.name) + '</td><td>' + esc(p.roof) +
+            '</td><td class="num">' + esc(p.height_m) + ' m</td></tr>';
+        }).join('');
+        el.innerHTML =
+          '<h1>Victoria Park: planned buildings</h1>' +
+          '<table>' + rows + '</table>' +
+          '<div class="key">' +
+          '<span><span class="swatch" style="background:' + ROOF_COLOR + '"></span>roof</span>' +
+          '<span><span class="swatch" style="background:' + WALL_COLOR + '"></span>walls</span>' +
+          '</div>';
+        el.hidden = false;
+      }
+
+      map.on('style.load', async () => {
+        if (map.getSource(SOURCE_ID)) return;
+        const data = await footprints;
+
+        // buffer 0 and maxzoom 17: at zoom 17 and below no footprint crosses a
+        // tile edge, so no tile ever receives a clipped piece of a building
+        // (a clipped piece would get its own, wrong, procedural roof).
+        map.addSource(SOURCE_ID, {
+          type: 'geojson',
+          data: data || DATA_URL,
+          buffer: 0,
+          maxzoom: 17
+        });
+
+        if (!addBuildings()) addFallbackExtrusion();
+
+        // Remove any basemap 3D models (e.g. trees) standing on the plots.
+        tryAddLayer({
+          id: CLIP_LAYER_ID,
+          type: 'clip',
+          source: SOURCE_ID,
+          layout: { 'clip-layer-types': ['model'] }
+        });
+
+        renderLegend(data);
+
+        map.once('idle', () => { window.plannedBuildingsReady = true; });
+      });
+    })();
+  </script>
+</body>
+</html>

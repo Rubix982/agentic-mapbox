@@ -590,7 +590,7 @@ token cannot reach.
 
 ### C-012 · Would one general sentence fix the three Standard settings the model named wrong?
 
-**Opened:** 2026-11-25
+**Opened:** 2026-11-25 · **Closed:** 2026-11-27
 
 1. **WHERE WE ARE.** In C-004, with no help, the model named 3 of the Standard style's 48 settings wrong, each in its one
    session: `showHdRoads`, `colorHdRoads` and `colorMix3dLandmarks`. When unsure, it wrote code that searched
@@ -629,6 +629,47 @@ with `--hint`.
 
 **Parked (2026-11-26):** the user chose T-011 next. Nothing of C-012 has run. It resumes with the two commands above
 once the user says yes to the 18 sessions.
+
+**Resumed (2026-11-27):** the user said yes ("You have my yes"). Two corrections before it ran. The cap stops new
+sessions from starting, and up to four already running still finish, so an arm can end a few dollars past $15. The
+worst case is nearer $40 than the $30 I first told the user. And a session the cap skipped would have been graded as
+wrong; `evals/config/run.mjs` now leaves skipped and errored sessions out of the grading and reports them as not run.
+Both arms run at the same time.
+
+**Result:** 3 of 9 right without the sentence, 8 of 9 with it (`evals/results.md`, C-012). That is field 5's first
+branch: the sentence works.
+
+| Setting | Without | With |
+|---|---|---|
+| `showHdRoads` | 0 of 3 | 3 of 3 |
+| `colorHdRoads` | 1 of 3 | 3 of 3 |
+| `colorMix3dLandmarks` | 2 of 3 | 2 of 3 |
+
+One session without the sentence was stopped at the 20-minute limit and replaced by one more run of the same request,
+which was wrong too.
+
+Five of the six misses without the sentence were C-004's: code that searched the settings' names for "lane" or
+"landmark", found nothing, and logged a warning or set a guessed name. The sixth wrote tool calls out as text, in a
+session with no tools, and gave no code. With the sentence, all eight right answers searched by each entry's
+`metadata['mapbox:title']`, and the one miss gave no code at all ("My previous reply was stopped partway through").
+No session with the sentence missed on the name.
+
+So a general rule is enough here, and the guide entry for these settings is that sentence, not a list of names. When
+this card was opened it would have been the first guide entry; C-015 and C-016 have since found the building-layer
+entry, so it is the second.
+
+The branch's claim needs two narrowings. On `colorMix3dLandmarks` the sentence cannot be shown to help, 2 of 3 either
+way. And I wrote the sentence after seeing these three misses; whether it costs anything on the 45 settings the model
+already names right is T-019.
+
+In plain words: asked to turn on three of the Standard style's newest settings, the model with no help got it right 3
+times in 9, because it looked for the words in the settings' names when they are in their titles. Told in one sentence
+to look in the titles and check the result, it got it right 8 times in 9.
+
+What stays unknown: the other 45 settings with the sentence (T-019), other models, and sessions that can look things up.
+
+**Use:** $15.36 for the 18 sessions that reported a cost, and the one stopped at 20 minutes, which reported none
+(probably $3 to $4, so about $19 in all). One map load per arm to grade.
 
 ---
 
@@ -830,3 +871,283 @@ task does not say to use the layer, and other models.
 
 **Use:** $2.88 for the 3 sessions.
 
+---
+
+### C-016 · With `building-part` added to the entry, is task 5 right every time offline?
+
+**Opened:** 2026-11-26 · **Closed:** 2026-11-26
+
+1. **WHERE WE ARE.** Offline, with one sentence naming GL JS's building layer, task 5 came out right 2 of 3 times
+   (C-015), against 1 of 4 without it. All three sessions used the layer. The miss coloured by `building_part`, where
+   GL JS's property is `building-part`, so every roof came out in the wall colour.
+2. **WHAT WE ARE DOING.** Run task 5 three times in the offline arm, as in C-015, with the entry extended by one
+   sentence. The note becomes: "Draw them with GL JS's procedural building layer (`type: 'building'`), which v3.35.2 has
+   and which can draw a GeoJSON source. It evaluates `building-color` once for each part of a building, with the part's
+   name (`roof`, `wall`, `window` or `door`) in the feature property `building-part`." The part names are the four GL
+   JS 3.35.2's code sets (checked in its `mapbox-gl.js` on 2026-11-26, as `tasks-3x/validation.md` also records). Grade
+   each page once with the same check, and record each failure's cause.
+3. **WHY.** Unknown now: whether the entry needs anything beyond the part property for this task. After: a count out of
+   3, and each failure's cause.
+4. **WHAT IS AFFECTED.** T-015 is answered. The first guide entry's text in C-015's result, `evals/results.md` and the
+   README and `kb/catalog.md` lines: it gains the second sentence, or keeps its known gap.
+5. **CONCLUSION.**
+   - **3 of 3 right:** the two sentences are the entry, with no known gap on this task. Three runs cannot show it never
+     fails; it means no failure turned up.
+   - **2 of 3 right, the failure something other than the part property:** the part property is settled, and the
+     failure names what the entry lacks next.
+   - **2 of 3 or fewer, a failure still on the part property** (misspelt, or the part names wrong): telling the model the
+     name is not enough, and the entry needs a working expression.
+   - **0 or 1 of 3 right for other reasons:** the second sentence made things worse than C-015's 2 of 3. The entry
+     stays one sentence, and the failures are written up as they come.
+6. **CONSEQUENCE OF NOT DOING IT.** The first guide entry keeps a known gap that one session in three fell into, and
+   no one knows whether the obvious fix closes it.
+
+**Needs before it can run:** 3 Claude sessions on claude-opus-5-5, about $1 each at C-015's prices, so about $3. The user
+said to go ahead on 2026-11-26 ("start 015"). The offline arm's settings have not changed since its last probe passed.
+
+**Result:** 2 of the 3 right first time (`evals/results.md`, C-016). That is field 5's second branch: the failure was
+something other than the part property.
+
+All three sessions used GL JS's building layer and coloured it by `building-part`. GL JS's own evaluation of every page
+gave the right heights, roof shapes and colours, run 0's included. Run 0 failed because none of its buildings were
+drawn. It had added a `clip` layer over its own footprints, meant to remove Standard's 3D trees standing on the plots,
+and the clip removed its own buildings too. Loaded again without the clip layer, the same page passes the check. With
+the clip limited to the basemap (`clip-layer-scope: ['basemap']`) it still fails (`evals/clip_test.mjs`, three map
+loads). The style spec says a clip layer "removes 3D content", and that the basemap scope "will only remove content
+from the Mapbox Standard style layers". Here it removed the page's own layer as well. That is one page's evidence
+(T-016).
+
+So the part property is settled: with it told, the colouring came out right 3 times in 3, against 2 in 3 in C-015. The
+failure names something an agent needs next, though not as part of this entry: a clip layer also removes the page's own
+procedural buildings beneath it, whatever its scope says.
+
+One fact found on the way: the style spec marks the `building` layer type `"private": true`. That may be why the model
+doubted the layer offline; it is not tested.
+
+**The first guide entry**, as this card leaves it: "GL JS v3.35.2 has a procedural building layer (`type: 'building'`),
+which can draw a GeoJSON source. It evaluates `building-color` once for each part of a building, with the part's name
+(`roof`, `wall`, `window` or `door`) in the feature property `building-part`." No failure on the building layer turned
+up in these three runs, which cannot show it never fails.
+
+In plain words: told the layer's name and how it names roofs and walls, the model with no network coloured every page
+right. One page still showed no buildings, because it also added a layer meant to remove trees, and that layer removed
+its own buildings too.
+
+What stays unknown: whether the clip behaviour is a fault in GL JS or in its spec (T-016), whether the entry helps where
+the task does not say to use the layer, and other models.
+
+**Use:** $2.48 for the 3 sessions, and 5 map loads for the clip test (two in a first try, three in the committed
+script).
+
+
+---
+
+### C-017 · Is a skill opened when its description names the feature the task needs?
+
+**Opened:** 2026-11-27 · **Closed:** 2026-11-27
+
+1. **WHERE WE ARE.** In C-006, sessions given Mapbox's 27 skills opened none of them on tasks 2, 3 and 5 (0 of 3). All
+   three downloaded GL JS's code instead. None of those skills' descriptions names what the three tasks need.
+2. **WHAT WE ARE DOING.** Run tasks 2, 3 and 5 once each in C-006's with arm, with one skill added to Mapbox's plugin:
+   `evals/skills/gl-js-3d-layers/SKILL.md`. Its description names the three features (`model-color-mix-intensity`, the
+   `clip` layer with `clip-layer-types`, the procedural `building` layer with `building-part`) and says what each is
+   for in the tasks' own terms. Its body has the property names and a snippet for each, on made-up data rather than the
+   tasks', and states only facts checked in GL JS 3.35.2's style spec or in `evals/tasks-3x/validation.md`. Before the
+   three, one short session with the same plugin copies the skill's description out of its list of skills, to show
+   the description reaches the model whole. Read each transcript for whether the new skill was opened, and whether
+   before or after any download.
+3. **WHY.** Unknown now: whether skills go unopened whatever their descriptions say, or because Mapbox's descriptions
+   are general. After: a count out of 3, against C-006's 0 of 3 with only the one skill changed.
+4. **WHAT IS AFFECTED.** T-012 is answered. C-006's last sentence in `evals/results.md` ("A skill whose description
+   named the feature was not tested"), and the README and `kb/catalog.md` lines on skills going unopened. The form for
+   the guide entry built in C-015 and C-016: a skill, or text an agent always sees (the prompt, a CLAUDE.md, a tool's
+   description).
+5. **CONCLUSION.**
+   - **2 or 3 of 3 open the new skill:** the description's wording decides. A guide entry shipped as a skill gets read
+     when its description names the feature, and Mapbox's 27 went unopened because theirs are general.
+   - **0 of 3:** a skill is skipped even when its description names the exact feature the task needs. A guide entry
+     belongs in text an agent always sees, not in a skill. This holds only if the check session shows the description
+     reached the model; if it did not, the three sessions say nothing and the card closes on that.
+   - **1 of 3:** neither, and more runs are needed.
+   - Right first time is recorded but is not the question. The description itself names the properties, so a session
+     could get a task right from the description without opening the skill.
+6. **CONSEQUENCE OF NOT DOING IT.** The guide entry's form gets chosen blind, and C-006's 0 of 3 keeps two
+   explanations: skills are skipped whatever they say, or Mapbox's descriptions were too general.
+
+**Needs before it can run:** 3 Claude sessions on claude-opus-5-5, about $1 each at C-006's prices ($2.94 for the
+three), and one short check session, about $0.2. The user picked T-012 on 2026-11-27 ("012").
+
+**Result:** 3 of the 3 opened the added skill (`evals/results.md`, C-017), each as its first tool call. That is field
+5's first branch. The check session copied the skill's description out of its list whole, all 536 characters, so the
+description did reach the model.
+
+None of the three opened any of Mapbox's 27 skills or downloaded anything, and all three were right first time. They
+took 16 turns and $0.87 between them, against C-006's 71 turns and $2.94 for the same three tasks.
+
+So skills are not skipped whatever they say. What the model sees of a skill before opening it is its name and
+description, and with one skill added whose description names the features, opening went from 0 of 3 to 3 of 3. A
+guide entry shipped as a skill gets read on these tasks when its description names the feature.
+
+The branch's claim needs two narrowings. The description both names the properties and describes the tasks in words
+close to their own ("removing Mapbox Standard's own 3D buildings and trees inside an area"), so which of the two did the
+work is not known. And I wrote it knowing the tasks; a guide written before its tasks are known would have to guess
+their words. That is T-017.
+
+One fact on the way, for T-016: task 5's page added a clip layer over its own footprints, as C-016's failing run 0 did,
+and passed. It added the clip before its building layer, saying that keeps the clip off the planned buildings; C-016's
+run 0 added it after. That points at render order rather than scope, one page each way.
+
+Another, about Claude Code: with the Skill tool denied, a session is given no list of skills at all. The list comes with
+the Skill tool.
+
+In plain words: given one more skill whose description named the three features the tasks needed, the model opened it
+first on all three tasks, where it had opened none of Mapbox's 27, and finished in under a quarter of the turns.
+
+What stays unknown: whether naming the property or describing the task is what gets a skill opened (T-017), and other
+models.
+
+**Use:** $0.87 for the 3 sessions, $0.60 for the 3 check sessions (the first two failed as checks, as above), and 3 map
+loads.
+
+---
+
+### C-018 · Does a clip layer remove a page's own procedural buildings whatever its scope, when drawn after them?
+
+**Opened:** 2026-11-27 · **Closed:** 2026-11-27
+
+1. **WHERE WE ARE.** In C-016 a clip layer drawn after a page's own `building` layer removed it, and still did with
+   `clip-layer-scope: ['basemap']` (one page). In C-017 a page that added its clip before its building layer passed. In
+   GL JS 3.35.2's code (`mapbox-gl-dev.js`), the procedural building bucket's `updateReplacement` skips a clip only when
+   the clip is drawn before the layer (`region.order < layerIndex`). It reads neither `clip-layer-scope` nor
+   `clip-layer-types`. Only the model bucket goes through `skipClipping`, which applies the scope. `isLayerClipped`
+   returns false for a fill-extrusion unless its source layer is `building` or `procedural_buildings`.
+2. **WHAT WE ARE DOING.** Load eight versions of one page once each in the harness, and count how many of the five
+   footprints are drawn terracotta at their centre, seen from above at zoom 16.5 with Standard's labels and trees
+   hidden (task 5's measure). The page is task 5's reference page (`tasks-3x/reference/task5.html`). It gets a clip
+   layer over its own footprints, `evals/clip_order_test.mjs`. The eight, with the code's prediction:
+
+   | Own layer | Clip | Predicted |
+   |---|---|---|
+   | building | none | 5 of 5 |
+   | building | after it, `clip-layer-types: ['model']` | 0 of 5 |
+   | building | after it, `['model']`, `clip-layer-scope: ['basemap']` | 0 of 5 |
+   | building | after it, no layout at all | 0 of 5 |
+   | building | before it, `['model']` | 5 of 5 |
+   | building | before it, `['model']`, scope `['basemap']` | 5 of 5 |
+   | fill-extrusion, terracotta | none | 5 of 5 |
+   | fill-extrusion, terracotta | after it, `['model']` | 5 of 5 |
+
+3. **WHY.** Unknown now: whether C-016's one page is GL JS's general behaviour, and whether the code reading predicts
+   what is drawn. After: eight counts out of 5 against the predictions.
+4. **WHAT IS AFFECTED.** T-016 is answered. C-016's result sentence ("a clip layer also removes the page's own
+   procedural buildings beneath it, whatever its scope says") gains its condition or is corrected, along with the README's
+   and `kb/catalog.md`'s lines on it and `evals/results.md`'s C-016 section. The guide entry may gain a sentence on where
+   to add a clip. C-017's skill is not changed, so that T-017 runs against the same body.
+5. **CONCLUSION.**
+   - **All eight as predicted:** in GL JS 3.35.2 a clip layer removes a procedural building layer drawn before it,
+     whatever its scope and types, and never a fill-extrusion over a page's own GeoJSON. The spec's sentence that the
+     `basemap` scope "will only remove content from the Mapbox Standard style layers" does not hold for building
+     layers. Whether the code or the spec is the intended behaviour, these loads cannot say.
+   - **The scoped clip after the layer keeps the buildings:** C-016's failure came from something else on that page,
+     and the code reading is wrong on scope.
+   - **Any other count off its prediction:** the code reading is wrong there, and the result is written up as found.
+6. **CONSEQUENCE OF NOT DOING IT.** An agent that trusts the spec scopes its clip to the basemap and still loses its own
+   buildings, and the guide entry cannot say how to avoid that.
+
+**Needs before it can run:** 8 map loads on the account's public token, no Claude sessions. The user said "016, then
+017" on 2026-11-27.
+
+**Result:** all eight came out as predicted (`evals/results.md`, C-018). That is field 5's first branch.
+
+| Own layer | Clip layer | Terracotta, of 5 |
+|---|---|---|
+| building | none | 5 |
+| building | after it: `['model']`; with scope `['basemap']`; with no layout | 0, 0, 0 |
+| building | before it: `['model']`; with scope `['basemap']` | 5, 5 |
+| fill-extrusion | none; after it | 5, 5 |
+
+So in GL JS 3.35.2 a clip layer removes a procedural building layer drawn before it, a page's own included, whatever
+its `clip-layer-scope` and `clip-layer-types`, and keeps one drawn after it. The spec's sentence on the `basemap` scope
+does not hold for building layers. Whether the code or the spec says what Mapbox intends, these loads cannot say.
+
+C-016's failing page and C-017's passing one fit this. The first added its clip after its building layer, the second
+before. Every removed building was still returned by `queryRenderedFeatures`, which is why task 5's "all five
+queryable" test let C-016's page through and only the roof colours caught it.
+
+A sentence the guide entry could carry, from this card and not yet tried on a session: "A clip layer removes a
+procedural building layer drawn before it, whatever its `clip-layer-scope` says, so add the clip before your own
+building layer."
+
+In plain words: a layer meant to clear Mapbox's own trees and buildings from a plot also clears your own buildings if
+it is added after them, even when it is told to touch only Mapbox's, and leaves them alone if it is added before them.
+
+What stays unknown: whether this is a GL JS bug or the spec's wording, other GL JS versions, and models and symbols
+(the scope is read from the code there, not loaded).
+
+**Use:** 8 map loads.
+
+---
+
+### C-019 · Which half of C-017's description gets the skill opened: the feature names or the task's words?
+
+**Opened:** 2026-11-27 · **Closed:** 2026-11-27
+
+1. **WHERE WE ARE.** In C-017 a skill whose description named the features tasks 2, 3 and 5 need, and also described
+   the tasks in words close to their own, was opened 3 of 3 times, first, where Mapbox's 27 skills were opened 0 of 3
+   (C-006).
+2. **WHAT WE ARE DOING.** Run tasks 2, 3 and 5 once each in C-017's setup with the skill's description cut two ways,
+   one arm each, the skill's name and body unchanged:
+   - **names:** "Mapbox GL JS v3.35 reference for `addModel`, the `model` layer, `model-rotation`, `model-color` and
+     `model-color-mix-intensity`; the `clip` layer and `clip-layer-types`; and the procedural `building` layer with
+     `building-roof-shape`, `building-color` and `building-part`."
+   - **task words:** "Mapbox GL JS v3.35: how to place a 3D model file at many points, each turned to its own heading
+     and coloured from its own properties; how to remove Mapbox Standard's own 3D buildings and trees inside an area;
+     and how to draw 3D buildings from your own footprints with real roof shapes and separate roof and wall colours."
+
+   Before each arm, the one-turn check copies the description out of the session's list of skills. Read each
+   transcript for whether the skill was opened, and when.
+3. **WHY.** Unknown now: whether a description that names the features, which is what a guide written before its tasks
+   can carry, gets a skill opened, or whether it takes the task's own words. After: two counts out of 3, per task.
+4. **WHAT IS AFFECTED.** T-017 is answered. C-017's narrowing ("which of the two did the work is not known") in
+   CARD.md, `evals/results.md` and `kb/catalog.md`. How a guide entry's skill description should be written, if it is
+   shipped as a skill.
+5. **CONCLUSION.**
+   - **Both arms 2 or 3 of 3:** either half is enough. A description that names the features gets a skill opened on
+     these tasks, so a guide written before its tasks can be shipped as a skill.
+   - **Names 0 or 1, task words 2 or 3:** the task's words do the work. A skill gets opened when its description
+     guesses how the task will be put, and naming the features is not enough.
+   - **Names 2 or 3, task words 0 or 1:** the feature names do the work, though tasks 2 and 3 never name their features.
+   - **Both 0 or 1:** it took both halves together, or C-017's 3 of 3 was luck. Either way, a description cannot be
+     counted on.
+   - Per task, the words the description shares with the task text are recorded, since `building` and `model` are in
+     both arms and in tasks 5 and 2.
+6. **CONSEQUENCE OF NOT DOING IT.** A guide shipped as a skill would get its description written to C-017's recipe
+   without knowing whether its features' names alone would get it read, which is all a guide written ahead of its tasks
+   can offer.
+
+**Needs before it can run:** 6 Claude sessions on claude-opus-5-5, about $0.3 each if the skill is opened and about $1
+each if not (C-017, C-006), so $2 to $6, and 2 one-turn check sessions, about $0.4. The user said "016, then 017" on
+2026-11-27.
+
+**Result:** both arms opened the skill 3 of 3 times, each as the first tool call (`evals/results.md`, C-019). That is
+field 5's first branch. Both checks copied their description out whole. All six sessions were right first time,
+downloaded nothing, and cost $1.72 between them.
+
+So either half of C-017's description is enough on these tasks. The names arm shares one word with each task's text
+(`model` with task 2, `building` with tasks 3 and 5), and task 3 opened it though nothing in its text is named in the
+description. A description that names the features, which is what a guide written before its tasks can carry, got the
+skill opened every time.
+
+The branch's claim needs one narrowing, and it is a large one. All three descriptions open with "Mapbox GL JS v3.35",
+which matches the prompt's "Mapbox GL JS v3.35.2", and all three belong to a skill named `gl-js-3d-layers`. None of
+Mapbox's 27 has either. Either one alone might be what gets the skill opened, whatever the rest of the description
+says. Until that is tested, the claim is that these descriptions get the skill opened, not that the feature names do.
+That is T-018.
+
+In plain words: whether the skill's description listed the API's names or described the tasks in plain words, the
+model opened it first on all three tasks. Something both versions share may be what made it open it.
+
+What stays unknown: whether the version in the description, or the skill's name, is enough on its own (T-018), and
+other models.
+
+**Use:** $1.72 for the 6 sessions and $0.37 for the 2 check sessions.

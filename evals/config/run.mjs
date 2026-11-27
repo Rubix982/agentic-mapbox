@@ -139,7 +139,11 @@ if (a.includes('--regrade')) {
   answers = [...first, ...rest];
 }
 
-const { graded, page } = await grade(answers, requests);
+// C-012: a session the cost cap skipped, or one that ended in an error, has no answer to grade; it is reported as not
+// run rather than graded as wrong, as C-004 treated its lost sessions
+const notRun = answers.filter((x) => x.skipped || x.error);
+for (const x of notRun) console.log(`not run: ${x.setting} run ${x.run}: ${x.skipped || String(x.error).slice(0, 120)}`);
+const { graded, page } = await grade(answers.filter((x) => !x.skipped && !x.error), requests);
 const right = report(graded, 'sessions');
 const cost = answers.reduce((s, x) => s + (x.cost_usd || 0), 0);
 fs.mkdirSync(path.join(ROOT, 'evals/results'), { recursive: true });

@@ -116,6 +116,8 @@ async function topDown(t, center, zoom) {
   await t.idle(10000);
 }
 const project = (t, lngLats) => t.eval((ps) => ps.map((p) => { const q = map.project(p); return [Math.round(q.x), Math.round(q.y)]; }), lngLats);
+// C-018's clip test measures its pages the way task 5's check does
+export { topDown, project };
 
 export default {
   // 1. A single glTF model placed at a point, turned 90 degrees (model source, orientation in degrees)

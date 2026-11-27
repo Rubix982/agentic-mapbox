@@ -1,0 +1,332 @@
+{
+  "ran_at": "2026-11-27T03:11:55.939Z",
+  "page": "evals/tasks-3x/reference/task5.html",
+  "variants": [
+    {
+      "name": "building, no clip",
+      "predicted": 5,
+      "terracotta": 5,
+      "as_predicted": true,
+      "queryable": 5,
+      "order": [
+        "plan (building)"
+      ],
+      "rgb": [
+        [
+          166,
+          75,
+          54
+        ],
+        [
+          180,
+          82,
+          59
+        ],
+        [
+          180,
+          82,
+          59
+        ],
+        [
+          180,
+          82,
+          59
+        ],
+        [
+          180,
+          82,
+          59
+        ]
+      ],
+      "settled": true,
+      "reasons": [],
+      "page_errors": []
+    },
+    {
+      "name": "building, clip after, types ['model']",
+      "predicted": 0,
+      "terracotta": 0,
+      "as_predicted": true,
+      "queryable": 5,
+      "order": [
+        "plan (building)",
+        "plan-clip (clip)"
+      ],
+      "rgb": [
+        [
+          194,
+          238,
+          190
+        ],
+        [
+          178,
+          234,
+          173
+        ],
+        [
+          196,
+          235,
+          191
+        ],
+        [
+          194,
+          238,
+          190
+        ],
+        [
+          194,
+          238,
+          190
+        ]
+      ],
+      "settled": true,
+      "reasons": [],
+      "page_errors": []
+    },
+    {
+      "name": "building, clip after, types ['model'], scope ['basemap']",
+      "predicted": 0,
+      "terracotta": 0,
+      "as_predicted": true,
+      "queryable": 5,
+      "order": [
+        "plan (building)",
+        "plan-clip (clip)"
+      ],
+      "rgb": [
+        [
+          194,
+          238,
+          190
+        ],
+        [
+          178,
+          234,
+          173
+        ],
+        [
+          196,
+          235,
+          191
+        ],
+        [
+          194,
+          238,
+          190
+        ],
+        [
+          194,
+          238,
+          190
+        ]
+      ],
+      "settled": true,
+      "reasons": [],
+      "page_errors": []
+    },
+    {
+      "name": "building, clip after, no layout",
+      "predicted": 0,
+      "terracotta": 0,
+      "as_predicted": true,
+      "queryable": 5,
+      "order": [
+        "plan (building)",
+        "plan-clip (clip)"
+      ],
+      "rgb": [
+        [
+          194,
+          238,
+          190
+        ],
+        [
+          178,
+          234,
+          173
+        ],
+        [
+          196,
+          235,
+          191
+        ],
+        [
+          194,
+          238,
+          190
+        ],
+        [
+          194,
+          238,
+          190
+        ]
+      ],
+      "settled": true,
+      "reasons": [],
+      "page_errors": []
+    },
+    {
+      "name": "building, clip before, types ['model']",
+      "predicted": 5,
+      "terracotta": 5,
+      "as_predicted": true,
+      "queryable": 5,
+      "order": [
+        "plan-clip (clip)",
+        "plan (building)"
+      ],
+      "rgb": [
+        [
+          166,
+          75,
+          54
+        ],
+        [
+          180,
+          82,
+          59
+        ],
+        [
+          180,
+          82,
+          59
+        ],
+        [
+          180,
+          82,
+          59
+        ],
+        [
+          180,
+          82,
+          59
+        ]
+      ],
+      "settled": true,
+      "reasons": [],
+      "page_errors": []
+    },
+    {
+      "name": "building, clip before, types ['model'], scope ['basemap']",
+      "predicted": 5,
+      "terracotta": 5,
+      "as_predicted": true,
+      "queryable": 5,
+      "order": [
+        "plan-clip (clip)",
+        "plan (building)"
+      ],
+      "rgb": [
+        [
+          166,
+          75,
+          54
+        ],
+        [
+          180,
+          82,
+          59
+        ],
+        [
+          180,
+          82,
+          59
+        ],
+        [
+          180,
+          82,
+          59
+        ],
+        [
+          180,
+          82,
+          59
+        ]
+      ],
+      "settled": true,
+      "reasons": [],
+      "page_errors": []
+    },
+    {
+      "name": "fill-extrusion, no clip",
+      "predicted": 5,
+      "terracotta": 5,
+      "as_predicted": true,
+      "queryable": 5,
+      "order": [
+        "plan (fill-extrusion)"
+      ],
+      "rgb": [
+        [
+          180,
+          82,
+          59
+        ],
+        [
+          180,
+          82,
+          59
+        ],
+        [
+          180,
+          82,
+          59
+        ],
+        [
+          180,
+          82,
+          59
+        ],
+        [
+          180,
+          82,
+          59
+        ]
+      ],
+      "settled": true,
+      "reasons": [],
+      "page_errors": []
+    },
+    {
+      "name": "fill-extrusion, clip after, types ['model']",
+      "predicted": 5,
+      "terracotta": 5,
+      "as_predicted": true,
+      "queryable": 5,
+      "order": [
+        "plan (fill-extrusion)",
+        "plan-clip (clip)"
+      ],
+      "rgb": [
+        [
+          180,
+          82,
+          59
+        ],
+        [
+          180,
+          82,
+          59
+        ],
+        [
+          180,
+          82,
+          59
+        ],
+        [
+          180,
+          82,
+          59
+        ],
+        [
+          180,
+          82,
+          59
+        ]
+      ],
+      "settled": true,
+      "reasons": [],
+      "page_errors": []
+    }
+  ]
+}

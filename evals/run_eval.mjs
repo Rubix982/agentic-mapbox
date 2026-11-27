@@ -1,10 +1,14 @@
 // Run the held-out GL JS tasks (evals/tasks/tasks.md) with Mapbox's Agent Skills and without, and score each first page.
 //
 //   node evals/run_eval.mjs [--set tasks] [--tasks 1-10 | 2,3,5] [--arms with,without] [--runs 1] [--model claude-opus-5-5] [--max-turns 40]
-//                           [--concurrency 3] [--resume evals/runs/<dir>] [--note "<sentence>"]
+//                           [--concurrency 3] [--resume evals/runs/<dir>] [--note "<sentence>"] [--extra-skill evals/skills/<name>]
 //
 // --note adds one sentence to the end of every task's text, as the agent sees it, and is kept in each record (C-015:
 // task 5 with GL JS's building layer named). The run folder's name ends in -note.
+//
+// --extra-skill copies one more skill folder into the with arm's copy of Mapbox's plugin, beside its 27 skills, and is
+// kept in each record by its folder (C-017: a skill whose description names the features tasks 2, 3 and 5 need). The run
+// folder's name ends in -extraskill.
 //
 // --arms offline is the without arm with no network: Bash runs in Claude Code's sandbox with no allowed domains and no
 // way out of it, WebFetch and WebSearch are denied, and neither Bash nor the file tools can read the home folder or
@@ -105,7 +109,7 @@ export function offlineSettings(work) {
   };
 }
 
-function pluginCopy(dest) {
+export function pluginCopy(dest, extraSkill = null) {
   fs.mkdirSync(dest, { recursive: true });
   execSync(`git -C '${SKILLS_REPO}' archive ${SKILLS_COMMIT} | tar -x -C '${dest}'`, { stdio: 'inherit' });
   for (const p of ['.mcp.json', '.agents', '.plugin']) fs.rmSync(path.join(dest, p), { recursive: true, force: true });
@@ -113,6 +117,7 @@ function pluginCopy(dest) {
   const j = JSON.parse(fs.readFileSync(pj, 'utf8'));
   delete j.mcpServers;
   fs.writeFileSync(pj, JSON.stringify(j, null, 2));
+  if (extraSkill) fs.cpSync(extraSkill, path.join(dest, 'skills', path.basename(extraSkill)), { recursive: true });
   return dest;
 }
 
@@ -145,7 +150,8 @@ export function transcriptFacts(lines) {
       if (part.type !== 'tool_use') continue;
       const inp = JSON.stringify(part.input || {});
       if (part.name === 'Skill') { skill_used = true; skillsUsed.add(part.input?.skill || part.input?.name || '?'); }
-      const m = inp.match(/skills\/(mapbox-[a-z0-9-]+)\//);
+      // a read of any skill's files (C-017's added skill is not named mapbox-…)
+      const m = inp.match(/skills\/(mapbox-[a-z0-9-]+)\//) || inp.match(/\/skills\/([a-z0-9][a-z0-9-]*)\//);
       if (m) { skill_used = true; skillsUsed.add(m[1]); }
       if (inp.includes(ROOT) || inp.includes(ROOT.replace(os.homedir(), '~'))) touched_repo = true;
       if (part.name === 'Bash' && /chrom|playwright|puppeteer|open\s+.*index\.html|http-server|python3? -m http\.server|npx serve/i.test(inp)) ran_browser = true;
@@ -196,11 +202,13 @@ async function main() {
   const maxTurns = opt('--max-turns', '40');
   const conc = Number(opt('--concurrency', '3'));
   const note = opt('--note', '');
+  const extraSkill = a.includes('--extra-skill') ? path.resolve(opt('--extra-skill')) : null;
+  if (extraSkill && !fs.existsSync(path.join(extraSkill, 'SKILL.md'))) throw new Error(`no SKILL.md in ${extraSkill}`);
   let base;
   if (a.includes('--resume')) base = path.resolve(opt('--resume'));
   else {
     const stamp = new Date().toISOString().replace(/[-:]/g, '').replace('T', '-').slice(0, 15);
-    base = path.join(HERE, 'runs', `${stamp}-${SET === 'tasks' ? '' : SET + '-'}${arms.join('+')}${note ? '-note' : ''}`);
+    base = path.join(HERE, 'runs', `${stamp}-${SET === 'tasks' ? '' : SET + '-'}${arms.join('+')}${note ? '-note' : ''}${extraSkill ? '-extraskill' : ''}`);
     fs.mkdirSync(base, { recursive: true });
   }
   const resultsFile = path.join(base, 'results.jsonl');
@@ -208,7 +216,7 @@ async function main() {
   const results = done.filter((x) => !x.session_error);
   const workroot = fs.mkdtempSync(path.join(arms.includes('offline') ? OFFLINE_ROOT : '/private/tmp', 'mbx-eval-'));
   const agentArms = arms.filter((x) => x === 'with' || x === 'without' || x === 'offline');
-  const plugin = arms.includes('with') ? pluginCopy(path.join(workroot, 'plugin')) : null;
+  const plugin = arms.includes('with') ? pluginCopy(path.join(workroot, 'plugin'), extraSkill) : null;
   const T = tasks();
   for (const n of wanted) if (!T[n]) throw new Error(`task ${n} not found in ${TASKS_MD}`);
 
@@ -240,7 +248,7 @@ async function main() {
       if (p.err.trim()) fs.writeFileSync(path.join(work, 'stderr.txt'), p.err);
       info = transcriptFacts(p.out.split('\n'));
     }
-    const rec = { task: n, arm, run: r, ...(note ? { note } : {}), agent_seconds: Math.round((Date.now() - t0) / 100) / 10, ...info };
+    const rec = { task: n, arm, run: r, ...(note ? { note } : {}), ...(extraSkill && arm === 'with' ? { extra_skill: path.relative(ROOT, extraSkill) } : {}), agent_seconds: Math.round((Date.now() - t0) / 100) / 10, ...info };
     const page = path.join(work, 'index.html');
     if (rec.session_error && !fs.existsSync(page)) {
       Object.assign(rec, { page_written: false, right_first_time: null });

@@ -1,0 +1,28 @@
+{
+  "ran_at": "2026-11-26T15:39:09.877Z",
+  "page": "evals/results/c016-run0/index.html",
+  "variants": [
+    {
+      "name": "as written",
+      "passed": false,
+      "reasons": [
+        "only 0/5 roofs are drawn terracotta seen from above (194,238,190 / 178,234,173 / 196,236,191 / 194,238,190 / 194,238,190)"
+      ],
+      "page_errors": []
+    },
+    {
+      "name": "without the clip layer",
+      "passed": true,
+      "reasons": [],
+      "page_errors": []
+    },
+    {
+      "name": "clip limited to the basemap",
+      "passed": false,
+      "reasons": [
+        "only 0/5 roofs are drawn terracotta seen from above (194,238,190 / 178,234,173 / 196,236,191 / 194,238,190 / 194,238,190)"
+      ],
+      "page_errors": []
+    }
+  ]
+}

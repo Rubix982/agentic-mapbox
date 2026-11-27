@@ -14,7 +14,13 @@ two of them came out right from what the model knew. The third, the procedural b
 in 4. Three times the model would not trust that GL JS has a layer for them and drew the roofs itself in WebGL, which
 the check fails. The one time it used the layer, from memory, it was right. Told in one sentence that the
 layer exists (C-015), the model used it all three times and was right twice; the miss spelt `building-part` with an
-underscore.
+underscore. With `building-part` added to the sentence (C-016), all three coloured their buildings
+right; the one miss added a `clip` layer, which removed its own buildings even when scoped to the basemap. GL JS's
+code and eight map loads (C-018) say why: a clip removes every procedural building layer drawn before it, whatever its
+scope, and none drawn after it. Back with
+the network on and one more skill beside Mapbox's 27, its description naming those three tasks' features (C-017), all
+three sessions opened that skill first, downloaded nothing and were right, for $0.87 against C-006's $2.94. With the
+description cut to the API's names alone, or to the tasks' words alone (C-019), it was still opened first every time.
 
 Then a tour (C-002): 22 small experiments over 21 of Mapbox's capabilities, each run once with a free account's public
 token, each recording facts that could have come out false and a screenshot (`experiments/results.md`,
@@ -29,7 +35,9 @@ times and with the tools twice (`experiments/results.md`).
 
 And a test of the Standard style's 48 settings (C-004). Asked in plain words for each, the model with no help wrote a
 working call for 44. For three of the newest it invented names, which GL JS ignores without a warning
-(`evals/results.md`). `kb.mjs config` now lists all 48.
+(`evals/results.md`). `kb.mjs config` now lists all 48. Asked three more times each (C-012), those three came out right
+3 times in 9. With one sentence telling the model to search the style's schema by each setting's title and check the
+result, they came out right 8 times in 9.
 
 And the API reference itself (C-011). Of 100 numeric limits it states that a public token can test, the API refused
 code that obeyed two: the Search Box query length and a Map Matching radius of 0. `kb.mjs api` now repeats its

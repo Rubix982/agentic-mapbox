@@ -82,7 +82,9 @@ them when a token is in `.env`).
 
 A model with no help named 44 of the 48 right (`evals/results.md`, C-004). It invented names for `showHdRoads`,
 `colorHdRoads` and `colorMix3dLandmarks`. **GL JS ignores an unknown setting name without a warning**, so a wrong name
-shows up only as nothing changing; `getConfigProperty` afterwards catches it.
+shows up only as nothing changing; `getConfigProperty` afterwards catches it. Asked three more times each (C-012),
+the model got those three right 3 times in 9 without help, and 8 times in 9 when told in one sentence to search
+`map.getSchema('basemap')` by each entry's `metadata['mapbox:title']` and read the value back.
 
 Run here `[exp: experiments/standard, 3d, data]`: light presets, themes, 3D buildings, the Interactions API, style
 imports, globe, terrain, a glTF `model` layer, `clip`, snow and rain, and `raster-particle`. Three things in them
@@ -96,13 +98,22 @@ an agent could trip on:
 - A landmark Standard draws as a 3D model (the Empire State Building) is in the `buildings` featureset, and its `select`
   state reads back, but nothing on screen changes until `show3dLandmarks` is off. Ordinary buildings turn the select
   colour at pitch 0 and at 45 (C-008).
+- The style spec marks the procedural `building` layer type `"private": true`. GL JS evaluates its `building-color`
+  once per part, with `building-part` set to `roof`, `wall`, `window` or `door`.
+- A `clip` layer removes every procedural `building` layer drawn before it, a page's own included, whatever its
+  `clip-layer-scope` and `clip-layer-types`; one drawn after the clip is kept. The spec says the `basemap` scope limits a
+  clip to Standard's layers. In GL JS 3.35.2's code the building bucket checks only the drawing order, and only the
+  model bucket applies the scope. Eight loads of one page came out as the code predicts, and a fill-extrusion over the
+  page's own GeoJSON was not removed (C-018, `evals/clip_order_test.mjs`; first seen in C-016). The removed buildings
+  are still returned by `queryRenderedFeatures`.
 
 With no help, the model got ten blind tasks on these areas right (C-005, `evals/results.md`). It knew seven; for the
 model colour mix, `clip` and the procedural building's colours it downloaded GL JS's own code and read it. With no
 network (C-013, C-014) it wrote the colour mix and `clip` from memory. The building came out right 1 time in 4. Three
 times it doubted that GL JS 3.35.2 has a building layer and drew the roofs in its own WebGL layer. The one time it used
 the layer, from memory, it was right. Told that the layer exists (C-015), it used it 3 times in 3 and was right twice; the miss
-coloured by `building_part`, which GL JS does not set, instead of `building-part`.
+coloured by `building_part`, which GL JS does not set, instead of `building-part`. With `building-part` named too (C-016), all three coloured
+right, and the one miss was a `clip` layer that removed its own buildings.
 
 ## Agent tooling Mapbox publishes
 
@@ -161,3 +172,7 @@ Coverage of GL JS 3.x in the skills, by a text search of their files (a mention,
 
 Whether they get opened: in C-001, sessions given all 27 opened none on ten everyday tasks. In C-006 they opened none on
 the three tasks the model did not know either, and downloaded GL JS's code instead (0 of 13 in all, `evals/results.md`).
+A skill added beside them whose description names those three tasks' features was opened first in all three sessions
+(C-017, 3 of 3). The description was written knowing the tasks. Cut to the API's names alone, or to the tasks' words
+alone, it was still opened 3 of 3 times either way (C-019). All three descriptions open with "Mapbox GL JS v3.35" and
+belong to a skill named `gl-js-3d-layers`, and either may be what gets it opened (T-018).

@@ -35,6 +35,19 @@ const cfg = fs.existsSync(cfgFile) ? JSON.parse(fs.readFileSync(cfgFile, 'utf8')
 const missFile = path.join(root, 'evals/results/c004-20261125-combined.jsonl');
 const misses = Object.fromEntries((fs.existsSync(missFile) ? fs.readFileSync(missFile, 'utf8').trim().split('\n').map((l) => JSON.parse(l)) : [])
   .filter((g) => !g.right && !g.error).map((g) => [g.setting, (g.names.length ? g.names : [...g.code.matchAll(/'((?:show|color)[A-Za-z0-9]+)'/g)].map((m) => m[1])).filter((n, i, a) => a.indexOf(n) === i)]));
+// C-012: how often a model got each of those settings right in three tries, without help and with one sentence telling
+// it to search the schema by title (evals/results/c004-20261127-*.jsonl; a session that never finished is not counted)
+const tally = (files) => {
+  const t = {};
+  for (const f of files.map((x) => path.join(root, 'evals/results', x)).filter((x) => fs.existsSync(x)))
+    for (const g of fs.readFileSync(f, 'utf8').trim().split('\n').map((l) => JSON.parse(l)).filter((g) => !g.error)) {
+      t[g.setting] = t[g.setting] || [0, 0];
+      t[g.setting][0] += g.right ? 1 : 0;
+      t[g.setting][1]++;
+    }
+  return t;
+};
+const c012 = { plain: tally(['c004-20261127-032110.jsonl', 'c004-20261127-035137.jsonl']), hint: tally(['c004-20261127-032110-hint.jsonl']) };
 
 const [cmd, ...args] = process.argv.slice(2);
 const q = args.join(' ');
@@ -132,7 +145,8 @@ switch (cmd) {
       ...(x.minimum !== undefined ? [`  range: ${x.minimum} to ${x.maximum}${x.step ? `, step ${x.step}` : ''}`] : []),
       `  in: standard${sat.has(x.name) ? ', standard-satellite' : ''}`,
       `  ${x.title ? x.title + ': ' : ''}${x.doc || ''}`,
-      ...(misses[x.name] ? [`  a model with no help (C-004) wrote ${misses[x.name].join(', ') || 'no usable name'} instead; GL JS ignores an unknown name without a warning`] : [])].join('\n');
+      ...(misses[x.name] ? [`  a model with no help (C-004) wrote ${misses[x.name].join(', ') || 'no usable name'} instead; GL JS ignores an unknown name without a warning`] : []),
+      ...(c012.plain[x.name] && c012.hint[x.name] ? [`  C-012: right ${c012.plain[x.name].join(' of ')} times without help, ${c012.hint[x.name].join(' of ')} when told to search map.getSchema('basemap') by each entry's metadata['mapbox:title'] and to read the value back`] : [])].join('\n');
     if (!q) {
       for (const x of std) console.log(`${x.name.padEnd(40)} ${String(x.type ?? '-').padEnd(8)} ${short(JSON.stringify(x.default), 26).padEnd(26)}${x.values ? ' ' + x.values.join('|') : ''}${flag(x.name)}`);
       const satOnly = (cfg.styles['standard-satellite'] || []).filter((x) => !std.some((y) => y.name === x.name));
