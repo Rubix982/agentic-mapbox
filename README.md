@@ -45,7 +45,9 @@ it was worse: within half a metre at 23% of 443 points, and more than 3 m off at
 medians of +2.0 m in Rotterdam and +2.9 m in Amsterdam. Two of Mapbox's MCP tools, elevation and ground-location, read
 their heights from the same tiles (C-010). In six English places, against the Environment Agency's lidar (C-038), it was
 worse again: 16% of 507 points within half a metre, with Ordnance Datum Newlyn, a zero Mapbox's DEM page names, as the
-reference.
+reference. Back in the Netherlands, against AHN's surface model (C-039), Mapbox's heights rose about a third of a metre
+for each metre of buildings and trees at a point and did not show roofs, and where nothing stood they were still within
+half a metre at only 24% of 214 points, so buildings and trees are not why most of them miss.
 
 Then three more civic checks (C-035 to C-037). Mapbox's geocoder put 97% of 500 random New Orleans addresses and 99% of
 500 New York ones within 50 m of the city's own point. An automated WCAG 2.1 AA check passed 78 of the 81 map pages
@@ -80,7 +82,7 @@ What is in it:
 | `METHOD.md` | how facts are tagged with their evidence, and what is never committed |
 | `evals/` | the harness (headless Chromium, one run per page), ten blind tasks with checks and reference and wrong pages, the session runner, and the results |
 | `experiments/` | the tour: one script per question, in `standard/`, `3d/`, `data/` and `api/`, each writing its facts and screenshots to `results/`; `run.mjs` runs them and writes the table and `gallery.html` |
-| `experiments/followups/` | checks that came after the tour (C-007 to C-011, C-030 to C-034, C-036, C-038): selecting a building at two pitches, the DEM on 24 summits and on low ground, one call to the MCP elevation tool, the API reference's limits |
+| `experiments/followups/` | checks that came after the tour (C-007 to C-011, C-030 to C-034, C-036, C-038 to C-040): selecting a building at two pitches, the DEM on 24 summits and on low ground, one call to the MCP elevation tool, the API reference's limits |
 | `experiments/mcp/` | the MCP tools against the API reference: `tool_schemas.mjs` (the tools' schemas as JSON Schema), `docs_params.py` (the docs' parameter tables), `compare.mjs`, `settle.mjs` |
 | `CARD.md`, `threads.md` | the questions asked one at a time, and the ones still open |
 
@@ -119,6 +121,8 @@ node experiments/followups/dem-datum-us.mjs       # C-033: the US shifts against
 node experiments/followups/dem-lowland-wide.mjs   # C-034: the US points with lidar averaged over 50 and 100 m, about 4 minutes
 node experiments/followups/geocode-addresses.mjs  # C-036: 1,000 official addresses geocoded, counts only, about 8 minutes
 node experiments/followups/dem-lowland-england.mjs  # C-038: six English places, needs .venv (pip install -r requirements.txt), about 30 minutes
+node experiments/followups/dem-surface-nl.mjs     # C-039: C-032's points against AHN's surface model, about 5 minutes
+node experiments/followups/dem-smooth-nl.mjs      # C-040: the same points, AHN averaged over 30, 100 and 250 m, about 4 minutes
 node evals/a11y/run.mjs                           # C-035: axe-core on every page sessions wrote (82 map loads)
 node evals/run_eval.mjs --set civic --arms reference,wrong   # C-037's set, checked against its own pages; no sessions
 

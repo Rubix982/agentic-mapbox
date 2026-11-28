@@ -35,7 +35,10 @@ against AHN, 23% of 443 points within 0.5 m, medians up to +2.9 m). C-033 closed
 EGM 96 or EGM 2008, fits the US shifts in four of six places). C-034 closed on 2026-11-28 (with the lidar averaged
 over 100 m, 60% within 0.5 m; no place reached 90%). On 2026-11-28 C-035 to C-038 closed too: 78 of 81 session pages
 pass axe's WCAG 2.1 AA rules; Mapbox's geocoder puts 97% and 99% of official addresses within 50 m; Claude mapped a real
-311 export 9 of 9; in England 16% of 507 points within 0.5 m of the lidar. One card at a time.
+311 export 9 of 9; in England 16% of 507 points within 0.5 m of the lidar. C-039 closed on 2026-11-28 (Mapbox's Dutch heights
+rise 0.31 m per metre of AHN's buildings and trees, and on open ground are within 0.5 m at 24%); T-027 was dropped
+the same day. C-040 closed on 2026-11-28 (AHN's surface averaged over 30 to 250 m: 18% within 0.5 m at best, the
+ground doing better at every size). One card at a time.
 
 ### T-001 · What does each Mapbox capability look like when it is actually run?
 
@@ -388,7 +391,8 @@ comes back.
 
 ### T-027 · Would a Mapbox map carrying Mapillary's photos and detections give a site what Google Maps with Street View gives it?
 
-**Status:** open
+**Status:** dropped on 2026-11-28. The user cut it, having called it a possible over-reach on 2026-11-27; nothing
+was run.
 **Parent:** none; raised by the user on 2026-11-27, after C-029
 **Opened:** 2026-11-27
 **Question:** Mapbox sells no street-level imagery (none of the web services in `kb/catalog.md` has any), so it can
@@ -481,7 +485,7 @@ Yarmouth) to +2.69 m (Boston), 88 points more than 3 m off, mostly too high, on 
 
 ### T-034 · Does Mapbox's DEM in the Netherlands include buildings and trees?
 
-**Status:** open
+**Status:** answered (C-039)
 **Parent:** T-030
 **Opened:** 2026-11-28
 **Question:** In C-032 Mapbox read a median 2.0 m above AHN's bare ground in Rotterdam and 2.9 m in Amsterdam, but
@@ -489,4 +493,19 @@ near 0 in Almere, Middelburg and Zwolle, and 77 of the 86 points more than 3 m o
 surface model with buildings and trees (`AHN4_DSM_50cm` on the same server). Averaging it over Mapbox's pixel at
 C-032's points, one request a point, would say whether Mapbox's Dutch heights follow the surface rather than the
 ground.
-**Answer:** —
+**Answer:** In part. Within each place Mapbox's height rose 0.31 m per metre of AHN's cover (95% range 0.22 to
+0.40), inside buildings it read a fifth of the roof's height, and on open ground it was within 0.5 m at 24% of 214
+points, so buildings and trees are not why most Dutch points miss (C-039).
+
+### T-035 · Do Mapbox's Dutch heights follow AHN's surface averaged over much more than 17.6 m?
+
+**Status:** answered (C-040)
+**Parent:** T-034
+**Opened:** 2026-11-28
+**Question:** C-039 found Mapbox rising a third of a metre per metre of cover over 17.6 m and missing on open ground,
+which a coarser surface source would also do. Rotterdam's 16 points with nothing standing over 17.6 m still read a
+median +1.7 m. Comparing Mapbox with AHN's surface averaged over 30 m, 100 m and 250 m at C-032's points, cached
+ground squares reused, would say whether the Dutch source is a smoothed surface; it would not change the advice.
+**Answer:** No. Averaged over 30, 100 or 250 m, AHN's surface put Mapbox within 0.5 m at 18% of 544 points at
+best, and AHN's ground did better at every size (21% to 25%). Mapbox lies between the two and matches neither; what
+its Dutch source is cannot be told from AHN (C-040).

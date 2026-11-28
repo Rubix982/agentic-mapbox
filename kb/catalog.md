@@ -107,7 +107,9 @@ an agent could trip on:
     points within 0.5 m, 38% within 1 m, and 86 more than 3 m off, mostly too high, with medians of +2.0 m in
     Rotterdam and +2.9 m in Amsterdam (C-032). In six English places, against the Environment Agency's lidar on
     Ordnance Datum Newlyn, worse again: 16% of 507 within 0.5 m and 32% within 1 m, medians −1.2 to +2.7 m (C-038).
-    Do not draw a one-metre flood line on it.
+    Against AHN's surface model, the Dutch heights rise about a third of a metre per metre of buildings and trees and
+    do not show roofs; on open ground they are still within 0.5 m at only 24% of 214 points (C-039). Do not draw a
+    one-metre flood line on it, in town or on open ground.
 - Standard Satellite's terrain fades to nothing between zoom 12 and 13.7, and above that `queryTerrainElevation`
   returns null.
 - Snow and rain keep the map from ever firing `idle`; wind particles do not.

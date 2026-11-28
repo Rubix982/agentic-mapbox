@@ -2037,6 +2037,10 @@ zero in Almere, Middelburg and Zwolle. That fits a source that includes building
 (T-034). In the US, C-030 found Mapbox's heights inside building polygons no higher than the rest. Here that check is
 not possible, because AHN has no ground height under buildings.
 
+C-039 tested it: Mapbox's Dutch heights rise about a third of a metre per metre of buildings and trees, do not show
+roofs, and on open ground are within 0.5 m of AHN at 24% of points. Buildings and trees are part of the upward lean,
+not why most points miss.
+
 The agent link is the same as C-030's: Mapbox's MCP elevation and ground-location tools read these tiles. Asked for
 the ground height of a street point in Amsterdam, they would come back a median 2.9 m too high.
 
@@ -2386,6 +2390,166 @@ Agency's lidar at about one point in six, and more than 3 m off at about one in 
 
 What this does not show: why. As in the Netherlands, the errors run mostly upward, which would fit a source that
 includes buildings or trees (T-034 asks this for the Dutch data), but Great Yarmouth reads 1.2 m low.
+For the Dutch data C-039 found buildings and trees only part of it: on open ground Mapbox was still within 0.5 m at 24%
+of points.
 
 **Use:** no Claude sessions. 793 Mapbox requests in the final run, within the free tier; about 560 requests to the
 Environment Agency's WCS over two runs and the cross-check, cached. $0.
+
+### C-039 · Do Mapbox's Dutch heights rise with the buildings and trees in AHN's surface model?
+
+**Opened:** 2026-11-28 · **Closed:** 2026-11-28
+
+1. **WHERE WE ARE.** At C-032's 443 Dutch points off buildings, Mapbox read within 0.5 m of AHN's bare ground at 23%,
+   a median 2.0 m too high in Rotterdam and 2.9 m in Amsterdam and near zero in Almere, Middelburg and Zwolle; 77 of the
+   86 points more than 3 m off were too high. AHN4 also has a surface model, `AHN4_DSM_50cm`, the same survey with
+   buildings and trees left in, on the same keyless server. Probed at two Rotterdam points on 2026-11-28, it answered
+   squares sent in RD coordinates as the ground model does. Mapbox's DEM page says only that its sources vary
+   "depending on the zoom level and location".
+2. **WHAT WE ARE DOING.** Run `node experiments/followups/dem-surface-nl.mjs`. It draws C-032's points again from the
+   same seed and boxes, and stops if the points off buildings are not C-032's. At C-032's 443 points and at the points
+   inside Mapbox's buildings, which C-032 left out, it reads Mapbox's height as C-030 did and the mean of AHN's surface
+   and ground models over squares one and three Mapbox pixels across (5.9 and 17.6 m). What stands on the ground at a
+   point, its cover, is the surface's mean minus the ground's.
+3. **WHY.** Unknown now: whether C-032's upward errors come from buildings and trees in Mapbox's Dutch source. After:
+   how far Mapbox's height rises for each metre of cover within a place, and how close Mapbox is where nothing stands.
+4. **WHAT IS AFFECTED.** T-034. C-032's paragraph beginning "Not tested, but the pattern suggests it" and C-038's
+   "What this does not show", which leans on it. The DEM bullet in `kb/catalog.md`, the README's DEM paragraph and the
+   page's notes, which give a surface model as an untested guess.
+5. **CONCLUSION.** The measure is the slope of Mapbox's height above the ground against cover, over the 17.6 m square,
+   with each place's medians removed so a place's own offset cannot pass for cover. It is a Theil–Sen slope, the median
+   of the slopes between every pair of points, with a 95% range from resampling the points within each place.
+   - **Slope 0.5 or more, range above 0.25:** Mapbox's Dutch heights follow the surface, buildings and trees in. Open
+     ground then says how much of C-032 that explains: if Mapbox is within 0.5 m of the ground at 90% of points where
+     cover over one pixel is under 0.25 m, all of it; if not, part, with another error on top.
+   - **Slope 0.1 or less, range below 0.25:** Mapbox's heights follow the ground. Buildings and trees do not explain
+     C-032's errors, and C-032's and C-038's sentences on a surface model come out.
+   - **Between:** Mapbox rises with cover by less than half of it, as a smoothed or older surface, or one with trees
+     and not buildings, would. Points inside and outside buildings are reported apart.
+6. **CONSEQUENCE OF NOT DOING IT.** C-032 and C-038 keep an untested cause in print, and the advice for the Netherlands
+   stays "do not draw a one-metre flood line on it" everywhere, when it could say whether open polder ground is the
+   exception.
+
+**Needs before it can run:** no Claude sessions. About 120 DEM tiles and 900 Tilequery requests to Mapbox for the
+redraw, within the free tier. About 1,200 requests to the AHN server: the surface model over two squares at every
+point, and the ground model at the points inside buildings (C-032's are cached). Four at a time with a generic
+User-Agent, cached in `.cache/`. The user said "034 please" on 2026-11-28.
+
+**Result:** between. Within each place, Mapbox's height above the ground rose 0.31 m for each metre of cover over the
+17.6 m square (95% range 0.22 to 0.40, 544 points), about a third of what stands there. That is neither the surface
+branch (0.5 or more) nor the ground branch (0.1 or less). Open ground then failed its own bar by far, so buildings and
+trees are not what makes most of C-032's points miss (`experiments/results.md`, C-039).
+
+| Points | n | Cover, median | Mapbox above the ground, median | Within 0.5 m of the ground | Slope, 17.6 m square |
+|---|---|---|---|---|---|
+| Inside Mapbox's buildings | 101 | 7.2 m (roof above the ground) | +1.47 m | 25% | 0.17 (0.01 to 0.32) |
+| Off buildings, 1 m or more of cover | 148 | 3.0 m | +1.38 m | 21% | |
+| Off buildings, open (under 0.25 m) | 214 | 0.0 m | +0.03 m | 24% | |
+| All off buildings | 443 | 0.3 m | +0.68 m | 23% | 0.43 (0.31 to 0.56) |
+
+Cover and "within 0.5 m" for points off buildings are over one pixel (5.9 m); for points inside buildings the ground is
+AHN's mean over 17.6 m, the cells under the building being empty.
+
+- Mapbox does not carry roofs. Inside buildings the roof stands a median 7.2 m above the ground around it, and Mapbox
+  reads 1.5 m above that ground, a fifth of the roof's height; at 72 of the 101 points it is more than 3 m below the
+  roof. Nine of the 110 building points had no ground cell within 17.6 m and were dropped.
+- Open ground does not rescue it. At the 214 points where AHN shows nothing standing over Mapbox's pixel, Mapbox has no
+  lean (median +0.03 m), but only 24% are within 0.5 m and 40% within 1 m, and 35 are more than 3 m off, 27 of them too
+  high. Where nothing stands over the whole 17.6 m square, 134 points, it is 25%. C-032 found 23% at all points.
+- Of the 85 points off buildings more than 3 m from the ground's mean over one pixel, 35 are on open ground and 35 have a metre or more of
+  cover.
+- The method check held: the redraw gave C-032's 490 points off buildings exactly, and 110 inside buildings.
+- Not set beforehand, and on small counts: where nothing stands over the 17.6 m square, Amsterdam's 11 points read a
+  median −0.28 m, against +2.83 m at all its points off buildings, so cover may account for much of Amsterdam's lean.
+  Rotterdam's 16 still read +1.71 m.
+
+In plain words: Mapbox's Dutch heights rise by about a third of a metre for each metre of trees and buildings that
+AHN shows at a point, and do not show roofs; where nothing stands at all, they are still within half a metre of the
+ground at only one point in four. So buildings and trees are part of the upward lean C-032 found, and not the reason
+most heights miss.
+
+So the exception field 6 asked about is not there. Open ground is no better than the rest, and no part of the
+Netherlands tested here would carry a one-metre flood line on Mapbox's heights. What the source is stays unknown. A coarser surface,
+averaged over more than 17.6 m, would rise with cover by less than its full height and would still be off on open
+ground near buildings, which fits, but was not tested (T-035).
+
+C-040 tested it: averaged over 30, 100 or 250 m, AHN's surface put Mapbox within 0.5 m at 18% of points at best, and
+AHN's ground did better at every size.
+
+Field 4 was wrong on one file: the page's notes never gave the surface-model guess, so they gain C-039's line rather
+than lose one.
+
+**Use:** no Claude sessions. 771 Mapbox requests (712 Tilequery for the redraw, 59 DEM tiles), within the free tier.
+1,326 requests to the AHN server, four at a time, cached: the surface model over two squares at 553 points and the
+ground model over two squares at the 110 building points. $0.
+
+### C-040 · Averaged over 30, 100 or 250 m, does AHN's surface model give Mapbox's Dutch heights?
+
+**Opened:** 2026-11-28 · **Closed:** 2026-11-28
+
+1. **WHERE WE ARE.** At C-039's 544 Dutch points, Mapbox's height rose 0.31 m per metre of AHN's cover over 17.6 m,
+   read a fifth of the roof's height inside buildings, and was within 0.5 m of the ground at 24% of open points.
+   Within 0.5 m of AHN's surface averaged over one Mapbox pixel, it was 19% off buildings. Probed on 2026-11-28, AHN's
+   server averages squares up to 250 m across in about 300 ms.
+2. **WHAT WE ARE DOING.** Run `node experiments/followups/dem-smooth-nl.mjs`. At C-039's 544 points it asks for the mean
+   of AHN's surface and ground models over squares 30, 100 and 250 m across, centred on each point, and compares
+   Mapbox's height from C-032 and C-039 with each, beside the 5.9 and 17.6 m squares C-039 already has.
+3. **WHY.** Unknown now: whether Mapbox's Dutch heights are a smoothed surface, which would rise with cover by less
+   than its full height and miss on open ground near buildings, as C-039 found. After: for each square size, the share
+   of points within 0.5 m of AHN's surface and of its ground.
+4. **WHAT IS AFFECTED.** T-035. C-039's closing sentence that the source "stays unknown" and its pointer to T-035; the
+   DEM bullet in `kb/catalog.md` and the README's DEM paragraph if a scale is found.
+5. **CONCLUSION.** The measure is the share of points within 0.5 m of AHN's surface mean, at the best of the five
+   square sizes.
+   - **90% or more at some size (C-030's bar):** Mapbox's Dutch heights are AHN's surface, or one like it, smoothed to
+     about that size. The catalog says so and names the size.
+   - **33% to 90%:** smoothing brings the surface closer than the 19% at one pixel, but does not give Mapbox's
+     heights. The source resembles a smoothed surface and is something else as well, an older survey or another kind.
+   - **Under 33% at every size (C-032's 23% plus ten points):** smoothing AHN's surface does not give Mapbox's heights,
+     and what the source is cannot be told from AHN.
+   - Baseline: the ground model averaged over the same squares. If the ground does as well at some size as the surface
+     at its best, the gain is from smoothing alone, not from the surface.
+6. **CONSEQUENCE OF NOT DOING IT.** The catalog keeps saying Mapbox's Dutch heights are off without saying what they
+   are. No advice changes either way: C-039 already says no one-metre flood line, in town or on open ground.
+
+**Needs before it can run:** no Claude sessions and no Mapbox requests; Mapbox's heights come from C-032's and C-039's
+results. About 3,300 requests to the AHN server (two models, three sizes, 544 points), four at a time with a generic
+User-Agent, cached in `.cache/`. The user said "035" on 2026-11-28.
+
+**Result:** no size comes close. At its best, over 30 m, AHN's surface put Mapbox within 0.5 m at 18% of the 544
+points. That is field 5's third branch: smoothing AHN's surface does not give Mapbox's heights, and what the source is
+cannot be told from AHN. The baseline did better: AHN's ground was within 0.5 m at 21% to 25% at every size
+(`experiments/results.md`, C-040).
+
+| Square | Within 0.5 m of the surface | Within 0.5 m of the ground | Mapbox minus surface, median | Mapbox minus ground, median |
+|---|---|---|---|---|
+| 5.9 m (one pixel) | 15% | 25% (501 points) | −0.86 m | +0.59 m |
+| 17.6 m | 15% | 23% | −1.08 m | +0.83 m |
+| 30 m | 18% | 21% | −1.12 m | +0.87 m |
+| 100 m | 15% | 21% | −1.60 m | +0.89 m |
+| 250 m | 12% | 21% | −1.63 m | +0.96 m |
+
+- Mapbox sits between the two at every size, a median 0.6 to 1.0 m above AHN's ground and 0.9 to 1.6 m below its
+  surface, and within half a metre of neither at most points.
+- Over one pixel the ground is compared at 501 points, the other 43 being inside buildings with no ground cell
+  there.
+- Inside buildings the surface comes closer as the square grows, because the roof is averaged with the streets
+  around it: within 0.5 m at 2% over one pixel and 14% over 250 m, with Mapbox still a median 1.6 m below it.
+- By place, the medians split. In Rotterdam and Amsterdam, Mapbox's median lies nearer the surface (+0.21 to −1.52 m
+  from it, against +2.0 to +3.7 m from the ground). In Almere, Middelburg and Zwolle it lies nearer the ground (−0.17
+  to +0.23 m). In every place and at every size, fewer than two points in five are within half a metre of either.
+- One thing the server's answers do not settle: at six Amsterdam building points checked, it reports every cell of
+  squares 17.6 m and up as holding a ground height, though the ground model is empty over one pixel there. The means read as
+  ground (Amsterdam's around +1 to +2.5 m), so they are used, but the counts are not quoted.
+
+In plain words: averaging AHN's surface over 30, 100 or 250 m never gets Mapbox's Dutch heights to within half a metre
+at more than about one point in five, and AHN's bare ground does slightly better at every size. Mapbox's Dutch heights
+lie between the ground and the surface, nearer the surface in Rotterdam and Amsterdam and nearer the ground elsewhere,
+and match neither.
+
+So C-039 and C-040 together rule out the two simple accounts for the Netherlands, AHN's surface as measured and AHN's
+surface smoothed. The rest is not testable against AHN: an older survey, a different sensor or a blend of sources
+would each fit, and Mapbox's DEM page names none of them.
+
+**Use:** no Claude sessions and no Mapbox requests. 3,264 requests to the AHN server (two models, three sizes, 544
+points), four at a time, cached; four minutes. $0.

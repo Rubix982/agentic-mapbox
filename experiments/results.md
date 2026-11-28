@@ -193,8 +193,8 @@ to within 5 cm at 35.
 - Mapbox reads the polders' depth: Almere's ground is a median 3.6 m below NAP, and Mapbox's median difference is −0.07 m.
 - AHN refuses a point sample where its 0.5 m cell at the point has no ground height (5 to 12 points a place); each
   refusal was checked against that cell before being counted as dropped.
-- Not tested: whether Mapbox's Dutch source includes buildings and trees (T-034). The errors are largest in the two
-  densest cities and mostly upward.
+- The errors are largest in the two densest cities and mostly upward. Whether that is buildings and trees in Mapbox's
+  source was tested in C-039, below: in part, and not on open ground.
 
 **C-033: is the US shift a different zero?** (2026-11-28). For each of C-030's six places, how much higher than USGS
 Mapbox would read if its source were on EGM 96 or EGM 2008 instead of NAVD 88, against the place's median from C-031
@@ -264,6 +264,46 @@ drew a 429 after about 60, so the run sent one a second.
   place's median removed 17% to 33%. Ordnance Datum Newlyn, a zero Mapbox names, did not help.
 - For 20 points the lidar cell requested on its own matched the cell read from the 17 m square within 0.03 m at 17
   and 0.14 m at 3, so the squares were read the right way up.
+
+**C-039: C-032's points against AHN's surface model** (2026-11-28). C-032's sample drawn again from the same seed
+(the same 490 points off buildings, and 110 inside Mapbox's buildings that C-032 left out), with AHN4's surface model
+(`AHN4_DSM_50cm`, buildings and trees in) and ground model averaged over squares one and three Mapbox pixels across.
+Cover is the surface's mean minus the ground's (`followups/dem-surface-nl.mjs`).
+
+| Points | n | Cover, median | Mapbox above the ground, median | Within 0.5 m of the ground |
+|---|---|---|---|---|
+| Inside Mapbox's buildings | 101 | 7.2 m (roof above the ground) | +1.47 m | 25% |
+| Off buildings, 1 m or more of cover | 148 | 3.0 m | +1.38 m | 21% |
+| Off buildings, open (under 0.25 m) | 214 | 0.0 m | +0.03 m | 24% |
+| All off buildings | 443 | 0.3 m | +0.68 m | 23% |
+
+- Within each place, Mapbox's height above the ground rises 0.31 m per metre of cover over 17.6 m (Theil–Sen, 95%
+  range 0.22 to 0.40, 544 points): 0.43 off buildings and 0.17 inside them. The bars set beforehand were 0.5 for a
+  surface model and 0.1 for bare ground.
+- Mapbox does not show roofs: inside buildings it reads a fifth of the roof's height above the ground, and at 72 of
+  101 points more than 3 m below the roof.
+- On open ground Mapbox has no lean (median +0.03 m) but is within 0.5 m at 24% and within 1 m at 40%, with 35 of 214
+  more than 3 m off. Buildings and trees are part of C-032's upward lean, not why most points miss.
+
+**C-040: AHN's surface averaged over 30, 100 and 250 m** (2026-11-28). C-039's 544 points against the mean of AHN4's
+surface and ground models over squares 30, 100 and 250 m across, beside C-039's 5.9 and 17.6 m
+(`followups/dem-smooth-nl.mjs`). No Mapbox requests.
+
+| Square | Within 0.5 m of the surface | Within 0.5 m of the ground | Mapbox minus surface, median | Mapbox minus ground, median |
+|---|---|---|---|---|
+| 5.9 m | 15% | 25% (501 points) | −0.86 m | +0.59 m |
+| 17.6 m | 15% | 23% | −1.08 m | +0.83 m |
+| 30 m | 18% | 21% | −1.12 m | +0.87 m |
+| 100 m | 15% | 21% | −1.60 m | +0.89 m |
+| 250 m | 12% | 21% | −1.63 m | +0.96 m |
+
+- No size reaches the 33% set beforehand for "closer", let alone 90%, and the ground does better than the surface at
+  every size. Mapbox lies between the two, nearer the surface in Rotterdam and Amsterdam and nearer the ground in
+  Almere, Middelburg and Zwolle, and within 0.5 m of either at fewer than two points in five in every place.
+- At six Amsterdam building points the server reported every cell of squares 17.6 m and up as holding a ground height,
+  though the ground model is empty over one pixel there; the means read as ground, so they are used, and the counts
+  are not quoted.
+
 - **A glTF model.** A 30 × 30 × 90 m box written here as glTF (Y up), added with `addModel` and a `model` layer,
   stood upright and red in Praça do Comércio. The picture changed by 19.6 near it and by 0 elsewhere.
 - **Clip.** A `clip` layer over one Lower Manhattan block cut the rendered buildings in that block's screen box from
