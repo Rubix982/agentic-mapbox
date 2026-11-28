@@ -1,0 +1,319 @@
+{
+  "experiment": "followups/dem-datum-us",
+  "question": "Do Mapbox's per-place shifts from USGS in C-030's US places match a difference of zero (NAVD 88, EGM 96, EGM 2008)?",
+  "ran_at": "2026-11-27T19:20:55.728Z",
+  "served_by_mapbox": true,
+  "refusals": [],
+  "refusals_are_the_finding": false,
+  "all_facts_hold": false,
+  "facts": [
+    {
+      "fact": "Where VDatum answers, the built offsets agree with it within 0.03 m",
+      "holds": true,
+      "numbers": {
+        "places_checked": [
+          "New Orleans, LA",
+          "Miami Beach, FL",
+          "Charleston, SC"
+        ],
+        "worst_m": 0.025
+      }
+    },
+    {
+      "fact": "NAVD 88 alone fits at least 4 places",
+      "holds": false,
+      "numbers": {
+        "places": [
+          "Sacramento, CA"
+        ]
+      }
+    },
+    {
+      "fact": "EGM 96 alone fits at least 4 places",
+      "holds": false,
+      "numbers": {
+        "places": []
+      }
+    },
+    {
+      "fact": "EGM 2008 alone fits at least 4 places",
+      "holds": false,
+      "numbers": {
+        "places": [
+          "Norfolk, VA",
+          "Charleston, SC"
+        ]
+      }
+    }
+  ],
+  "numbers": {
+    "resamples": 2000,
+    "places": [
+      {
+        "place": "New Orleans, LA",
+        "centre": [
+          -90.08,
+          29.965
+        ],
+        "n": 71,
+        "median_m": 0.25,
+        "range95_m": [
+          0.16,
+          0.34
+        ],
+        "geoid18_m": -26.002,
+        "egm_m": {
+          "EGM 96": -27.1759,
+          "EGM 2008": -27.3501
+        },
+        "shift_from": [
+          -89.08,
+          29.965
+        ],
+        "shift_m": {
+          "EGM 96": -1.365,
+          "EGM 2008": -1.369
+        },
+        "vdatum_m": {
+          "EGM 96": -0.182,
+          "EGM 2008": -0.005
+        },
+        "built_m": {
+          "EGM 96": -0.191,
+          "EGM 2008": -0.021
+        },
+        "offsets_m": {
+          "NAVD 88": 0,
+          "EGM 96": -0.182,
+          "EGM 2008": -0.005
+        },
+        "source": "VDatum",
+        "fits": [],
+        "decided": "none"
+      },
+      {
+        "place": "Miami Beach, FL",
+        "centre": [
+          -80.131,
+          25.815
+        ],
+        "n": 77,
+        "median_m": -0.44,
+        "range95_m": [
+          -0.59,
+          -0.33
+        ],
+        "geoid18_m": -25.697,
+        "egm_m": {
+          "EGM 96": -27.9758,
+          "EGM 2008": -27.3619
+        },
+        "shift_from": [
+          -79.131,
+          25.815
+        ],
+        "shift_m": {
+          "EGM 96": -1.574,
+          "EGM 2008": -1.59
+        },
+        "vdatum_m": {
+          "EGM 96": 0.68,
+          "EGM 2008": 0.086
+        },
+        "built_m": {
+          "EGM 96": 0.705,
+          "EGM 2008": 0.075
+        },
+        "offsets_m": {
+          "NAVD 88": 0,
+          "EGM 96": 0.68,
+          "EGM 2008": 0.086
+        },
+        "source": "VDatum",
+        "fits": [],
+        "decided": "none"
+      },
+      {
+        "place": "Norfolk, VA",
+        "centre": [
+          -76.29,
+          36.87
+        ],
+        "n": 86,
+        "median_m": -0.215,
+        "range95_m": [
+          -0.38,
+          -0.115
+        ],
+        "geoid18_m": -37.084,
+        "egm_m": {
+          "EGM 96": -38.4757,
+          "EGM 2008": -38.0726
+        },
+        "shift_from": [
+          -77.29,
+          36.87
+        ],
+        "shift_m": {
+          "EGM 96": -1.322,
+          "EGM 2008": -1.312
+        },
+        "vdatum_m": {
+          "EGM 96": null,
+          "EGM 2008": null
+        },
+        "built_m": {
+          "EGM 96": 0.069,
+          "EGM 2008": -0.323
+        },
+        "offsets_m": {
+          "NAVD 88": 0,
+          "EGM 96": 0.069,
+          "EGM 2008": -0.323
+        },
+        "source": "built",
+        "fits": [
+          "EGM 2008"
+        ],
+        "decided": "EGM 2008"
+      },
+      {
+        "place": "Galveston, TX",
+        "centre": [
+          -94.81,
+          29.29
+        ],
+        "n": 76,
+        "median_m": 0.215,
+        "range95_m": [
+          0.13,
+          0.36
+        ],
+        "geoid18_m": -26.63,
+        "egm_m": {
+          "EGM 96": -27.7951,
+          "EGM 2008": -27.7376
+        },
+        "shift_from": [
+          -95.81,
+          29.29
+        ],
+        "shift_m": {
+          "EGM 96": -1.274,
+          "EGM 2008": -1.277
+        },
+        "vdatum_m": {
+          "EGM 96": null,
+          "EGM 2008": null
+        },
+        "built_m": {
+          "EGM 96": -0.109,
+          "EGM 2008": -0.169
+        },
+        "offsets_m": {
+          "NAVD 88": 0,
+          "EGM 96": -0.109,
+          "EGM 2008": -0.169
+        },
+        "source": "built",
+        "fits": [],
+        "decided": "none"
+      },
+      {
+        "place": "Charleston, SC",
+        "centre": [
+          -79.942,
+          32.79
+        ],
+        "n": 75,
+        "median_m": -0.26,
+        "range95_m": [
+          -0.4,
+          -0.11
+        ],
+        "geoid18_m": -33.173,
+        "egm_m": {
+          "EGM 96": -34.6714,
+          "EGM 2008": -34.3258
+        },
+        "shift_from": [
+          -78.942,
+          32.79
+        ],
+        "shift_m": {
+          "EGM 96": -1.403,
+          "EGM 2008": -1.413
+        },
+        "vdatum_m": {
+          "EGM 96": 0.085,
+          "EGM 2008": -0.253
+        },
+        "built_m": {
+          "EGM 96": 0.095,
+          "EGM 2008": -0.261
+        },
+        "offsets_m": {
+          "NAVD 88": 0,
+          "EGM 96": 0.085,
+          "EGM 2008": -0.253
+        },
+        "source": "VDatum",
+        "fits": [
+          "EGM 2008"
+        ],
+        "decided": "EGM 2008"
+      },
+      {
+        "place": "Sacramento, CA",
+        "centre": [
+          -121.51,
+          38.52
+        ],
+        "n": 83,
+        "median_m": 0.09,
+        "range95_m": [
+          -0.21,
+          0.33
+        ],
+        "geoid18_m": -30.921,
+        "egm_m": {
+          "EGM 96": -30.9267,
+          "EGM 2008": -30.6675
+        },
+        "shift_from": [
+          -120.51,
+          38.52
+        ],
+        "shift_m": {
+          "EGM 96": -0.538,
+          "EGM 2008": -0.533
+        },
+        "vdatum_m": {
+          "EGM 96": null,
+          "EGM 2008": null
+        },
+        "built_m": {
+          "EGM 96": -0.532,
+          "EGM 2008": -0.786
+        },
+        "offsets_m": {
+          "NAVD 88": 0,
+          "EGM 96": -0.532,
+          "EGM 2008": -0.786
+        },
+        "source": "built",
+        "fits": [
+          "NAVD 88"
+        ],
+        "decided": "NAVD 88"
+      }
+    ]
+  },
+  "screenshots": [],
+  "use": {
+    "map_loads": 0,
+    "web_service_requests": 0,
+    "calls": []
+  },
+  "seconds": 55.7
+}

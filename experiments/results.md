@@ -115,6 +115,155 @@ Metres below the published height:
 - GL JS reads the same as the tiles (`followups/dem-summits-gl.mjs`, one map load). At 20 of the 24 summits its
   highest reading within 1 km is within 4 m of the tile's. The other four differ by 6 to 18 m, two higher and two
   lower. At the Matterhorn's coordinate the tile itself gives 3,587 m; GL JS gave 3,575.
+
+**C-030: the same DEM on low-lying US ground** (2026-11-27). 100 random land points in each of six flood-prone places
+(New Orleans, Miami Beach, Norfolk, Galveston, Charleston, Sacramento), from a fixed seed and boxes set before any height
+was read, redrawn when inside a water polygon of Mapbox's Streets tileset. Each was read from the zoom-14 tile at the
+coordinate, bilinear, as Mapbox's MCP elevation tool reads it, and compared with USGS's Elevation Point Query Service,
+which answers from its 1 m lidar-derived bare-earth DEM (`followups/dem-lowland.mjs`; 88 tiles, 816 Tilequery requests,
+600 USGS requests). The bar, set beforehand, was 90% of points off buildings within 0.5 m in each place. Mapbox's
+height minus USGS's:
+
+| Place | Points | Median difference | Within 0.5 m | Within 1 m | Within 0.5 m, median removed |
+|---|---|---|---|---|---|
+| New Orleans, LA | 71 | +0.26 m | 70% | 97% | 89% |
+| Miami Beach, FL | 77 | −0.42 m | 49% | 81% | 69% |
+| Norfolk, VA | 86 | −0.22 m | 64% | 84% | 65% |
+| Galveston, TX | 76 | +0.25 m | 50% | 89% | 62% |
+| Charleston, SC | 75 | −0.28 m | 56% | 85% | 67% |
+| Sacramento, CA | 83 | +0.06 m | 35% | 67% | 36% |
+| **All six** | **468** | **−0.08 m** | **54%** | **84%** | |
+
+- No place reached the bar, as read or with its median difference removed. New Orleans came closest, 63 of 71 points
+  with its median removed, where the bar needed 64. Elsewhere removing the median changed little, so the disagreement
+  is mostly scatter, in both directions (92 points more than 0.5 m high, 124 more than 0.5 m low), not a shift.
+- Half the points are within 0.47 m, one in ten is more than 1.36 m off, and 16 of the 468 more than 2 m. The largest
+  are three neighbouring Charleston points near 32.807° N, 79.926° W: lidar 8 to 10 m, Mapbox 0.2 m. Not looked at.
+- Points inside building polygons read like the rest, so the DEM is of the ground, as USGS's is.
+- Worked out afterwards: for a flood line at 1, 2 or 3 m, 12%, 14% and 12% of the points fall on the other side of it
+  on Mapbox's heights from lidar's. At 1 m, 43 of the 56 are flooded on Mapbox's heights and dry on lidar's; 26 of
+  them are in Miami Beach, where Mapbox reads a median 0.42 m low.
+- Mapbox's MCP elevation tool and its ground-location tool both read heights through the same code
+  (`elevation-tool/terrain.ts` at `ea129dc`), so both would give these heights for these points.
+- Not tested here: whether lidar averaged over Mapbox's 7.5 to 8.6 m pixel agrees better (T-029, run as C-031
+  below); which zero Mapbox's heights start from here (USGS's is NAVD88; Mapbox's DEM page says its sources use "NAVD
+  88, EGM 96, and Ordnance Datum Newlyn" among others, not which where; T-031); and anywhere outside the US (T-030).
+  USGS's lidar here was flown between 2013 and 2025, and Mapbox does not say when its source was.
+
+**C-031: the lidar averaged over Mapbox's own pixel** (2026-11-27). For each of C-030's 468 points, USGS's 3DEP
+elevation service (`computeStatisticsHistograms`) gave the lidar's mean, minimum and maximum over a square one Mapbox
+pixel across (7.5 to 8.6 m) and one three pixels across (about 25 m), at the lidar's own spacing of about 0.9 m
+(`followups/dem-lowland-pixel.mjs`; 936 requests, no Mapbox requests). Share within 0.5 m of Mapbox's height:
+
+| Place | Lidar at the point (C-030) | Over one pixel | Over three pixels |
+|---|---|---|---|
+| New Orleans, LA | 70% | 72% | 70% |
+| Miami Beach, FL | 49% | 51% | 51% |
+| Norfolk, VA | 64% | 63% | 64% |
+| Galveston, TX | 50% | 53% | 55% |
+| Charleston, SC | 56% | 55% | 56% |
+| Sacramento, CA | 35% | 36% | 40% |
+| **All six, 468 points** | **54%** | **54%** | **56%** |
+
+- Of the 216 points more than 0.5 m off at the point, 206 still were over one pixel and 195 over three. So C-030's
+  scatter is not lidar detail that an 8 m pixel averages away: the heights are off at their own scale, up to 25 m.
+- On flat ground, where the lidar spans under 0.25 m across the 25 m square, 12 of 21 points are still more than 0.5 m
+  off (10 of 19 without Charleston's two). All five flat Norfolk points read low, by 0.27 to 0.62 m.
+- Not tested here: a Mapbox source smoother than 25 m (T-032, run as C-034 below), and why the heights are off.
+
+**C-032: the same in the Netherlands, against AHN** (2026-11-28). C-030 and C-031 again in six low-lying Dutch places
+(Rotterdam, Amsterdam, Almere, Dordrecht, Middelburg, Zwolle), 100 land points each, against AHN4's 0.5 m bare-ground
+lidar DEM (heights in NAP) from Esri Nederland's keyless image server (`followups/dem-lowland-nl.mjs`). Every AHN request
+went in RD New coordinates converted here: the server's statistics for a square sent in GPS coordinates came from a
+different place than its point sample. For 36 points the server's own GPS conversion for point samples matched mine
+to within 5 cm at 35.
+
+| Place | Points | AHN, median | Mapbox minus AHN, median | Within 0.5 m | Within 1 m | Within 0.5 m over one pixel |
+|---|---|---|---|---|---|---|
+| Rotterdam | 78 | −1.63 m | +2.01 m | 12% | 26% | 14% |
+| Amsterdam | 64 | +0.63 m | +2.89 m | 13% | 17% | 13% |
+| Almere | 77 | −3.60 m | −0.07 m | 30% | 43% | 31% |
+| Dordrecht | 76 | −0.28 m | +0.90 m | 12% | 33% | 8% |
+| Middelburg | 82 | −0.23 m | 0.00 m | 40% | 55% | 40% |
+| Zwolle | 66 | +1.54 m | +0.10 m | 30% | 50% | 32% |
+| **All six** | **443** | | **+0.69 m** | **23%** | **38%** | **23%** |
+
+- 86 points are more than 3 m off, 77 of them with Mapbox higher; in Amsterdam one in ten is more than 8.6 m off.
+  Removing each place's median leaves 9% to 40% within 0.5 m, and over three pixels (17.6 m) the share is 22%.
+- Mapbox reads the polders' depth: Almere's ground is a median 3.6 m below NAP, and Mapbox's median difference is −0.07 m.
+- AHN refuses a point sample where its 0.5 m cell at the point has no ground height (5 to 12 points a place); each
+  refusal was checked against that cell before being counted as dropped.
+- Not tested: whether Mapbox's Dutch source includes buildings and trees (T-034). The errors are largest in the two
+  densest cities and mostly upward.
+
+**C-033: is the US shift a different zero?** (2026-11-28). For each of C-030's six places, how much higher than USGS
+Mapbox would read if its source were on EGM 96 or EGM 2008 instead of NAVD 88, against the place's median from C-031
+and its 95% range from 2,000 resamplings (`followups/dem-datum-us.mjs`). VDatum answered for New Orleans, Miami Beach
+and Charleston. For Norfolk, Galveston and Sacramento the offsets were built from GEOID18 (NGS's geoid API), EGM 96 and
+EGM 2008 (GeographicLib's GeoidEval) and the NAD 83 to WGS 84 ellipsoid shift from the nearest point VDatum answers;
+built the same way, the other three agreed with VDatum within 0.025 m.
+
+| Place | Median (95% range) | EGM 96 | EGM 2008 | Fits |
+|---|---|---|---|---|
+| New Orleans, LA | +0.25 (+0.16 to +0.34) | −0.18 | −0.01 | none |
+| Miami Beach, FL | −0.44 (−0.59 to −0.33) | +0.68 | +0.09 | none |
+| Norfolk, VA | −0.22 (−0.38 to −0.12) | +0.07 | −0.32 | EGM 2008 |
+| Galveston, TX | +0.22 (+0.13 to +0.36) | −0.11 | −0.17 | none |
+| Charleston, SC | −0.26 (−0.40 to −0.11) | +0.09 | −0.25 | EGM 2008 |
+| Sacramento, CA | +0.09 (−0.21 to +0.33) | −0.53 | −0.79 | NAVD 88 (0) |
+
+- No zero fits four places, so the shifts are not a difference of zero; in three places none of the three fits. And
+  C-030 had already removed each place's whole median, the most a change of zero could do, and that left 36% to 89%
+  within 0.5 m.
+
+**C-034: the lidar averaged over 50 m and 100 m** (2026-11-28). The same 468 US points, with USGS's lidar averaged over
+squares 50 m and 100 m across (`followups/dem-lowland-wide.mjs`, 936 requests). Share within 0.5 m of Mapbox's height:
+
+| Place | Point | 8 m | 25 m | 50 m | 100 m |
+|---|---|---|---|---|---|
+| New Orleans, LA | 70% | 72% | 70% | 66% | 68% |
+| Miami Beach, FL | 49% | 51% | 51% | 51% | 53% |
+| Norfolk, VA | 64% | 63% | 64% | 69% | 71% |
+| Galveston, TX | 50% | 53% | 55% | 67% | 64% |
+| Charleston, SC | 56% | 55% | 56% | 60% | 63% |
+| Sacramento, CA | 35% | 36% | 40% | 45% | 45% |
+| **All six** | **54%** | **54%** | **56%** | **59%** | **60%** |
+
+- No place reaches 90% at any scale, so resolution does not explain C-030's errors up to 100 m. Within 1 m the share
+  goes from 84% to 87%.
+
+**C-036: Mapbox's geocoder on official city addresses** (2026-11-28). 500 random addresses from each of New Orleans'
+"Site Address Point" list (268,821) and New York's "AddressPoint" list (967,871), sent to Geocoding v6 forward as one
+line each, first result only (`followups/geocode-addresses.mjs`). Temporary geocoding, so each result was compared in
+memory and dropped; only counts were kept.
+
+| City | Within 10 m | 10 to 50 m | 50 to 100 m | 100 to 500 m | Beyond 500 m | No result |
+|---|---|---|---|---|---|---|
+| New Orleans | 398 | 85 | 8 | 8 | 0 | 1 |
+| New York | 473 | 23 | 1 | 0 | 2 | 1 |
+
+- 97% and 99% within 50 m, against the 90% bar. The 16 New Orleans addresses beyond 50 m all came back with "high"
+  confidence; New York's 3 came back "low".
+
+**C-038: the same in England, against the Environment Agency's lidar** (2026-11-28). Six low-lying places, 100 land
+points each, against the 1 m lidar DTM (heights in Ordnance Datum Newlyn) by WCS, converted to the British National
+Grid with OSTN15 (`tools/osgb.py`, pyproj in `.venv`; `followups/dem-lowland-england.mjs`). Four requests at a time
+drew a 429 after about 60, so the run sent one a second.
+
+| Place | Points | Lidar, median | Mapbox minus lidar, median | Within 0.5 m | Within 1 m |
+|---|---|---|---|---|---|
+| Hull | 83 | 2.28 m | +0.51 m | 30% | 52% |
+| Boston | 92 | 2.54 m | +2.69 m | 7% | 13% |
+| Bridgwater | 86 | 6.95 m | +1.27 m | 16% | 34% |
+| Great Yarmouth | 82 | 2.08 m | −1.23 m | 20% | 34% |
+| Canvey Island | 87 | 1.87 m | +0.94 m | 16% | 39% |
+| York | 77 | 13.20 m | +1.80 m | 10% | 23% |
+| **All six** | **507** | | **+1.07 m** | **16%** | **32%** |
+
+- 88 points are more than 3 m off, 75 of them with Mapbox higher. Over one pixel 17%, over three 16%, and with each
+  place's median removed 17% to 33%. Ordnance Datum Newlyn, a zero Mapbox names, did not help.
+- For 20 points the lidar cell requested on its own matched the cell read from the 17 m square within 0.03 m at 17
+  and 0.14 m at 3, so the squares were read the right way up.
 - **A glTF model.** A 30 × 30 × 90 m box written here as glTF (Y up), added with `addModel` and a `model` layer,
   stood upright and red in Praça do Comércio. The picture changed by 19.6 near it and by 0 elsewhere.
 - **Clip.** A `clip` layer over one Lower Manhattan block cut the rendered buildings in that block's screen box from

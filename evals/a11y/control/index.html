@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GL JS with nothing added</title>
+<link href="https://api.mapbox.com/mapbox-gl-js/v3.35.2/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v3.35.2/mapbox-gl.js"></script>
+<style>html, body, #map { margin: 0; height: 100%; }</style>
+</head>
+<body>
+<div id="map"></div>
+<script>
+mapboxgl.accessToken = window.MAPBOX_ACCESS_TOKEN;
+window.map = new mapboxgl.Map({ container: 'map', center: [-122.4194, 37.7749], zoom: 12 });
+</script>
+</body>
+</html>

@@ -38,6 +38,11 @@ token check from the Tokens API, but the account's own listings refuse it: style
 `styles:list` and `tilesets:list`, datasets and tokens with 404 `[exp: api/token]`. Not stated on the pages read: whether a card is needed to sign up, and whether use past the free
 tier is billed or blocked.
 
+Geocoding v6 on official city addresses (C-036): of 500 random addresses from each city's own list, 97% landed within
+50 m of New Orleans' point and 99% of New York's, with none beyond 500 m in New Orleans and 2 in New York. All 16 New
+Orleans misses beyond 50 m came back with "high" confidence, so confidence would not have flagged them. Temporary
+results "are not allowed to be cached"; only counts were kept.
+
 ## Libraries
 
 | | Version here | Licence |
@@ -94,6 +99,15 @@ an agent could trip on:
 - `mapbox-terrain-dem-v1` reads sharp summits low: 8 of 11 by more than 50 m (median 104 m; the Matterhorn 252, Fitz
   Roy 549), but the two sharp US summits within 11 m. Broad summits read a median 21 m low (C-009). GL JS reads the
   same as the tiles. Do not quote a summit's height from it.
+  - On low-lying ground in six flood-prone US places, 54% of 468 points read within 0.5 m of USGS's 1 m lidar DEM and
+    84% within 1 m, with no place above 70% within 0.5 m (C-030). A flood line drawn on it a metre at a time puts
+    about one point in eight on the wrong side. Averaging the lidar over Mapbox's own pixel, or three, gives 54% and
+    56%, and over 100 m 60%, so the heights are off, not only coarse (C-031, C-034). No one zero (NAVD 88, EGM 96, EGM
+    2008) explains the shifts (C-033). In six low-lying Dutch places, against AHN's lidar, it is worse: 23% of 443
+    points within 0.5 m, 38% within 1 m, and 86 more than 3 m off, mostly too high, with medians of +2.0 m in
+    Rotterdam and +2.9 m in Amsterdam (C-032). In six English places, against the Environment Agency's lidar on
+    Ordnance Datum Newlyn, worse again: 16% of 507 within 0.5 m and 32% within 1 m, medians −1.2 to +2.7 m (C-038).
+    Do not draw a one-metre flood line on it.
 - Standard Satellite's terrain fades to nothing between zoom 12 and 13.7, and above that `queryTerrainElevation`
   returns null.
 - Snow and rain keep the map from ever firing `idle`; wind particles do not.
@@ -137,7 +151,9 @@ right, and the one miss was a `clip` layer that removed its own buildings.
     - The elevation tool reads `mapbox-terrain-dem-v1` tiles; it does not use Tilequery. Called once with 24 summits'
       coordinates (C-010), it answered what the tiles hold within 0.5 m. Its schema offers "a summit" as an example,
       and for the Matterhorn it answered 3,587 m, 890 m below the published height; 11 of the 24 came back more than
-      50 m low. It is in the source at `ea129dc` but not in npm's latest release, 0.18.1.
+      50 m low. On low-lying US ground its tiles are more than 0.5 m from USGS's lidar at about half of street
+      points (C-030), and its answer carries no warning. It is in the source at `ea129dc` but not in npm's latest
+      release, 0.18.1.
 - **DevKit MCP server** (styles, tokens, validation) and **Docs MCP server**: github.com/mapbox/mcp-devkit-server,
   github.com/mapbox/mcp-docs-server.
 - **Mapbox CLI**, github.com/mapbox/mapbox-cli (MIT): geocoding, search, static images and tokens from a terminal, JSON

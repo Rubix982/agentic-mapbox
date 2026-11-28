@@ -1,0 +1,1124 @@
+{
+  "ran_at": "2026-11-27T19:37:29.085Z",
+  "summary": {
+    "axe": "4.10.2",
+    "tags": [
+      "wcag2a",
+      "wcag2aa",
+      "wcag21a",
+      "wcag21aa"
+    ],
+    "control": [],
+    "pages_checked": 81,
+    "pages_not_checked": 0,
+    "pages_with_no_violations": 78,
+    "pages_with_none_beyond_control": 78,
+    "share_none_beyond_control": 0.96,
+    "bar": 0.9,
+    "rules": {
+      "meta-viewport": {
+        "pages": 3,
+        "impact": "critical",
+        "help": "Zooming and scaling must not be disabled",
+        "from_gl_js": false
+      }
+    }
+  },
+  "pages": [
+    {
+      "run": "control",
+      "session": "control",
+      "task": null,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261124-190027-with+without",
+      "session": "task1-with-0",
+      "task": 1,
+      "settled": true,
+      "violations": [
+        {
+          "id": "meta-viewport",
+          "impact": "critical",
+          "help": "Zooming and scaling must not be disabled",
+          "nodes": 1,
+          "targets": [
+            "meta[name=\"viewport\"]"
+          ]
+        }
+      ],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261124-190027-with+without",
+      "session": "task1-without-0",
+      "task": 1,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261124-190027-with+without",
+      "session": "task10-with-0",
+      "task": 10,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261124-190027-with+without",
+      "session": "task10-without-0",
+      "task": 10,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261124-190027-with+without",
+      "session": "task2-with-0",
+      "task": 2,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261124-190027-with+without",
+      "session": "task2-without-0",
+      "task": 2,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261124-190027-with+without",
+      "session": "task3-with-0",
+      "task": 3,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261124-190027-with+without",
+      "session": "task3-without-0",
+      "task": 3,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261124-190027-with+without",
+      "session": "task4-with-0",
+      "task": 4,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261124-190027-with+without",
+      "session": "task4-without-0",
+      "task": 4,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261124-190027-with+without",
+      "session": "task5-with-0",
+      "task": 5,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261124-190027-with+without",
+      "session": "task5-without-0",
+      "task": 5,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261124-190027-with+without",
+      "session": "task6-with-0",
+      "task": 6,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261124-190027-with+without",
+      "session": "task6-without-0",
+      "task": 6,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261124-190027-with+without",
+      "session": "task7-with-0",
+      "task": 7,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261124-190027-with+without",
+      "session": "task7-without-0",
+      "task": 7,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261124-190027-with+without",
+      "session": "task8-with-0",
+      "task": 8,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261124-190027-with+without",
+      "session": "task8-without-0",
+      "task": 8,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261124-190027-with+without",
+      "session": "task9-with-0",
+      "task": 9,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261124-190027-with+without",
+      "session": "task9-without-0",
+      "task": 9,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261125-154837-tasks-3x-without",
+      "session": "task1-without-0",
+      "task": 1,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261125-154837-tasks-3x-without",
+      "session": "task10-without-0",
+      "task": 10,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261125-154837-tasks-3x-without",
+      "session": "task2-without-0",
+      "task": 2,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261125-154837-tasks-3x-without",
+      "session": "task3-without-0",
+      "task": 3,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261125-154837-tasks-3x-without",
+      "session": "task4-without-0",
+      "task": 4,
+      "settled": true,
+      "violations": [
+        {
+          "id": "meta-viewport",
+          "impact": "critical",
+          "help": "Zooming and scaling must not be disabled",
+          "nodes": 1,
+          "targets": [
+            "meta[name=\"viewport\"]"
+          ]
+        }
+      ],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261125-154837-tasks-3x-without",
+      "session": "task5-without-0",
+      "task": 5,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261125-154837-tasks-3x-without",
+      "session": "task6-without-0",
+      "task": 6,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261125-154837-tasks-3x-without",
+      "session": "task7-without-0",
+      "task": 7,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261125-154837-tasks-3x-without",
+      "session": "task8-without-0",
+      "task": 8,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261125-154837-tasks-3x-without",
+      "session": "task9-without-0",
+      "task": 9,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261125-174022-tasks-3x-with",
+      "session": "task2-with-0",
+      "task": 2,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261125-174022-tasks-3x-with",
+      "session": "task3-with-0",
+      "task": 3,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261125-174022-tasks-3x-with",
+      "session": "task5-with-0",
+      "task": 5,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261126-044700-tasks-3x-offline",
+      "session": "task2-offline-0",
+      "task": 2,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261126-044700-tasks-3x-offline",
+      "session": "task3-offline-0",
+      "task": 3,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261126-044700-tasks-3x-offline",
+      "session": "task5-offline-0",
+      "task": 5,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261126-053718-tasks-3x-offline",
+      "session": "task5-offline-0",
+      "task": 5,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261126-053718-tasks-3x-offline",
+      "session": "task5-offline-1",
+      "task": 5,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261126-053718-tasks-3x-offline",
+      "session": "task5-offline-2",
+      "task": 5,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261126-065716-tasks-3x-offline-note",
+      "session": "task5-offline-0",
+      "task": 5,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261126-065716-tasks-3x-offline-note",
+      "session": "task5-offline-1",
+      "task": 5,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261126-065716-tasks-3x-offline-note",
+      "session": "task5-offline-2",
+      "task": 5,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261126-152435-tasks-3x-offline-note",
+      "session": "task5-offline-0",
+      "task": 5,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261126-152435-tasks-3x-offline-note",
+      "session": "task5-offline-1",
+      "task": 5,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261126-152435-tasks-3x-offline-note",
+      "session": "task5-offline-2",
+      "task": 5,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-030055-tasks-3x-with-extraskill",
+      "session": "task2-with-0",
+      "task": 2,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-030055-tasks-3x-with-extraskill",
+      "session": "task3-with-0",
+      "task": 3,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-030055-tasks-3x-with-extraskill",
+      "session": "task5-with-0",
+      "task": 5,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-031511-tasks-3x-with-extraskill",
+      "session": "task2-with-0",
+      "task": 2,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-031511-tasks-3x-with-extraskill",
+      "session": "task3-with-0",
+      "task": 3,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-031511-tasks-3x-with-extraskill",
+      "session": "task5-with-0",
+      "task": 5,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-031612-tasks-3x-with-extraskill",
+      "session": "task2-with-0",
+      "task": 2,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-031612-tasks-3x-with-extraskill",
+      "session": "task3-with-0",
+      "task": 3,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-031612-tasks-3x-with-extraskill",
+      "session": "task5-with-0",
+      "task": 5,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-041213-tasks-3x-with-extraskill",
+      "session": "task2-with-0",
+      "task": 2,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-041213-tasks-3x-with-extraskill",
+      "session": "task3-with-0",
+      "task": 3,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-041213-tasks-3x-with-extraskill",
+      "session": "task5-with-0",
+      "task": 5,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-041317-tasks-3x-with-extraskill",
+      "session": "task2-with-0",
+      "task": 2,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-041317-tasks-3x-with-extraskill",
+      "session": "task3-with-0",
+      "task": 3,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-041317-tasks-3x-with-extraskill",
+      "session": "task5-with-0",
+      "task": 5,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-041420-tasks-3x-with-extraskill",
+      "session": "task2-with-0",
+      "task": 2,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-041420-tasks-3x-with-extraskill",
+      "session": "task3-with-0",
+      "task": 3,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-041420-tasks-3x-with-extraskill",
+      "session": "task5-with-0",
+      "task": 5,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-091829-tasks-3x-with",
+      "session": "task2-with-0",
+      "task": 2,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-091829-tasks-3x-with",
+      "session": "task3-with-0",
+      "task": 3,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-091829-tasks-3x-with",
+      "session": "task5-with-0",
+      "task": 5,
+      "settled": true,
+      "violations": [
+        {
+          "id": "meta-viewport",
+          "impact": "critical",
+          "help": "Zooming and scaling must not be disabled",
+          "nodes": 1,
+          "targets": [
+            "meta[name=\"viewport\"]"
+          ]
+        }
+      ],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-130633-tasks-3x-with-description",
+      "session": "task2-with-0",
+      "task": 2,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-130633-tasks-3x-with-description",
+      "session": "task3-with-0",
+      "task": 3,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-130633-tasks-3x-with-description",
+      "session": "task5-with-0",
+      "task": 5,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-132807-tasks-3x-with-extraskill",
+      "session": "task2-with-0",
+      "task": 2,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-132807-tasks-3x-with-extraskill",
+      "session": "task3-with-0",
+      "task": 3,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-132807-tasks-3x-with-extraskill",
+      "session": "task5-with-0",
+      "task": 5,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-134613-tasks-3x-with-extraskill",
+      "session": "task2-with-0",
+      "task": 2,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-134613-tasks-3x-with-extraskill",
+      "session": "task3-with-0",
+      "task": 3,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-134613-tasks-3x-with-extraskill",
+      "session": "task5-with-0",
+      "task": 5,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-134615-tasks-3x-with-extraskill",
+      "session": "task2-with-0",
+      "task": 2,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-134615-tasks-3x-with-extraskill",
+      "session": "task3-with-0",
+      "task": 3,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-134615-tasks-3x-with-extraskill",
+      "session": "task5-with-0",
+      "task": 5,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-143115-tasks-3x-with-extraskill",
+      "session": "task2-with-0",
+      "task": 2,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-143115-tasks-3x-with-extraskill",
+      "session": "task3-with-0",
+      "task": 3,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    },
+    {
+      "run": "20261127-143115-tasks-3x-with-extraskill",
+      "session": "task5-with-0",
+      "task": 5,
+      "settled": true,
+      "violations": [],
+      "incomplete": [
+        "bypass",
+        "color-contrast"
+      ],
+      "axe": "4.10.2",
+      "reasons": []
+    }
+  ]
+}

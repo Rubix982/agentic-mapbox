@@ -34,7 +34,25 @@ token, each recording facts that could have come out false and a screenshot (`ex
 `experiments/gallery.html`). Everything was served except the account's own listings. Two height readings came out
 wrong: Mapbox's DEM has the Matterhorn 252 m low, and Tilequery's contours never reach a summit. Read on 24 summits
 (C-009), the DEM is low on sharp ones: 8 of 11 by more than 50 m, Fitz Roy by 549 m, though the two in the US were
-within 11 m. Broad summits came out a median 21 m low.
+within 11 m. Broad summits came out a median 21 m low. On low ground, where flood maps need it to the metre (C-030), it
+was within half a metre of USGS's lidar at 54% of 468 points in six flood-prone US places, and within a metre at 84%.
+No place reached the 90% within half a metre set beforehand, and removing each place's median difference helped only
+in two. A flood line drawn on it a metre at a time puts about one point in eight on the wrong side. With the lidar
+averaged over Mapbox's own 8 m pixel, over 25 m or over 100 m, the share was 54%, 56% and 60% (C-031, C-034), so the
+heights are off, not only too coarse for a street. Nor is it a different zero: no one of NAVD 88, EGM 96 and EGM 2008 fits
+the shift in four of the six places (C-033). In six low-lying Dutch places, against the national lidar survey (C-032),
+it was worse: within half a metre at 23% of 443 points, and more than 3 m off at 86, almost always too high, with
+medians of +2.0 m in Rotterdam and +2.9 m in Amsterdam. Two of Mapbox's MCP tools, elevation and ground-location, read
+their heights from the same tiles (C-010). In six English places, against the Environment Agency's lidar (C-038), it was
+worse again: 16% of 507 points within half a metre, with Ordnance Datum Newlyn, a zero Mapbox's DEM page names, as the
+reference.
+
+Then three more civic checks (C-035 to C-037). Mapbox's geocoder put 97% of 500 random New Orleans addresses and 99% of
+500 New York ones within 50 m of the city's own point. An automated WCAG 2.1 AA check passed 78 of the 81 map pages
+Claude sessions wrote here; the three failures copy the zoom-blocking viewport line from Mapbox's own example, and no
+automated rule tests whether a map's content reaches someone who cannot see it. Given New York's real 311 export of a
+week of Brooklyn potholes, 70 of 135 rows with no location and positions in the city's own feet-based grid, Claude
+mapped it right 9 times out of 9 (`evals/civic/`).
 
 Then a check of Mapbox's MCP server (C-003): its 16 web-service tools let an agent set 101 of the 240 parameters Mapbox
 documents for the endpoints they call. Where the tools' schemas and the docs disagreed, the API sided with the docs six
@@ -62,7 +80,7 @@ What is in it:
 | `METHOD.md` | how facts are tagged with their evidence, and what is never committed |
 | `evals/` | the harness (headless Chromium, one run per page), ten blind tasks with checks and reference and wrong pages, the session runner, and the results |
 | `experiments/` | the tour: one script per question, in `standard/`, `3d/`, `data/` and `api/`, each writing its facts and screenshots to `results/`; `run.mjs` runs them and writes the table and `gallery.html` |
-| `experiments/followups/` | checks that came after the tour (C-007 to C-011): selecting a building at two pitches, the DEM on 24 summits, one call to the MCP elevation tool, the API reference's limits |
+| `experiments/followups/` | checks that came after the tour (C-007 to C-011, C-030 to C-034, C-036, C-038): selecting a building at two pitches, the DEM on 24 summits and on low ground, one call to the MCP elevation tool, the API reference's limits |
 | `experiments/mcp/` | the MCP tools against the API reference: `tool_schemas.mjs` (the tools' schemas as JSON Schema), `docs_params.py` (the docs' parameter tables), `compare.mjs`, `settle.mjs` |
 | `CARD.md`, `threads.md` | the questions asked one at a time, and the ones still open |
 
@@ -94,6 +112,15 @@ node experiments/mcp/compare.mjs      # fetches 14 docs pages into .cache/ once,
 node experiments/mcp/settle.mjs       # 11 read-only requests
 node experiments/followups/<name>.mjs # C-007 to C-011's checks: same-building selection, the DEM on 24 summits, the
                                       # MCP elevation tool, the API reference's limits (each script says what it needs)
+node experiments/followups/dem-lowland.mjs  # C-030: the DEM against USGS's lidar at 600 points, about 2 to 7 minutes
+node experiments/followups/dem-lowland-pixel.mjs  # C-031: the same points, lidar averaged over Mapbox's pixel, about 5 minutes
+node experiments/followups/dem-lowland-nl.mjs     # C-032: six Dutch places against AHN's lidar, about 5 to 10 minutes
+node experiments/followups/dem-datum-us.mjs       # C-033: the US shifts against NAVD 88, EGM 96 and EGM 2008, about 1 minute
+node experiments/followups/dem-lowland-wide.mjs   # C-034: the US points with lidar averaged over 50 and 100 m, about 4 minutes
+node experiments/followups/geocode-addresses.mjs  # C-036: 1,000 official addresses geocoded, counts only, about 8 minutes
+node experiments/followups/dem-lowland-england.mjs  # C-038: six English places, needs .venv (pip install -r requirements.txt), about 30 minutes
+node evals/a11y/run.mjs                           # C-035: axe-core on every page sessions wrote (82 map loads)
+node evals/run_eval.mjs --set civic --arms reference,wrong   # C-037's set, checked against its own pages; no sessions
 
 node evals/config/run.mjs --validate  # the settings test's grader, on right and wrong answers; no sessions
 node evals/config/run.mjs             # 48 Claude sessions (about $1 to $9), then grading

@@ -1779,3 +1779,613 @@ What stays unknown: what changed, and whether the morning's behaviour comes back
 other models.
 
 **Use:** $0.80 for the 3 sessions.
+
+### C-030 · On low-lying US ground, how close are Mapbox's heights to USGS's lidar?
+
+**Opened:** 2026-11-27 · **Closed:** 2026-11-27
+
+1. **WHERE WE ARE.** Mapbox's DEM has been measured only on summits (C-009). Sharp ones read a median 104 m low and
+   broad ones 21 m low, and the two sharp US summits within 11 m. Mapbox's MCP elevation tool reads the same zoom-14
+   tiles, to within 0.5 m of C-009's read (C-010), and calls its answer "Ground elevation".
+2. **WHAT WE ARE DOING.** Run `node experiments/followups/dem-lowland.mjs`. It draws 100 random points on land in each
+   of six low-lying, flood-prone US places (New Orleans, Miami Beach, Norfolk, Galveston, Charleston, Sacramento), from
+   a fixed seed and boxes written into the script before any height is read. A point inside a water polygon of Mapbox's
+   Streets tileset (Tilequery, radius 0) is redrawn; a point inside a building polygon is kept and marked. For each
+   point it reads Mapbox's height at the coordinate, bilinear from the zoom-14 tile as the MCP tool does, and USGS's
+   from its Elevation Point Query Service, which answers from the 3DEP bare-earth DEM. Points where USGS's answer is
+   not from a 1 m DEM, or has no value, are dropped and counted.
+3. **WHY.** Unknown now: whether Mapbox's heights on low ground are close enough to draw a flood line a metre at a time.
+   After: for each place, the share of points within 0.5 m and within 1 m of USGS's height, as read and after removing
+   that place's median difference.
+4. **WHAT IS AFFECTED.** T-028's first candidate. The README's sentence that the two US summits were within 11 m, the
+   DEM and elevation-tool lines in `kb/catalog.md`, and C-009's and C-010's sections of `experiments/results.md`. None
+   of these says anything about low ground now, so each gains a sentence whichever way this comes out.
+5. **CONCLUSION.** The tolerance is 0.5 m, half of a one-metre flood step. The bar is 90% of the points off buildings,
+   in each place.
+   - **Within 0.5 m at 90% as read:** in these places Mapbox's terrain, and the MCP tool's answer, put the ground on
+     the same side of a one-metre flood line as lidar does, for at least nine points in ten.
+   - **Not as read, but within 0.5 m at 90% once the place's median difference is removed:** the heights have the
+     right shape but are shifted by a constant in each place, possibly because they are measured from a different
+     zero (not tested here). A flood map drawn on them needs the shift subtracted first, and the MCP tool's answers
+     are off by it with no warning.
+   - **Not even then:** Mapbox's terrain cannot place a one-metre flood line street by street in these places, and the
+     share off by more than 1 m says how far from it.
+   - A place that comes out differently from the rest is reported on its own. Points on buildings are reported apart:
+     if they read higher than the rest, Mapbox's heights include buildings and USGS's bare earth does not.
+6. **CONSEQUENCE OF NOT DOING IT.** The repository's only word on Mapbox's heights in the US is two summits within
+   11 m, an error ten times what a one-metre flood map can carry. Anyone drawing a flood map on Mapbox's terrain, or
+   asking an agent with Mapbox's MCP tool whether a street sits above a flood level, has no number to go on.
+
+**Needs before it can run:** no Claude sessions. About 80 zoom-14 DEM tiles (Raster Tiles, 750,000 free a month) and
+about 900 Tilequery requests (100,000 free), with the public token in `.env`. About 600 requests to USGS's Elevation
+Point Query Service, which is free and needs no key, sent four at a time with a generic User-Agent and cached in
+`.cache/`. One probe on 2026-11-27 returned a height with `"resolution":1` and the survey's date. The user picked
+T-028's first candidate on 2026-11-27.
+
+**Result:** not within half a metre in any place, even once each place's median difference is removed. That is field
+5's third branch. Points off buildings with a height from USGS's 1 m DEM; heights are Mapbox's minus USGS's
+(`experiments/results.md`, C-030):
+
+| Place | Points | Median difference | Within 0.5 m | Within 1 m | Within 0.5 m, median removed |
+|---|---|---|---|---|---|
+| New Orleans, LA | 71 | +0.26 m | 70% | 97% | 89% |
+| Miami Beach, FL | 77 | −0.42 m | 49% | 81% | 69% |
+| Norfolk, VA | 86 | −0.22 m | 64% | 84% | 65% |
+| Galveston, TX | 76 | +0.25 m | 50% | 89% | 62% |
+| Charleston, SC | 75 | −0.28 m | 56% | 85% | 67% |
+| Sacramento, CA | 83 | +0.06 m | 35% | 67% | 36% |
+| **All six** | **468** | **−0.08 m** | **54%** | **84%** | |
+
+- Removing the median difference helped in two places and hardly at all in the other four. New Orleans rose to 89%,
+  63 of 71 points where the bar needed 64, so it is one point from the second branch. Miami Beach rose to 69%. So most
+  of the disagreement is scatter, not a shift, and the medians run from −0.42 to +0.26 m, so no one correction would
+  serve all six.
+- The scatter goes both ways: 92 points read more than 0.5 m high and 124 more than 0.5 m low. Half the points are
+  within 0.47 m, one in ten is more than 1.36 m off, and 16 of the 468 are more than 2 m off. The largest are three
+  neighbouring Charleston points near 32.807° N, 79.926° W, which lidar puts at 8 to 10 m and Mapbox at 0.2 m. I have
+  not looked at what is there.
+- Points inside building polygons read like the rest, within 0.5 m by median in every place, the one check of the four
+  that held. So Mapbox's heights are of the ground, as USGS's are, not of roofs.
+- The script's first check, at least 90 points off buildings in each place, failed. 12 to 25 of every 100 points fell
+  inside a building polygon, which I did not allow for when I wrote it, and 17 New Orleans answers came from USGS's
+  3 m DEM and were dropped by the card's rule. The bar is a share, so this leaves 71 to 86 points a place and does not
+  change how the result reads.
+- The first run's rule for USGS's resolution was wrong both ways. It dropped 35 Norfolk points whose resolution USGS
+  gives as 1.000000005 m, and it kept 11 New Orleans points whose resolution is given in degrees (1/9 arc-second, about
+  3 m). I fixed the rule to the card's and ran it again on the same 600 points, with the same Mapbox heights. Norfolk
+  went from 70% to 64% within 0.5 m, and New Orleans from 79% to 89% with its median removed; the branch was the same
+  in both runs.
+
+Worked out afterwards, not set in advance: for a flood line at 1, 2 or 3 m, in each source's own heights, 12%, 14% and
+12% of the 468 points fall on the other side of it on Mapbox's heights from where lidar puts them. At 1 m, 43 of those
+56 are under the line on Mapbox's heights and above it on lidar's, so a map drawn on Mapbox's terrain shows more ground
+flooded than lidar does. Most of the 43 are in Miami Beach, where Mapbox reads a median 0.42 m low: 26 of its 77
+points.
+
+The agent link is C-010: Mapbox's MCP elevation tool reads these same tiles in the same way, and so does its
+ground-location tool when asked for a spot's elevation (both call `elevationsAt` in `elevation-tool/terrain.ts` at
+`ea129dc`). Asked for the ground elevation of a street point in these places, either would be more than half a metre
+off about half the time, and say nothing.
+
+In plain words: at about half of 468 street-level points in six flood-prone US cities, Mapbox's ground height was more
+than half a metre from the US government's lidar survey, and at about one in six it was more than a metre off. A flood
+map drawn on Mapbox's terrain a metre at a time would put about one point in eight on the wrong side of the line.
+
+What this does not show:
+- Mapbox's pixels are 7.5 to 8.6 m across here and lidar's 1 m. Some of the scatter may be lidar seeing kerbs, levees
+  and banks that an 8 m pixel averages away. Whether Mapbox agrees better with lidar averaged over its own pixel is not
+  tested (T-029). A street-by-street flood map uses the heights as given either way.
+- USGS's 1 m DEM is the reference, not the truth. Its lidar here was flown between 2013 and 2025, and Mapbox's source
+  and its date are not stated, so ground that sank or was built up between the two would show as a difference.
+- Which zero Mapbox's heights start from here is not known (T-031). USGS's are from NAVD88. Mapbox's DEM page says
+  its sources use different vertical datums, "including but not limited to NAVD 88, EGM 96, and Ordnance Datum
+  Newlyn", without saying which applies where.
+- Six US places, in boxes chosen by me. Outside the US there is no USGS to compare with (T-030).
+
+**Use:** no Claude sessions. 904 Mapbox requests a run (88 DEM tiles and 816 Tilequery), twice, within the free tier;
+600 requests to USGS once, cached for the second run. $0.
+
+### C-031 · Averaged over Mapbox's own pixel, does USGS's lidar agree with Mapbox's height?
+
+**Opened:** 2026-11-27 · **Closed:** 2026-11-27
+
+1. **WHERE WE ARE.** At 468 low-lying points in six US places, Mapbox's height was within 0.5 m of USGS's 1 m lidar at
+   54% and within 1 m at 84%, and no place reached the 90% within 0.5 m set beforehand (C-030). Mapbox's pixels there
+   are 7.5 to 8.6 m across. One probe, at a Sacramento point chosen because it missed by 1.6 m, found the lidar across
+   Mapbox's pixel ranging only from 5.97 to 6.05 m.
+2. **WHAT WE ARE DOING.** Run `node experiments/followups/dem-lowland-pixel.mjs`. For each of C-030's 468 points it
+   asks USGS's 3DEP elevation service (`computeStatisticsHistograms`) for the lidar's mean, minimum and maximum over two
+   squares centred on the point: one Mapbox pixel across (7.5 to 8.6 m, by latitude) and three pixels across (about
+   25 m, in case Mapbox's source is coarser than its tiles). It compares each mean with Mapbox's height from C-030.
+3. **WHY.** Unknown now: whether C-030's scatter is lidar seeing kerbs, levees and banks that an 8 m pixel cannot, or
+   Mapbox's heights being off at their own scale. After: the share within 0.5 m at each window size, by place, and on
+   flat ground alone.
+4. **WHAT IS AFFECTED.** T-029. How C-030's result is worded in CARD.md, `experiments/results.md`, `kb/catalog.md`, the
+   README and the C-030 page: "too coarse for a street-level flood line" or "off by up to a metre on flat ground".
+5. **CONCLUSION.** Flat ground is a point where the lidar across the 25 m square spans less than 0.25 m from lowest to
+   highest; there an 8 m pixel has nothing to average away.
+   - **Every place reaches 90% within 0.5 m at either window:** C-030's scatter was resolution. Mapbox's heights are
+     right at their own scale and too coarse for a flood line drawn street by street.
+   - **No place reaches it at either window, and on flat ground at least a quarter of points are still more than
+     0.5 m off:** Mapbox's heights are off at their own scale, and resolution is not the main reason for C-030's
+     scatter.
+   - **Anything between:** part of each, reported by how far each window moves the shares from C-030's.
+   - Check on the method: the point height C-030 read from USGS should lie within the 8 m square's range at 95% of
+     points or more, or the two USGS services are not reading the same surface and the comparison stops there.
+6. **CONSEQUENCE OF NOT DOING IT.** C-030 says Mapbox's terrain misplaces a one-metre flood line at about one point in
+   eight, but not whether that is a limit of resolution, which a reader would expect from any 8 m grid, or an error in
+   the heights, which Mapbox would want to know about. The advice differs: use finer data, or don't trust the heights.
+
+**Needs before it can run:** no Claude sessions and no Mapbox requests; Mapbox's heights are C-030's. 936 requests to
+USGS's elevation service, free and keyless, four at a time with a generic User-Agent, cached in `.cache/`. The probe on
+2026-11-27 returned a mean, minimum, maximum and pixel count for an 8 m square. The user said "sure, go ahead" on
+2026-11-27.
+
+**Result:** averaging the lidar over Mapbox's pixel brought it hardly any closer. That is field 5's second branch:
+Mapbox's heights are off at their own scale, and resolution is not the main reason for C-030's scatter. Share of points
+within 0.5 m of Mapbox's height (`experiments/results.md`, C-031):
+
+| Place | Points | Lidar at the point (C-030) | Over one pixel, about 8 m | Over three pixels, about 25 m |
+|---|---|---|---|---|
+| New Orleans, LA | 71 | 70% | 72% | 70% |
+| Miami Beach, FL | 77 | 49% | 51% | 51% |
+| Norfolk, VA | 86 | 64% | 63% | 64% |
+| Galveston, TX | 76 | 50% | 53% | 55% |
+| Charleston, SC | 75 | 56% | 55% | 56% |
+| Sacramento, CA | 83 | 35% | 36% | 40% |
+| **All six** | **468** | **54%** | **54%** | **56%** |
+
+- The method check held: C-030's point height lay within the one-pixel square's lidar range at all 468 points. USGS
+  answered with 100 samples for each one-pixel square and 841 for each three-pixel one, about 0.9 m apart, so the
+  squares were read at the lidar's own spacing.
+- Of the 216 points more than 0.5 m off at the point, 206 were still more than 0.5 m off with the lidar averaged over
+  one pixel and 195 over three. The median point's difference changed by 0.02 m.
+- Flat ground, where the lidar spans less than 0.25 m across the 25 m square, was rarer than I expected: 21 points.
+  12 of the 21 are still more than 0.5 m off, against the quarter set as the bar. If the true share were a quarter,
+  12 or more would come up about one time in 600. Leaving out the two Charleston points, one of them the 8 m outlier
+  from C-030, it is 10 of 19. On flat ground in Norfolk all five read low, by 0.27 to 0.62 m.
+- Within 1 m the shares moved from 84% to 84% and 85%.
+
+In plain words: Mapbox's heights are not off because the lidar sees small bumps that an 8 m grid smooths out. Averaged
+over the same 8 m square, or a 25 m one, the lidar disagrees with Mapbox just as often, including on ground that is
+flat to within a quarter of a metre.
+
+So C-030's result now reads as an error in the heights, not only a limit of their resolution, at least up to 25 m.
+
+What this does not show:
+- Whether Mapbox's US source is smoother than 25 m. If it came from a 30 m grid, say, a wider average could still bring
+  the two together (T-032). C-009 found the data under the tiles smoother than the pixels on summits.
+- Why the heights are off. C-030's other candidates stand: a different zero in some places (T-031), and ground that
+  changed between the two surveys, since Mapbox does not say when its source was.
+- Flat ground is 21 points, so its share is rough; the main evidence is the 468-point table.
+
+**Use:** no Claude sessions and no Mapbox requests. 936 requests to USGS's elevation service, cached. $0.
+
+### C-032 · In the Netherlands, how close are Mapbox's heights to AHN's lidar?
+
+**Opened:** 2026-11-28 · **Closed:** 2026-11-28
+
+1. **WHERE WE ARE.** In six low-lying US places Mapbox's heights were within 0.5 m of USGS's lidar at 54% of 468 points
+   (C-030), and 56% with the lidar averaged over 25 m (C-031). Mapbox's DEM page says its sources differ by place, so
+   the US numbers need not hold elsewhere. AHN, the Netherlands' national lidar survey (AHN4, 0.5 m bare ground, heights
+   in NAP), is served keyless by Esri Nederland's image server. Probed on 2026-11-28 at a Rotterdam point, its
+   statistics for a square given in GPS coordinates came back from somewhere else (−0.66 m) while its point sample read
+   −1.40 m. With both sent in RD New coordinates, converted here by Schreutelkamp and Strang van Hees's approximation
+   (good to about a metre), both read −1.40 m.
+2. **WHAT WE ARE DOING.** Run `node experiments/followups/dem-lowland-nl.mjs`. It does C-030 and C-031 again in six
+   low-lying Dutch places (Rotterdam, Amsterdam, Almere, Dordrecht, Middelburg, Zwolle). That is 100 random land points
+   each, from a fixed seed and boxes written into the script before any height is read, redrawn in Mapbox's water and
+   marked in its buildings. At each it reads Mapbox's height as C-030 did, and from AHN4's 0.5 m bare-ground DEM the
+   point and the mean over squares one and three Mapbox pixels across (5.9 and 17.6 m), all sent in RD coordinates.
+   Points AHN has no ground height for, under water or buildings it does not list, are dropped and counted.
+3. **WHY.** Unknown now: whether C-030's half-metre errors belong to Mapbox's DEM everywhere or to its US source. After:
+   for each Dutch place the share within 0.5 m at the point and over each square, as read and with the median removed.
+4. **WHAT IS AFFECTED.** T-030. The README's and `kb/catalog.md`'s sentences on C-030 and C-031, which now speak only of
+   the US, and C-030's page if the answer differs.
+5. **CONCLUSION.** Same tolerance and bar as C-030: 0.5 m, at 90% of points off buildings, in each place.
+   - **Every place reaches it at the point or over one pixel:** in the Netherlands Mapbox's heights carry a one-metre
+     flood line. C-030's errors belong to the US source, and the README says so.
+   - **No place reaches it as read, but each does once its median difference is removed, and the medians are close to
+     one another:** the Dutch heights have the right shape on a different zero from NAP, and a flood map needs one
+     national shift subtracted.
+   - **Neither:** Mapbox's heights are off in the Netherlands too, and C-030's result is not only about the US.
+   - Places that differ are reported one by one.
+   - Check on the method: AHN's point height should lie within its own one-pixel square's range at 95% of points or
+     more, or the coordinates are being converted differently and the comparison stops there.
+6. **CONSEQUENCE OF NOT DOING IT.** The repository would say Mapbox's terrain is unfit for one-metre flood lines on the
+   strength of one country. The Netherlands is where such maps matter most, and where a reader would first want to
+   check it.
+
+**Needs before it can run:** no Claude sessions. About 120 zoom-14 DEM tiles and about 900 Tilequery requests to
+Mapbox, within the free tier. About 1,800 requests to Esri Nederland's AHN image server (a point and two squares a
+point), free and keyless, four at a time with a generic User-Agent, cached in `.cache/`. The user said "030, then 031,
+032" on 2026-11-28.
+
+**Result:** far from it. No place came near 90% within 0.5 m, as read, with its median removed or over Mapbox's pixel.
+That is field 5's third branch: Mapbox's heights are off in the Netherlands too, and by more than in the US. Mapbox's
+height minus AHN's, points off buildings with an AHN ground height (`experiments/results.md`, C-032):
+
+| Place | Points | AHN, median | Median difference | Within 0.5 m | Within 1 m | Within 0.5 m over one pixel |
+|---|---|---|---|---|---|---|
+| Rotterdam | 78 | −1.63 m | +2.01 m | 12% | 26% | 14% |
+| Amsterdam | 64 | +0.63 m | +2.89 m | 13% | 17% | 13% |
+| Almere | 77 | −3.60 m | −0.07 m | 30% | 43% | 31% |
+| Dordrecht | 76 | −0.28 m | +0.90 m | 12% | 33% | 8% |
+| Middelburg | 82 | −0.23 m | 0.00 m | 40% | 55% | 40% |
+| Zwolle | 66 | +1.54 m | +0.10 m | 30% | 50% | 32% |
+| **All six** | **443** | | **+0.69 m** | **23%** | **38%** | **23%** |
+
+- 86 of the 443 points are more than 3 m off, and at 77 of those Mapbox is the higher one. In Amsterdam one point in
+  ten is more than 8.6 m off.
+- The medians run from −0.07 to +2.89 m, so no one national shift would fix them, and removing each place's own median
+  leaves 9% to 40% within 0.5 m. Over three pixels (17.6 m) the share is 22%, so averaging does not help here either.
+- Where Mapbox does read close, it reads the polders right: Almere's ground is a median 3.6 m below NAP in AHN, and
+  Mapbox's median difference there is −0.07 m.
+- The method checks held. AHN's point height lay within its own one-pixel square's range at all 443 points. For 36
+  points, six a place, the server's own conversion from GPS coordinates gave the same height as mine to within 5 cm at
+  35; at the 36th it returned nothing.
+- Dropped: 11 to 29 points a place inside Mapbox's building polygons, which AHN's bare-ground model has no height for,
+  and 5 to 12 more where AHN's 0.5 m cell at the point is empty. AHN refuses a point sample there; each refusal was
+  checked against that one cell before being counted. Two earlier runs stopped on those refusals, the second because
+  my first check looked at a 1 m square, which takes in neighbouring cells.
+
+In plain words: in six low-lying Dutch places, Mapbox's height was within half a metre of the national lidar survey at
+fewer than one point in four, and more than 3 m off at about one in five, almost always too high.
+
+Not tested, but the pattern suggests it: the errors are largest in the two densest cities and mostly upward, and near
+zero in Almere, Middelburg and Zwolle. That fits a source that includes buildings and trees rather than bare ground
+(T-034). In the US, C-030 found Mapbox's heights inside building polygons no higher than the rest. Here that check is
+not possible, because AHN has no ground height under buildings.
+
+The agent link is the same as C-030's: Mapbox's MCP elevation and ground-location tools read these tiles. Asked for
+the ground height of a street point in Amsterdam, they would come back a median 2.9 m too high.
+
+**Use:** no Claude sessions. 818 Mapbox requests in the final run (DEM tiles and Tilequery), within the free tier;
+about 1,800 requests to the AHN server over three runs, cached. $0.
+
+### C-033 · Are Mapbox's heights in C-030's US places measured from a different zero than USGS's?
+
+**Opened:** 2026-11-28 · **Closed:** 2026-11-28
+
+1. **WHERE WE ARE.** With the lidar averaged over Mapbox's pixel, Mapbox's median difference from USGS was +0.25 m in
+   New Orleans, −0.44 in Miami Beach, −0.21 in Norfolk, +0.22 in Galveston, −0.26 in Charleston and +0.09 in Sacramento
+   (C-031). Resampling the points puts each median within about ±0.1 to ±0.2 m (±0.27 in Sacramento). USGS's heights
+   are from NAVD 88. Mapbox's DEM page says its sources use datums "including but not limited to NAVD 88, EGM 96, and
+   Ordnance Datum Newlyn". NOAA's VDatum, probed on 2026-11-28, gives a point at 0 m NAVD 88 in Miami Beach as +0.68 m
+   in EGM 96 and +0.09 m in EGM 2008.
+2. **WHAT WE ARE DOING.** Run `node experiments/followups/dem-datum-us.mjs`. For the centre of each of C-030's six boxes
+   it works out what a height of 0 m in NAVD 88 is in EGM 96 and in EGM 2008. That is how much higher Mapbox would
+   read than USGS if its source there were on that zero. Where VDatum's API answers, its numbers are used. On the
+   first try it answered for New Orleans, Miami Beach and Charleston and failed for Norfolk, Galveston and Sacramento,
+   even 10 km away. There the offset is built from parts: GEOID18 at the place (NGS's geoid API), minus EGM 96 or EGM
+   2008 at the place (GeographicLib's GeoidEval), plus the shift from the NAD 83 ellipsoid to WGS 84's, taken from the
+   nearest point where VDatum answers. That shift changes by centimetres over hundreds of kilometres. The same build is
+   run for the three places VDatum answers, from a point a degree away, as a check. It then sees which of the three
+   zeros (NAVD 88 is 0) falls within each place's 95% range for its median, from 2,000 resamplings with a fixed seed.
+3. **WHY.** Unknown now: whether the per-place shifts in C-030 are a difference of zero, which a flood map could
+   correct, or part of the source's own error. After: for each place, which zeros fit its median.
+4. **WHAT IS AFFECTED.** T-031, and the "which zero" limit stated under C-030 in CARD.md and `experiments/results.md`
+   and on C-030's page.
+5. **CONCLUSION.**
+   - **One global zero (EGM 96 or EGM 2008) fits in at least four places and NAVD 88 does not:** Mapbox's US heights
+     there are probably on that zero. Part of C-030's error is a shift a flood map can subtract, and C-030's
+     median-removed column is roughly what is left.
+   - **NAVD 88 fits in at least four places and neither global zero does:** Mapbox's US heights are on the same zero
+     as USGS's, and the shifts are the source's own error.
+   - **No zero fits in four places:** the shifts are not explained by these three zeros.
+   - Where two zeros both fit a place, it counts for neither and is reported as undecided.
+   - Check on the method: at the three places VDatum answers, the built offsets should agree with VDatum's within
+     3 cm, or the built ones are not used.
+6. **CONSEQUENCE OF NOT DOING IT.** Every claim about Mapbox's US heights carries "possibly a different zero" as a
+   caveat, and a reader building a flood map cannot tell whether a correction would help.
+
+**Needs before it can run:** no Claude sessions and no Mapbox requests. About 60 requests to NOAA's VDatum and geoid
+APIs and to GeographicLib's GeoidEval, all free and keyless, one at a time with a generic User-Agent. The user said "030, then 031, 032" on 2026-11-28.
+
+**Result:** no zero fits in four places. That is field 5's third branch: the shifts are not explained by NAVD 88, EGM
+96 or EGM 2008 (`experiments/results.md`, C-033). How much higher than USGS Mapbox would read on each zero, against
+each place's median of Mapbox minus USGS with the lidar averaged over Mapbox's pixel:
+
+| Place | Median, and its 95% range | NAVD 88 | EGM 96 | EGM 2008 | Fits | Offsets from |
+|---|---|---|---|---|---|---|
+| New Orleans, LA | +0.25 (+0.16 to +0.34) | 0 | −0.18 | −0.01 | none | VDatum |
+| Miami Beach, FL | −0.44 (−0.59 to −0.33) | 0 | +0.68 | +0.09 | none | VDatum |
+| Norfolk, VA | −0.22 (−0.38 to −0.12) | 0 | +0.07 | −0.32 | EGM 2008 | built |
+| Galveston, TX | +0.22 (+0.13 to +0.36) | 0 | −0.11 | −0.17 | none | built |
+| Charleston, SC | −0.26 (−0.40 to −0.11) | 0 | +0.09 | −0.25 | EGM 2008 | VDatum |
+| Sacramento, CA | +0.09 (−0.21 to +0.33) | 0 | −0.53 | −0.79 | NAVD 88 | built |
+
+All in metres.
+
+- The method check held. At the three places VDatum answers, the offsets built from GEOID18, GeographicLib's EGM
+  heights and the frame shift from a point a degree away agreed with VDatum's within 0.025 m.
+- EGM 2008 fits both places on the Atlantic coast north of Florida. Two of six is not a finding, but it is the one
+  pattern here.
+- Sacramento's fit is weak: its median is the least certain of the six, and its range would take any zero between
+  −0.21 and +0.33 m.
+- A different zero could not have rescued C-030 in any case. C-030 removed each place's whole median, the most any
+  correction of zero could do, and that left 36% to 89% of points within 0.5 m, against the 90% bar.
+
+In plain words: Mapbox's US heights are not simply measured from a different sea level than USGS's. In three of the
+six places none of the three usual zeros matches the shift, so converting between them would not fix a flood map drawn
+on Mapbox's terrain.
+
+What this does not show: which source Mapbox uses in each place, and whether its zero differs from point to point
+within a place rather than by place.
+
+**Use:** no Claude sessions and no Mapbox requests. About 60 requests to VDatum, NGS's geoid API and GeographicLib's
+GeoidEval over two runs; the first stopped when VDatum failed for Norfolk. $0.
+
+### C-034 · Averaged over 50 m or 100 m, does USGS's lidar agree with Mapbox's US heights?
+
+**Opened:** 2026-11-28 · **Closed:** 2026-11-28
+
+1. **WHERE WE ARE.** At C-030's 468 US points, Mapbox's height was within 0.5 m of USGS's lidar at 54% at the point,
+   54% with the lidar averaged over Mapbox's 8 m pixel, and 56% over 25 m (C-031). If Mapbox's US source came from a
+   coarser grid, such as a 30 m one, a wider average could still match it. C-009 found the data under Mapbox's tiles
+   smoother than the pixels on summits. Probed on 2026-11-28, USGS's service averaged a 100 m square in about 2 s.
+2. **WHAT WE ARE DOING.** Run `node experiments/followups/dem-lowland-wide.mjs`. For each of the 468 points it asks
+   USGS's 3DEP service for the lidar's mean over squares 50 m and 100 m across, centred on the point, and compares each
+   with Mapbox's height from C-030.
+3. **WHY.** Unknown now: whether C-031's answer, off at its own scale, holds at any scale a flood map could use, or
+   whether Mapbox's US heights are right but smoother than 25 m. After: for each place, the share within 0.5 m at 50
+   and 100 m beside C-031's at the point, 8 m and 25 m.
+4. **WHAT IS AFFECTED.** T-032. The README's and `kb/catalog.md`'s wording of C-031 ("off at their own scale"), and C-030's
+   page.
+5. **CONCLUSION.** Same tolerance and bar: 0.5 m, at 90% of points, in each place.
+   - **Every place reaches it at 50 or 100 m:** Mapbox's US heights are right but smoother than their tiles suggest.
+     C-031's wording changes to "right only over 50 or 100 m", and a flood map at that scale could use them.
+   - **No place reaches it at either:** averaging up to 100 m does not bring the two together, so resolution does not
+     explain C-030's errors at any scale a street-level or neighbourhood flood map would use.
+   - **Anything between:** reported with the shares at all five scales.
+6. **CONSEQUENCE OF NOT DOING IT.** C-031's "off at its own scale" would rest on averages up to 25 m only, and someone
+   who knows Mapbox's source is coarser could dismiss it.
+
+**Needs before it can run:** no Claude sessions and no Mapbox requests. 936 requests to USGS's 3DEP service, free and
+keyless, four at a time with a generic User-Agent, cached in `.cache/`. The user said "030, then 031, 032" on
+2026-11-28.
+
+**Result:** no place reached 90% within 0.5 m at 50 or 100 m. That is field 5's second branch: averaging the lidar up to
+100 m does not bring it to Mapbox's heights, so resolution does not explain C-030's errors at any scale a street-level
+or neighbourhood flood map would use. Share within 0.5 m of Mapbox's height, by how widely the lidar is averaged
+(`experiments/results.md`, C-034):
+
+| Place | Point | 8 m | 25 m | 50 m | 100 m |
+|---|---|---|---|---|---|
+| New Orleans, LA | 70% | 72% | 70% | 66% | 68% |
+| Miami Beach, FL | 49% | 51% | 51% | 51% | 53% |
+| Norfolk, VA | 64% | 63% | 64% | 69% | 71% |
+| Galveston, TX | 50% | 53% | 55% | 67% | 64% |
+| Charleston, SC | 56% | 55% | 56% | 60% | 63% |
+| Sacramento, CA | 35% | 36% | 40% | 45% | 45% |
+| **All six, 468 points** | **54%** | **54%** | **56%** | **59%** | **60%** |
+
+- Wider averages help a little and steadily, from 54% to 60%, and within 1 m from 84% to 87%. The best single place is
+  Norfolk, at 71% over 100 m. Each place's median hardly moves (Miami Beach −0.42 m at the point, −0.45 m at 100 m).
+- Every square came back with lidar cells, 3,136 to 3,969 for 50 m and 12,321 to 16,384 for 100 m.
+
+In plain words: even averaged over a city block 100 m across, the lidar disagrees with Mapbox by more than half a metre
+at four points in ten. Mapbox's US heights are not right-but-blurry; they are off.
+
+**Use:** no Claude sessions and no Mapbox requests. 936 requests to USGS's 3DEP service, cached. $0.
+
+### C-035 · Do the map pages Claude sessions wrote pass an automated WCAG 2.1 AA check?
+
+**Opened:** 2026-11-28 · **Closed:** 2026-11-28
+
+1. **WHERE WE ARE.** T-028's fourth candidate. 81 map pages written by Claude sessions in C-001 to C-029 are on disk in
+   `evals/runs/` (reference and wrong pages left out). The US rule for state and local government websites under ADA
+   Title II asks for WCAG 2.1 Levels A and AA. An interim rule published on 20 April 2026 moved its first compliance
+   date to 26 April 2027 for governments of 50,000 people or more, and to 26 April 2028 for the rest. GL JS draws the
+   map on a canvas, so what a map shows reaches a screen reader only if the page adds it in text.
+2. **WHAT WE ARE DOING.** Run `node evals/a11y/run.mjs`. It loads each of the 81 pages as the harness does, and a bare
+   GL JS 3.35.2 page as the control (`evals/a11y/control/`). It adds axe-core 4.10.2 and runs its WCAG 2.0 and 2.1 A
+   and AA rules, recording each violation by rule, impact and number of elements. A rule that also fails on the control
+   counts as GL JS's own, not the page's.
+3. **WHY.** Unknown now: whether map pages an agent writes pass even the part of WCAG a checker can test, and if not,
+   which rules fail. After: the share of pages with no violation beyond GL JS's own, and the failing rules by count.
+4. **WHAT IS AFFECTED.** T-028's fourth candidate. The README and `kb/catalog.md` gain a sentence either way.
+5. **CONCLUSION.**
+   - **At least 90% of pages have no violation beyond the control's:** agent-written map pages pass the automated part
+     of WCAG 2.1 AA. What a checker cannot judge, whether the map's content reaches someone who cannot see it, is
+     still untested, and the claim stops there.
+   - **Fewer than 90%:** the failing rules, and how many pages each fails, are what an agent building a civic map has
+     to be told. Rules the control also fails are reported as GL JS's, for Mapbox rather than the page author.
+   - Limit stated in advance: axe checks labels, contrast, structure and keyboard focus. It does not check whether the
+     map's information has a text equivalent, so passing would not make a map accessible.
+6. **CONSEQUENCE OF NOT DOING IT.** Agents are being used to build maps for sites the Title II rule will cover from
+   2027, and nothing here says whether what they write meets even the checkable part of it.
+
+**Needs before it can run:** no Claude sessions. 82 map loads (free tier), and axe-core from cdnjs. The user said "028,
+033" on 2026-11-28.
+
+**Result:** 78 of 81 pages, 96%, have no WCAG 2.1 A or AA violation that axe can find, and the bare GL JS page has none.
+That is field 5's first branch, with its limit: agent-written map pages pass the automated part of WCAG 2.1 AA
+(`evals/results.md`, C-035).
+
+- All three failures are the same rule, `meta-viewport` (critical: "Zooming and scaling must not be disabled"). Each
+  page has `<meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">`, the line Mapbox's own
+  "Display a map" example carries (`docs.mapbox.com/mapbox-gl-js/example/simple-map/`, read on 2026-11-28). The pages
+  are C-001's task 1 with skills, C-005's task 4 without, and C-022's task 5 with.
+- axe left two rules for a person to review on nearly every page, the control included: `color-contrast` (81 of 81),
+  which it cannot judge over a canvas, and `bypass` (80), a way to skip past repeated content.
+- The 81 pages cover all ten tasks of both sets, 1 to 10, many of them several times.
+
+In plain words: the map pages Claude wrote pass an automated accessibility checker 96% of the time, and the only
+failures copy a line from Mapbox's own example that stops people zooming in on a phone.
+
+The limit stated in advance stands, and it is most of the question. Not one of the 81 pages was checked for whether
+what the map shows reaches someone who cannot see it, because no automated rule tests that. Passing axe does not make
+these maps accessible.
+
+**Use:** no Claude sessions. 82 map loads, within the free tier. $0.
+
+### C-036 · How often does Mapbox's geocoder put a city's own addresses more than 50 m from where the city has them?
+
+**Opened:** 2026-11-28 · **Closed:** 2026-11-28
+
+1. **WHERE WE ARE.** T-028's third candidate. New Orleans publishes 268,821 official address points (`data.nola.gov`,
+   "Site Address Point"), and New York publishes its own (`data.cityofnewyork.us`, "AddressPoint"). A 311, permit or
+   eviction map built by geocoding addresses puts each at whatever the geocoder returns. Mapbox's docs say temporary
+   geocoding results "are not allowed to be cached"; the user chose temporary geocoding with only totals kept.
+2. **WHAT WE ARE DOING.** Run `node experiments/followups/geocode-addresses.mjs`. It draws 500 addresses at random in
+   each city from the city's own list (fixed seed), sends each to Mapbox's Geocoding v6 forward endpoint as one line
+   (number, street, city, state, and ZIP where the city gives one), takes the first result, and measures in memory how
+   far it lies from the city's point. Only the counts are kept: within 10, 50, 100 and 500 m, beyond 500 m, and no
+   result, with Mapbox's own confidence for each count. No Mapbox result or per-address distance is written.
+3. **WHY.** Unknown now: how often a civic map built on Mapbox's geocoder misplaces an address by more than a building
+   or two. After: per city, the share within 50 m and beyond 500 m.
+4. **WHAT IS AFFECTED.** T-028's third candidate. `kb/catalog.md`'s geocoding row and the README gain a sentence.
+5. **CONCLUSION.** The bar is 90% of addresses within 50 m, in each city.
+   - **Both cities reach it:** Mapbox's geocoder puts nine addresses in ten within about a building of where the city
+     has them, good enough for a block-level civic map.
+   - **Either falls short:** the share beyond 50 m, and beyond 500 m (a different street or neighbourhood), says how
+     many points such a map would misplace, and Mapbox's confidence on those says whether a map could have flagged them.
+6. **CONSEQUENCE OF NOT DOING IT.** Every civic map that geocodes its records rests on this step, and the repository
+   has no number for it.
+
+**Needs before it can run:** no Claude sessions. 1,000 temporary geocoding requests (100,000 free a month) and about
+1,000 single-row requests to the two cities' open-data portals, keyless, with a generic User-Agent. The user said
+"028, 033" and chose "Temporary, counts only" on 2026-11-28.
+
+**Result:** both cities reach it, 97% within 50 m in New Orleans and 99% in New York. That is field 5's first branch:
+Mapbox's geocoder puts civic addresses within about a building of the city's own point, good enough for a block-level
+map (`experiments/results.md`, C-036). Of 500 addresses in each:
+
+| City | Within 10 m | 10 to 50 m | 50 to 100 m | 100 to 500 m | Beyond 500 m | No result |
+|---|---|---|---|---|---|---|
+| New Orleans | 398 | 85 | 8 | 8 | 0 | 1 |
+| New York | 473 | 23 | 1 | 0 | 2 | 1 |
+
+- Mapbox's confidence would not have caught New Orleans' misses: all 16 addresses more than 50 m off came back with
+  "high" confidence. In New York the 3 more than 50 m off came back "low".
+- Mapbox placed most results on a rooftop, 415 of 499 in New Orleans and 480 of 499 in New York; the rest were by
+  parcel, point or interpolation along the street.
+- 47 New Orleans rows drawn at random were not "Current" or had no address, and were drawn again. As chosen, no
+  geocoding result or per-address distance was kept; only these counts are in the results file.
+
+In plain words: when a New Orleans or New York address is geocoded with Mapbox, about 49 in 50 land within 50 m of
+where the city puts it. The few that land further off are not always marked as doubtful.
+
+What this does not show: other cities, addresses as people type them into a 311 form rather than as the city writes
+them, and how often the city's own point is the one that is wrong.
+
+**Use:** no Claude sessions. 1,000 temporary geocoding requests, within the free tier; about 1,050 single-row requests
+to the two portals. $0.
+
+### C-037 · Given a real city export, does Claude map it right first time?
+
+**Opened:** 2026-11-28 · **Closed:** 2026-11-28
+
+1. **WHERE WE ARE.** T-028's second candidate. Claude got C-001's ten everyday GL JS tasks right 10 of 10, all on clean
+   data files written for the tasks. New York's 311 export of Brooklyn pothole reports from 1 to 7 November 2026 has
+   135 rows: 70 with no location at all, 27 still open, and positions in two forms, latitude and longitude and the
+   city's own X and Y in US feet on the Long Island state plane (EPSG:2263), which the file does not name. The new set
+   `evals/civic/` has three tasks on it, with checks that pass all three reference pages and fail all three wrong ones,
+   each for its own mistake (blank coordinates read as 0, feet read as metres, open reports counted as closed late).
+2. **WHAT WE ARE DOING.** Run `node evals/run_eval.mjs --set civic --tasks 1,2,3 --arms without --runs 3`: three fresh
+   Claude Code sessions on each task, with no skills and no MCP, each page graded once by the task's check.
+3. **WHY.** Unknown now: whether real civic data's gaps and coordinate systems trip an agent that handles clean data
+   every time. After: right first time out of 3 for each task, with each failure's cause.
+4. **WHAT IS AFFECTED.** T-028's second candidate. The README gains a sentence, and `kb/catalog.md` gains a line if any
+   failure names something a guide would need to say.
+5. **CONCLUSION.**
+   - **At least 8 of 9 right first time:** gaps, open records and the city's own coordinates do not trip Claude on a
+     first try, and a civic guide would not need to cover them.
+   - **7 or fewer:** each failure's cause, such as reports with no location drawn at 0,0, the city's feet read as
+     metres, or open reports counted as closed, is what such a guide must say.
+6. **CONSEQUENCE OF NOT DOING IT.** Every result so far came from data written for the tasks. Real records are what
+   civic maps are made from, and nothing here says whether an agent copes with them.
+
+**Needs before it can run:** 9 Claude sessions on claude-opus-5-5, estimated $3 to $8; the user said "Run it (~$3–8)"
+on 2026-11-28. About 20 map loads.
+
+**Result:** 9 of 9 right first time, 3 of 3 on each task. That is field 5's first branch: the export's gaps, open records
+and the city's own coordinates did not trip Claude on a first try (`evals/results.md`, C-037; run folder
+`evals/runs/20261127-194039-civic-without`, named by this machine's local clock).
+
+- Task 1: every session drew the 65 located reports and wrote that 70 had no location.
+- Task 2: all three sessions named the city's X and Y as EPSG:2263, New York Long Island state plane in US feet, and
+  wrote the Lambert conformal conic inverse themselves. No session loaded a projection library, used WebFetch or
+  WebSearch, or reached the network from Bash. Each point landed within the check's 15 m.
+- Task 3: every session kept open reports apart from closed ones and coloured all 65 right.
+- The set's checks passed the three reference pages and failed the three wrong ones before any session ran.
+
+In plain words: given New York's real 311 file for a week of Brooklyn potholes, with half the rows missing a location
+and the positions in the city's own feet-based grid, Claude mapped it right nine times out of nine, working out the grid
+from memory.
+
+What this does not show: other cities' exports and coordinate systems, data that needs geocoding before it can be
+mapped, and files much larger than 135 rows.
+
+**Use:** 9 Claude sessions on claude-opus-5-5, $4.51, within the $3 to $8 approved. About 15 map loads with the
+validation runs.
+
+### C-038 · In England, how close are Mapbox's heights to the Environment Agency's lidar?
+
+**Opened:** 2026-11-28 · **Closed:** 2026-11-28
+
+1. **WHERE WE ARE.** On low ground Mapbox's heights were within 0.5 m of national lidar at 54% of 468 US points
+   (C-030) and 23% of 443 Dutch ones (C-032). England's Environment Agency serves its 1 m lidar DTM keyless by WCS, in
+   plain text, with heights in Ordnance Datum Newlyn, one of the zeros Mapbox's DEM page names. Its grid is the British
+   National Grid. pyproj 3.8.0, in this project's `.venv`, converts to it with Ordnance Survey's OSTN15 grid; at Hull the
+   seven-parameter formula lands 3.9 m away from it.
+2. **WHAT WE ARE DOING.** Run `node experiments/followups/dem-lowland-england.mjs`. As C-032 did, it draws 100 random land
+   points in each of six low-lying English places (Hull, Boston, Bridgwater, Great Yarmouth, Canvey Island, York), from a
+   fixed seed and boxes written into the script before any height is read, redrawn in Mapbox's water and marked in its
+   buildings. For each point off buildings it reads Mapbox's height as C-030 did, converts the point with
+   `tools/osgb.py` (OSTN15), and asks the WCS for the lidar over a square three Mapbox pixels across (about 17 m). From
+   that grid it takes the 1 m cell under the point, the mean over one pixel and the mean over all three. Points with no
+   lidar cell under them are dropped and counted.
+3. **WHY.** Unknown now: whether Mapbox's heights are off on low ground in a third country, and whether they come closer
+   where the zero is one Mapbox names. After: per place, the share within 0.5 m at the point and over each square, as
+   read and with the median removed.
+4. **WHAT IS AFFECTED.** T-033. The README's and `kb/catalog.md`'s sentences on C-030 and C-032.
+5. **CONCLUSION.** Same tolerance and bar as C-030: 0.5 m, at 90% of points off buildings, in each place.
+   - **Every place reaches it at the point or over one pixel:** in England Mapbox's heights carry a one-metre flood
+     line, and the US and Dutch results belong to those countries' sources.
+   - **No place reaches it as read, but each does with its median removed:** the right shape on a shifted zero.
+   - **Neither:** Mapbox's heights are off on low ground in England too, the third country of three.
+   - Places that differ are reported one by one.
+6. **CONSEQUENCE OF NOT DOING IT.** Two countries leave open whether the errors follow particular sources or Mapbox's
+   DEM as a whole, and England is the one place where Mapbox names the zero its source uses.
+
+**Needs before it can run:** no Claude sessions. About 120 DEM tiles and 900 Tilequery requests to Mapbox, within the
+free tier. About 500 requests to the Environment Agency's WCS, keyless, with a generic User-Agent, cached in `.cache/`. Sent
+four at a time on the first try, the service answered 429 ("You are making too many requests") after about 60, so the
+run was changed before any result to one at a time, a second apart, waiting a minute after any 429. pyproj, and OSTN15's grid from cdn.proj.org. The user said "028, 033" on 2026-11-28.
+
+**Result:** far from it, and further than in the Netherlands. No place came near 90% within 0.5 m, as read, with its
+median removed or over Mapbox's pixel. That is field 5's third branch: Mapbox's heights are off on low ground in
+England too, the third country of three (`experiments/results.md`, C-038). Mapbox's height minus the Environment
+Agency's, points off buildings:
+
+| Place | Points | Lidar, median | Median difference | Within 0.5 m | Within 1 m | Within 0.5 m over one pixel |
+|---|---|---|---|---|---|---|
+| Hull | 83 | 2.28 m | +0.51 m | 30% | 52% | 31% |
+| Boston | 92 | 2.54 m | +2.69 m | 7% | 13% | 7% |
+| Bridgwater | 86 | 6.95 m | +1.27 m | 16% | 34% | 19% |
+| Great Yarmouth | 82 | 2.08 m | −1.23 m | 20% | 34% | 20% |
+| Canvey Island | 87 | 1.87 m | +0.94 m | 16% | 39% | 16% |
+| York | 77 | 13.20 m | +1.80 m | 10% | 23% | 12% |
+| **All six** | **507** | | **+1.07 m** | **16%** | **32%** | **17%** |
+
+- 88 of the 507 points are more than 3 m off, and at 75 of those Mapbox is the higher one. Removing each place's median
+  leaves 17% to 33% within 0.5 m, and over three pixels (17 m) the share is 16%.
+- The zero did not help. The Environment Agency's heights are in Ordnance Datum Newlyn, which Mapbox's DEM page names
+  among its sources' zeros, and the medians still run from −1.23 m to +2.69 m.
+- The method checks held. Points went to the British National Grid through `tools/osgb.py` with Ordnance Survey's
+  OSTN15 grid, 3.9 m from the seven-parameter formula at Hull. For 20 points, four a place in five of the six, the
+  lidar cell asked for on its own matched the cell read from the 17 m square within 0.03 m at 17 and within 0.14 m at
+  3, a neighbouring cell, so the squares were read the right way up. Every point off buildings had a lidar cell.
+- The first run was refused with 429 ("You are making too many requests") after about 60 requests sent four at a time.
+  The second sent one at a time, a second apart, and took 32 minutes.
+
+In plain words: in six low-lying English towns, Mapbox's ground height was within half a metre of the Environment
+Agency's lidar at about one point in six, and more than 3 m off at about one in six, mostly too high.
+
+What this does not show: why. As in the Netherlands, the errors run mostly upward, which would fit a source that
+includes buildings or trees (T-034 asks this for the Dutch data), but Great Yarmouth reads 1.2 m low.
+
+**Use:** no Claude sessions. 793 Mapbox requests in the final run, within the free tier; about 560 requests to the
+Environment Agency's WCS over two runs and the cross-check, cached. $0.

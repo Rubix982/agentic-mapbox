@@ -28,8 +28,14 @@ general description given to Mapbox's own web-integration skill: opened 0 of 3).
 side, both names 1 of 3; added skills were opened on every task in the morning and only on task 5 in the afternoon, so
 C-024 and C-026's readings do not hold). C-028 closed on 2026-11-27 (nothing the transcripts record splits the morning
 from the afternoon). C-029 closed on 2026-11-27 (in the afternoon C-017's skill, naming the features, was still opened
-on all three tasks). One card at a
-time.
+on all three tasks). C-030 closed on 2026-11-27 (on low-lying US ground, Mapbox's DEM within 0.5 m of USGS's lidar at
+54% of 468 points, no place reaching 90%). C-031 closed on 2026-11-27 (with the lidar averaged over Mapbox's pixel,
+54%; over three pixels, 56%: the heights are off at their own scale). C-032 closed on 2026-11-28 (in six Dutch places
+against AHN, 23% of 443 points within 0.5 m, medians up to +2.9 m). C-033 closed on 2026-11-28 (no one zero, NAVD 88,
+EGM 96 or EGM 2008, fits the US shifts in four of six places). C-034 closed on 2026-11-28 (with the lidar averaged
+over 100 m, 60% within 0.5 m; no place reached 90%). On 2026-11-28 C-035 to C-038 closed too: 78 of 81 session pages
+pass axe's WCAG 2.1 AA rules; Mapbox's geocoder puts 97% and 99% of official addresses within 50 m; Claude mapped a real
+311 export 9 of 9; in England 16% of 507 points within 0.5 m of the lidar. One card at a time.
 
 ### T-001 · What does each Mapbox capability look like when it is actually run?
 
@@ -379,3 +385,108 @@ skill, naming the features, was opened on all three tasks at 14:31 (C-029). Copy
 needed, since the prompt's size is recorded in every transcript. Parked on 2026-11-27; resume by running arm C
 (`evals/skills/c020-neither/web-map-patterns`) on another day, three sessions, to see whether the morning's behaviour
 comes back.
+
+### T-027 · Would a Mapbox map carrying Mapillary's photos and detections give a site what Google Maps with Street View gives it?
+
+**Status:** open
+**Parent:** none; raised by the user on 2026-11-27, after C-029
+**Opened:** 2026-11-27
+**Question:** Mapbox sells no street-level imagery (none of the web services in `kb/catalog.md` has any), so it can
+carry Mapillary's photos but not stand in for them. Two reasons Mapillary is rarely embedded point opposite ways: if its
+coverage is too patchy for most addresses, pairing it with Mapbox changes little; if the barrier is the work of wiring a
+second viewer and token to a map, a pairing that an agent writes right first time removes it. First check: the share of
+a sample of addresses with a recent Mapillary image nearby (needs a free Mapillary token).
+**Answer:** —
+
+### T-028 · Which civic use of Mapbox, built on what this project already has, is worth a card?
+
+**Status:** answered (C-030, C-035 to C-037)
+**Parent:** none; raised by the user on 2026-11-27, after T-027
+**Opened:** 2026-11-27
+**Question:** Four candidates, each reusing something here: (1) Mapbox's DEM on low-lying ground against USGS's
+lidar-based heights, which a flood map and the MCP elevation tool both depend on (C-009's tile reader, C-010); (2) an
+agent mapping a real city open-data export, with its swapped coordinates and blank rows, checked in the harness (C-001);
+(3) Mapbox geocoding against a city's own address points, once it is clear whether temporary geocoding's terms allow
+keeping the distances; (4) an automated accessibility checker on the harness's pages, which can judge labels, contrast
+and keyboard use but not whether what the map shows reaches a screen reader.
+**Answer:** — Candidate 1 was run as C-030: Mapbox's heights were within 0.5 m of USGS's lidar at 54% of 468
+low-lying points, and no place reached the 90% set beforehand. Candidate 2, C-037: Claude mapped New York's real 311
+export of Brooklyn potholes right 9 of 9. Candidate 3, C-036: Mapbox's geocoder put 97% (New Orleans) and 99% (New
+York) of official addresses within 50 m. Candidate 4, C-035: 78 of 81 session pages pass axe's WCAG 2.1 AA rules, the
+three failures carrying the zoom-blocking viewport line from Mapbox's own example.
+
+### T-029 · Averaged over Mapbox's own pixel, does USGS's lidar agree with Mapbox's height better than at the point?
+
+**Status:** answered (C-031)
+**Parent:** T-028
+**Opened:** 2026-11-27
+**Question:** C-030 compared Mapbox's 7.5 to 8.6 m pixels, read bilinear, with lidar's 1 m value at the same point,
+and found half the points more than 0.5 m apart. Averaging lidar over each Mapbox pixel (about 64 USGS requests a
+point, or one lidar tile download per place) would say whether that is Mapbox's heights being wrong or lidar seeing
+kerbs, levees and banks an 8 m pixel cannot.
+**Answer:** Hardly better. Within 0.5 m at 54% over one pixel and 56% over three (25 m), against 54% at the point; on
+flat ground 12 of 21 points were still more than 0.5 m off. So the heights are off at their own scale, up to 25 m
+(C-031).
+
+### T-030 · Outside the US, against a national lidar DEM, how close are Mapbox's heights on low ground?
+
+**Status:** answered (C-032), for the Netherlands
+**Parent:** T-028
+**Opened:** 2026-11-27
+**Question:** C-030 could only use USGS, so it covers six US places. The Netherlands (AHN), England (the Environment
+Agency's lidar) and Denmark publish national lidar DEMs, and the Netherlands is where a metre matters most. Mapbox
+says its DEM uses different sources by place, so the US result need not carry over.
+**Answer:** In the Netherlands it is worse. Within 0.5 m of AHN at 23% of 443 points and within 1 m at 38%, with
+medians from −0.07 m (Almere) to +2.89 m (Amsterdam) and 86 points more than 3 m off, mostly too high (C-032). England
+is T-033.
+
+### T-031 · What zero do Mapbox's heights start from in the US?
+
+**Status:** answered (C-033)
+**Parent:** T-028
+**Opened:** 2026-11-27
+**Question:** USGS's heights are from NAVD88. Mapbox's median difference from them ran from −0.42 m (Miami Beach) to
++0.26 m (New Orleans) in C-030. Mapbox's DEM page says its sources use different vertical datums, "including but not
+limited to NAVD 88, EGM 96, and Ordnance Datum Newlyn", and that normalising to one "may lead to inaccuracies", but
+not which applies where. If a place's source is on EGM 96, part of its shift is the gap between the two zeros there,
+which can be computed and compared with the measured shift.
+**Answer:** None of NAVD 88, EGM 96 and EGM 2008 fits in four of the six places. EGM 2008 fits Norfolk and Charleston,
+NAVD 88 Sacramento, and nothing fits New Orleans, Miami Beach or Galveston. So the shifts are not a difference of zero,
+and removing them would not have reached C-030's bar anyway (C-033).
+
+### T-032 · Is Mapbox's DEM in the US smoother than 25 m, so that a wider lidar average would agree with it?
+
+**Status:** answered (C-034)
+**Parent:** T-029
+**Opened:** 2026-11-27
+**Question:** C-031 averaged the lidar over squares up to 25 m and the agreement with Mapbox rose only from 54% to 56%
+within 0.5 m. If Mapbox's US source came from a coarser grid, such as a 30 m one, a 50 to 100 m average might match it.
+One more USGS request per point at each wider square would say; if none matches, resolution is ruled out at any scale
+a flood map could use.
+**Answer:** No. Over 50 m 59% within 0.5 m, over 100 m 60%, and no place above 71%. Resolution does not explain the
+errors up to 100 m (C-034).
+
+### T-033 · In England, against the Environment Agency's lidar, how close are Mapbox's heights on low ground?
+
+**Status:** answered (C-038)
+**Parent:** T-030
+**Opened:** 2026-11-28
+**Question:** The Environment Agency's 1 m lidar DTM is served keyless by WCS
+(`environment.data.gov.uk/spatialdata/lidar-composite-digital-terrain-model-dtm-1m/wcs`, formats include `text/plain`).
+Its heights are in Ordnance Datum Newlyn, which Mapbox's DEM page names. It is on the British National Grid, and
+converting GPS coordinates to it to the metre needs OSTN15, not a seven-parameter formula, which can be several metres
+out. Places: Hull, Boston and the Fens, the Somerset Levels.
+**Answer:** Worse than the Netherlands: 16% of 507 points within 0.5 m and 32% within 1 m, medians from −1.23 m (Great
+Yarmouth) to +2.69 m (Boston), 88 points more than 3 m off, mostly too high, on the zero Mapbox names (C-038).
+
+### T-034 · Does Mapbox's DEM in the Netherlands include buildings and trees?
+
+**Status:** open
+**Parent:** T-030
+**Opened:** 2026-11-28
+**Question:** In C-032 Mapbox read a median 2.0 m above AHN's bare ground in Rotterdam and 2.9 m in Amsterdam, but
+near 0 in Almere, Middelburg and Zwolle, and 77 of the 86 points more than 3 m off were too high. AHN4 also has a
+surface model with buildings and trees (`AHN4_DSM_50cm` on the same server). Averaging it over Mapbox's pixel at
+C-032's points, one request a point, would say whether Mapbox's Dutch heights follow the surface rather than the
+ground.
+**Answer:** —

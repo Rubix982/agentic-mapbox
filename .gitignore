@@ -5,3 +5,4 @@ inventory/
 *.log
 .DS_Store
 evals/runs/
+.venv/

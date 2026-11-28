@@ -975,3 +975,38 @@ Beside the afternoon's other runs:
 - Three sessions, on one model.
 
 **Use.** $0.80 for the 3 sessions.
+
+## C-035: an automated WCAG 2.1 AA check on the pages sessions wrote (2026-11-28)
+
+`node evals/a11y/run.mjs` loaded each of the 81 map pages Claude sessions wrote in C-001 to C-029 as the harness does,
+and a bare GL JS 3.35.2 page as the control, added axe-core 4.10.2 from cdnjs, and ran its WCAG 2.0 and 2.1 Level A and
+AA rules (`evals/a11y/results.json`). That is the standard the US ADA Title II rule asks of state and local government
+sites, from 26 April 2027 for the larger ones after the April 2026 extension.
+
+- 78 of 81 pages, 96%, had no violation; the control had none. The bar set beforehand was 90%.
+- All three failures are `meta-viewport` (critical): `initial-scale=1,maximum-scale=1,user-scalable=no`, which stops
+  people zooming. Mapbox's own "Display a map" example carries the same line. The pages are C-001's task 1 with skills,
+  C-005's task 4 without and C-022's task 5 with.
+- axe left `color-contrast` (81 pages) and `bypass` (80) for a person to review, on the control too.
+- No automated rule checks whether a map's content reaches someone who cannot see it, so passing does not make these
+  maps accessible.
+
+## C-037: three tasks on New York's real 311 export (2026-11-28)
+
+The set `evals/civic/` (`tasks.md`, `checks.mjs`, `make_data.mjs`) is every Brooklyn pothole report from 1 to 7
+November 2026 in New York's 311 Service Requests, 135 rows, as the city exports it: 70 with no location and 27 still
+open. Task 1 maps the located reports and says how many had none; task 2 maps them from the city's X and Y alone
+(EPSG:2263, US feet, not named in the file); task 3 colours them by time to close. Validation
+(`results/c037-validation-20261127-193941.jsonl`): the three reference pages pass, and the three wrong ones fail, each
+on its own mistake (blank coordinates read as 0, feet read as metres, open reports counted as closed late).
+
+| Task | Right first time, without skills |
+|---|---|
+| 1. With and without a location | 3/3 |
+| 2. From the city's X and Y | 3/3 |
+| 3. Time to close | 3/3 |
+| **Total** | **9/9** |
+
+- All three task-2 sessions named EPSG:2263 and wrote the Lambert conformal conic inverse by hand. No session loaded a
+  projection library, fetched anything, or searched.
+- 9 sessions, $4.51 (`results/c037-20261127-194039.jsonl`).
